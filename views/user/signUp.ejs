@@ -1,0 +1,49 @@
+<%- include("../partials/header.ejs")%>
+   <div class="container-fluid p-0 justify-content-center align-items-center signUp min-vh-100">
+      <%- include("../partials/navBar.ejs")%>
+         <div class="container d-flex justify-content-center align-items-center">
+            <div class="row rounded-5 p-3 bg-white CardSignup">
+               <div class="right col-md-6 p-2 signUpimage">
+                  <img src="/assets/nav/signUp.png" alt="" class="img-fluid rounded-2">
+               </div>
+               <div class="left p-3 col-md-6 d-flex flex-column justify-content-center">
+                  <div class="heading">
+                     <h2>Create an account</h2>
+                     <span>Enter your details</span> <br>
+                     <div class="text text-success fw-bold mt-3" style="font-size: 15px;">
+                        <%=locals.succ? succ:""%>
+                     </div>
+                  </div>
+                  <form action="/register" method="post" onsubmit="return allChecking()">
+                     <div class="signUpForm d-flex gap-3 mt-4 flex-column loginButton">
+                        <!-- NAME -->
+                        <input class="signInput" type="text" placeholder="Name" name="name" id="name"
+                           onchange="nameChecking()" required>
+                        <span id="Name" class="text text-danger"></span>
+                        <!-- PHONE -->
+                        <input class="signInput" type="text" placeholder="Phone" name="number" id="number"
+                           onchange="numberChecking()" required>
+                        <span id="Number" class="text text-danger"></span>
+                        <!-- EMAIL -->
+                        <input class="signInput" type="text" placeholder="email" name="email" id="email"
+                           onchange="emailChecking()" required>
+                        <span id="Email" class="text text-danger"></span>
+                        <!-- PASSWORD -->
+                        <input class="signInput" type="password" placeholder="Password" name="password" id="password"
+                           onchange="passwordChecking()" required>
+                        <span id="Password" class="text text-danger"></span>
+                        <!-- BUTTON -->
+                        <div class="d-flex flex-column mt-2 gap-2 align-items-center ">
+                           <button class="btn text-white " type="submit"
+                              onclick="nameChecking(),emailChecking(),numberChecking(),passwordChecking()">
+                              Create Account</button>
+                           <button class="btn bg-white border text-dark col-lg-6">Sign up with Google</button>
+                        </div>
+                     </div>
+                  </form>
+               </div>
+            </div>
+         </div>
+   </div>
+   <script src="/js/validation.js"></script>
+   <%- include("../partials/footer.ejs")%>

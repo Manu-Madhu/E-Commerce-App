@@ -1,0 +1,120 @@
+<%- include('../partials/header.ejs')%>
+    <div class="container-fluid p-0 min-vh-100 ">
+        <%- include('../partials/adminnav.ejs')%>
+            <div class="container f-flex align-items-center justify-content-center">
+                <div class="row p-4 gap-3 d-flex justify-content-center">
+                    <div class="DashBoardUl container col-md-2 p-0 m-0 bg-white d-flex pt-4 sideBar">
+                        <ul class="d-flex flex-column">
+                            <li class="sideBarlist border p-1 m-2 ps-4 ">
+                                <img src="/assets/admin/d1.png" alt="" class="img-fluid me-2">
+                                <span><a class="text-decoration-none" style="color: white;" href="/admin/Dashboard">DashBoard</a></span>
+                            </li>
+                            <li class="dashOther fw-bold p-1 ps-4 m-2">
+                                <img src="/assets/admin/d3.png" alt="" class="img-fluid me-2">
+                                <span><a href="/admin/category"  class="text-decoration-none" style="color: #cdcdcd;">Category</a></span>
+                            </li>
+                            <li class="dashOther fw-bold p-1 ps-4 m-2">
+                                <img src="/assets/admin/d2.png" alt="" class="img-fluid me-2">
+                                <span></span>
+                                <a href="/admin/productView"  class="text-decoration-none" style="color: #cdcdcd;">Product</a></span>
+                            </li>
+                            <li class="dashOther fw-bold p-1 ps-4 m-2">
+                                <img src="/assets/admin/d4.png" alt="" class="img-fluid me-2">
+                                <span></span>
+                                <a href="/admin/coustomers"  class="text-decoration-none" style="color: #cdcdcd;">Coustomer</a></span>
+                            </li>
+                            <li class="dashOther fw-bold p-1 ps-4 m-2">
+                                <img src="/assets/admin/d5.png" alt="" class="img-fluid me-2">
+                                <span></span>
+                                <a href="#"  class="text-decoration-none" style="color: #cdcdcd;">Order</a></span>
+                            </li>
+                            <li class="dashOther fw-bold p-1 ps-4 m-2">
+                                <img src="/assets/admin/d6.png" alt="" class="img-fluid me-2">
+                                <span></span>
+                                <a href="#"  class="text-decoration-none" style="color: #cdcdcd;">Coupons</a></span>
+                            </li>
+                            <li class="dashOther fw-bold p-1 ps-4 m-2">
+                                <img src="/assets/admin/d2.png" alt="" class="img-fluid me-2">
+                                <span></span>
+                                <a href="#"  class="text-decoration-none" style="color: #cdcdcd;">Banner</a></span>
+                            </li>
+                            <li class="dashOther fw-bold p-1 ps-4 m-2">
+                                <img src="/assets/admin/d6.png" alt="" class="img-fluid me-2">
+                                <span></span>
+                                <a href="admin/logOut"  class="text-decoration-none" style="color: #cdcdcd;">Logout</a></span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class=" container col-md-9  p-0 m-0">
+                        <div class="container p-0 ">
+                            <div class="conatiner saleTop bg-white mb-3">
+                                <div class="container summary p-3 d-flex gap-3">
+                                    <h6 class="mt-3 ps-4">Sales Summary</h6>
+                                    <select name="cars" id="cars" class="btnYear fw-bold mt-3">
+                                        <option value="volvo">2023</option>
+                                        <option value="saab">2022</option>
+                                        <option value="opel">2021</option>
+                                        <option value="audi">2020</option>
+                                    </select>
+                                </div>
+                                <div class="row p-4">
+                                    <div
+                                        class="container SaleBox-one d-flex flex-column align-items-start justify-content-center col-md-3 p-3 ps-5">
+                                        <img src="/assets/admin/DsC1.png" alt="" class="img-fluid mb-3">
+                                        <h2>₹ 1k</h2>
+                                        <h6>Total Sales</h6>
+                                    </div>
+                                    <div id="two"
+                                        class="container SaleBox-one d-flex flex-column align-items-start justify-content-center col-md-3 p-3 ps-5">
+                                        <img src="/assets/admin/DsC2.png" alt="" class="img-fluid mb-3">
+                                        <h2>25</h2>
+                                        <h6>Total Sales</h6>
+                                    </div>
+                                    <div id="three"
+                                        class="container SaleBox-one d-flex flex-column align-items-start justify-content-center col-md-3 p-3 ps-5">
+                                        <img src="/assets/admin/DsC3.png" alt="" class="img-fluid mb-3">
+                                        <h2>15</h2>
+                                        <h6>Total Sales</h6>
+                                    </div>
+                                    <div id="four"
+                                        class="container SaleBox-one d-flex flex-column align-items-start justify-content-center col-md-3 p-3 ps-5">
+                                        <img src="/assets/admin/DsC4.png" alt="" class="img-fluid mb-3">
+                                        <h2>10</h2>
+                                        <h6>Total Sales</h6>
+                                    </div>
+                                    <div id="fifth"
+                                        class="container SaleBox-one d-flex flex-column align-items-start justify-content-center col-md-3 p-3 ps-5">
+                                        <img src="/assets/admin/DsC1.png" alt="" class="img-fluid mb-3">
+                                        <h2>10</h2>
+                                        <h6>Total Sales</h6>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="conatiner graphSummary bg-white">
+                                <div class="container summary p-3 d-flex gap-3">
+                                    <h6 class="mt-3 ps-4">Sales Summary</h6>
+                                    <select name="cars" id="cars" class="btnYear fw-bold mt-3">
+                                        <option value="volvo">2023</option>
+                                        <option value="saab">2022</option>
+                                        <option value="opel">2021</option>
+                                        <option value="audi">2020</option>
+                                    </select>
+                                </div>
+
+                                <div class="container graph">
+                                    <div class="chart p-3">
+                                        <canvas id="lineChart" width="400" height="100"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="/js/chart.js"></script>
+
+    <%- include('../partials/adminfooter.ejs')%>

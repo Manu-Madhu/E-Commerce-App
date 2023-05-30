@@ -1,0 +1,126 @@
+<%- include("../partials/header.ejs")%>
+    <%- include("../partials/navBar.ejs")%>
+        <section class="container my-5 pt-3">
+            <div class="row m-4">
+                <% data.forEach((data)=> {%>
+                    <div class="left col-lg-7 col-md-7 col-12 d-flex  justify-content-center">
+                        <div class="smal-img-group gap-3 d-flex flex-column ">
+                            <div class="smal-img-col">
+                                <img src="../../productImages/<%= data.image[1]%>" width="90%" alt=""
+                                    class="img-fluid smalImg">
+                            </div>
+                            <div class="smal-img-col">
+                                <img src="../../productImages/<%= data.image[2]%>" width="90%" alt=""
+                                    class="img-fluid smalImg">
+                            </div>
+                            <div class="smal-img-col">
+                                <img src="../../productImages/<%= data.image[3]%>" width="90%" alt=""
+                                    class="img-fluid smalImg">
+                            </div>
+                            <div class="smal-img-col">
+                                <img src="../../productImages/<%= data.image[4]%>" width="90%" alt=""
+                                    class="img-fluid smalImg">
+                            </div>
+                            <div class="smal-img-col">
+                                <img src="../../productImages/<%= data.image[5]%>" width="90%" alt=""
+                                    class="img-fluid smalImg">
+                            </div>
+                        </div>
+                        <div class="mian-img col-lg-10 col-md-12 col-12">
+                            <img class="img-fluid" width="85%"
+                                src="../../productImages/<%= data.image[0]%>" alt="" id="zoom">
+                        </div>
+                    </div>
+                    <div class="right col-lg-5 col-md-5 col-12 gap-3">
+                        <h3 class="mt-2">
+                            <%= data.p_name%>
+                        </h3>
+                        <div>
+                            <img src="/assets/product/star.png" alt="" class="img-fluid">
+                            <img src="/assets/product/star.png" alt="" class="img-fluid">
+                            <img src="/assets/product/star.png" alt="" class="img-fluid">
+                            <img src="/assets/product/star.png" alt="" class="img-fluid">
+                            <img src="/assets/product/star.png" alt="" class="img-fluid">
+                            <span>(150 reviews) &nbsp;| &nbsp;<span class="text-success">Instock</span></span>
+                        </div>
+                        <h2 class="mt-2">
+                            <span>₹ &nbsp;</span>
+                            <%= data.price %> &nbsp;&nbsp;
+                                <span class="text-success">76% off</span>
+                        </h2>
+                        <div class="pt-2">
+                            <p class="text-Description">
+                                <%= data.description %>
+                            </p>
+                        </div>
+                        <div class="mt-4">
+                            <hr class="line bg-dark">
+                        </div>
+                        <h5 class="pt-2">Colors:</h5>
+                        <h5 class="pt-2">Size:</h5>
+                        <div class="d-flex p_Cart_Buy gap-4 pt-2">
+                            <form action="">
+                                <button class="btn btn-warning text-white px-5">Add to Cart</button>
+                            </form>
+                            <form action="">
+                                <button class="btn btn-danger text-white px-5">Add to Cart</button>
+                            </form>
+                        </div>
+                        <div class="pt-4">
+                            <div class="border border-dark p_Delivery_Border">
+                                <div class="d-flex align-items-center p-3 gap-3">
+                                    <img class="img-fluid" src="/assets/product/icon-delivery.png" alt=""
+                                        style="width:40px">
+                                    <h6>Free Delivery</h6>
+                                </div>
+                                <hr class="p-0 m-0 bg-dark">
+                                <div class="d-flex align-items-center p-3 gap-3">
+                                    <img class="img-fluid" src="/assets/product/Icon-return.png" alt=""
+                                        style="width:40px">
+                                    <h6>Return Delivery</h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <%})%>
+            </div>
+            <div class="pt-5">
+                <hr class="bg-dark m-0 p-0">
+            </div>
+            <h4 class="p-4">Related Adds</h4>
+            <div class="row">
+                <div class="col-lg-3 col-sm-6 p-3">
+                    <div class="container bg-white ProductCard">
+                        <!-- image rendering  -->
+                        <a href="#">
+                            <div class="cardImage mb-2">
+                                <img src="/assets/product/3.webp" alt="Product Image">
+                            </div>
+                        </a>
+                        <span>
+                            manu
+                        </span>
+                        <div class="p_price d-flex justify-content-between">
+                            <div class="price text-danger">₹ <text>1000</text> &nbsp; <span>₹ 1160</span></div>
+                            <div class="favor" style="cursor: pointer;">
+                                <i class="fa-regular fa-heart"></i>
+                            </div>
+                        </div>
+                        <div class="rating d-flex align-items-center">
+                            <div class="star d-flex align-items-center">
+                                <img src="/assets/product/star.png" alt="">
+                                <img src="/assets/product/star.png" alt="">
+                                <img src="/assets/product/star.png" alt="">
+                                <img src="/assets/product/star.png" alt="">
+                                <img src="/assets/product/star.png" alt="">
+                            </div>
+                            <div class="value ms-2">(75)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <script src="/zoom/zoom.js"></script>
+        <script src="/zoom/zoomsl.min.js"></script>
+        <script src="/js/P_Image.js"></script>
+        <%- include("../partials/footer.ejs")%>

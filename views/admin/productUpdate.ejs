@@ -1,0 +1,112 @@
+<%- include('../partials/header.ejs')%>
+    <div class="container-fluid p-0 min-vh-100 ">
+        <%- include('../partials/adminnav.ejs')%>
+            <div class="container f-flex align-items-center justify-content-center">
+                <div class="row p-4 gap-3 d-flex justify-content-center">
+                    <!-- SIDE BAR -->
+                    <div class="DashBoardUl container col-md-2 p-0 m-0 bg-white d-flex pt-4 sideBar">
+                        <ul class="d-flex flex-column">
+                            <li class="dashOther fw-bold p-1 m-2 ps-4 ">
+                                <img src="/assets/admin/d1.png" alt="" class="img-fluid me-2">
+                                <span><a class="text-decoration-none" style="color: #cdcdcd;"
+                                        href="/admin/Dashboard">DashBoard</a></span>
+                            </li>
+                            <li class="dashOther fw-bold p-1 ps-4 m-2">
+                                <img src="/assets/admin/d3.png" alt="" class="img-fluid me-2">
+                                <span><a href="/admin/category" class="text-decoration-none"
+                                        style="color: #cdcdcd;">Category</a></span>
+                            </li>
+                            <li class="sideBarlist fw-bold p-1 ps-4 m-2">
+                                <img src="/assets/admin/d2.png" alt="" class="img-fluid me-2">
+                                <span></span>
+                                <a href="/admin/productView" class="text-decoration-none"
+                                    style="color: white;">Product</a></span>
+                            </li>
+                            <li class="dashOther fw-bold p-1 ps-4 m-2">
+                                <img src="/assets/admin/d4.png" alt="" class="img-fluid me-2">
+                                <span></span>
+                                <a href="/admin/coustomers" class="text-decoration-none"
+                                    style="color: #cdcdcd;">Coustomer</a></span>
+                            </li>
+                            <li class="dashOther fw-bold p-1 ps-4 m-2">
+                                <img src="/assets/admin/d5.png" alt="" class="img-fluid me-2">
+                                <span></span>
+                                <a href="#" class="text-decoration-none" style="color: #cdcdcd;">Order</a></span>
+                            </li>
+                            <li class="dashOther fw-bold p-1 ps-4 m-2">
+                                <img src="/assets/admin/d6.png" alt="" class="img-fluid me-2">
+                                <span></span>
+                                <a href="#" class="text-decoration-none" style="color: #cdcdcd;">Coupons</a></span>
+                            </li>
+                            <li class="dashOther fw-bold p-1 ps-4 m-2">
+                                <img src="/assets/admin/d2.png" alt="" class="img-fluid me-2">
+                                <span></span>
+                                <a href="#" class="text-decoration-none" style="color: #cdcdcd;">Banner</a></span>
+                            </li>
+                            <li class="dashOther fw-bold p-1 ps-4 m-2">
+                                <img src="/assets/admin/d6.png" alt="" class="img-fluid me-2">
+                                <span></span>
+                                <a href="" class="text-decoration-none" style="color: #cdcdcd;">Logout</a></span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class=" container col-md-9  p-0 m-0">
+                        <div class="container p-0 bg-white p_addingWrapper">
+                            <div class="container p-5">
+                                <form action="/admin/addUpdatedProducts" method="post" enctype="multipart/form-data">
+                                    <div class="row d-flex mb-3">
+                                        <div class="col-md-6 d-flex flex-column">
+                                            <label for="">Product Name*</label>
+                                            <input type="text" class="mt-1 py-2" name="p_name"
+                                                placeholder="Product Name" value="<%= product.p_name%>" required>
+                                        </div>
+                                        <div class="col-md-6 d-flex flex-column">
+                                            <label for="">Category*</label>
+                                            <!-- <input type="text" class="mt-1 py-2" name="category"
+                                                placeholder="Category" required> -->
+                                            <select name="category" id="" class="mt-1 py-2">
+                                                <option value="<%= product.category[0]%>">
+                                                    <%= product.category[0] %>
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row d-flex mb-3">
+                                        <div class='col-md-6 d-flex flex-column'>
+                                            <label for="">Price*</label>
+                                            <input type="tel" class="mt-1 py-2" name="price"
+                                                value="<%= product.price %>" placeholder="price" pattern="[0-9]+"
+                                                title="Please enter numbers only" required>
+                                        </div>
+                                        <div class="col-md-6 d-flex flex-column">
+                                            <label for="">Quantity *</label>
+                                            <input type="number" class="mt-1 py-2" name="quantity"
+                                                value="<%= product.quantity%>" min="0" pattern="[0-9]"
+                                                title="Please enter nunmber" placeholder="Quantity" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="">Discription*</label>
+                                        <textarea class="form-control" placeholder="Description" name="description"
+                                            rows="4" required><%= product.description %></textarea>
+                                    </div>
+
+                                    <input type="hidden" name="id" value="<%= product._id %>">
+                                    <input type="file" class="form-control my-3 py-2" name="image" multiple required>
+                                    <div class="mt-3">
+                                        <button type="submit" class="btn btn-success" style="background :#0D9E00;">Apply
+                                            Changes</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+    </div>
+
+    <script src="/js/P_Image.js"></script>
+
+    <%- include('../partials/adminfooter.ejs')%>

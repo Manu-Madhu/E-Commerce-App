@@ -1,0 +1,35 @@
+<%- include("../partials/header.ejs")%>
+   <div class="container-fluid p-0 justify-content-center align-items-center signUp min-vh-100">
+      <%- include("../partials/navBar.ejs")%>
+         <div class="container d-flex justify-content-center align-items-center p-5">
+            <div class="row p-3 bg-white adminCard">
+               <div class="right col-md-6 p-2 d-flex justify-content-center">
+                  <img src="/assets/admin/login.png" alt="" class="img-fluid rounded-2">
+               </div>
+               <div class="left col-md-6 p-3 d-flex flex-column justify-content-center">
+                  <div class="heading">
+                     <h2>Log in to Exclusive</h2>
+                     <span>Enter your details</span>
+                  </div>
+                  <form action="/admin" method="post" onsubmit="return fullyChecking()">
+                     <div class="credntials mt-4 d-flex flex-column gap-3 loginButton">
+                        <!-- email -->
+                        <input class="loginInput p-1 " type="text" placeholder="Email or Phone Number" required
+                           name="email" id="Email" onchange="emailValidate()">
+                        <span id="emailError" class="text text-danger fw-bold mb-2"></span>
+                        <!-- password -->
+                        <input class="loginInput p-1" type="password" placeholder="Password" required name="password"
+                        id="Password" onchange="passwordValidate()">
+                        <span id="passwordError" class="text text-danger fw-bold mb-2"></span>
+                        <div class="d-flex mt-3 gap-5 align-items-center justify-content-between">
+                           <button class="btn text-white col-lg-6" type="submit" onclick="emailValidate(),passwordValidate()">Login</button>
+                           <span class="text-danger col-lg-6">Forgot Password?</span>
+                        </div>
+                     </div>
+                  </form>
+               </div>
+            </div>
+         </div>
+   </div>
+   <script src="/js/validation.js"></script>
+   <%- include("../partials/footer.ejs")%>
