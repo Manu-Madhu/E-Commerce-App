@@ -31,7 +31,8 @@ admin.get("/category", adminController.category);
 admin.post("/addCategory", adminController.CategoryAdding);
 
 admin.get("/addCategory", adminController.categoryAdd);
-admin.post("/deleteCategory/:id", adminController.deleteCategory);
+admin.post("/unlistCategory/:id", adminController.unlistCategory);
+admin.post("/listCategory/:id", adminController.listCategory);
 
 admin.get("/updateCategory/:id", adminMiddleWeare.isLogOut, adminController.Categoryupdate);
 admin.post("/updateCategory", adminController.updateCategory);

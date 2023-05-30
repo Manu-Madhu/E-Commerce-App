@@ -106,10 +106,27 @@ const CategoryAdding = async (req, res) => {
         res.status(500).render('admin/categoryAdd', { Succ: "Category must be uniqe", title: "Category" })
     }
 }
-const deleteCategory = async (req, res) => {
+const unlistCategory = async (req, res) => {
     try {
         const id = req.params.id
-        await CategoryModel.deleteOne({ _id: id })
+        await CategoryModel.findByIdAndUpdate({ _id: id },{
+            $set:{
+                isAvailable: false 
+            }
+        })
+        res.redirect('/admin/category')
+    } catch (error) {
+        res.status(500).send("internal error")
+    }
+}
+const listCategory = async (req, res) => {
+    try {
+        const id = req.params.id
+        await CategoryModel.findByIdAndUpdate({ _id: id },{
+            $set:{
+                isAvailable: true 
+            }
+        })
         res.redirect('/admin/category')
     } catch (error) {
         res.status(500).send("internal error")
@@ -249,7 +266,8 @@ module.exports = {
     category,
     categoryAdd,
     CategoryAdding,
-    deleteCategory,
+    unlistCategory,
+    listCategory,
     Categoryupdate,
     updateCategory,
     newproductAdding,

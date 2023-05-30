@@ -72,25 +72,46 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <% CategoryData.forEach((category,index) => { %>
-                                                  <tr>
-                                                    <th scope="row"><%= index+1 %></th>
-                                                    <td scope="col">
-                                                      <span><%= category.categoryName %></span>
-                                                    </td>
-                                                    <td scope="col">
-                                                      <span><%= category.categoryDiscription %></span>
-                                                    </td>
-                                                    <td scope="col" class="TableButton d-flex align-items-center" onsubmit="return confirmDelete()">
-                                                      <form action="/admin/deleteCategory/<%= CategoryData[index]._id %>" method="POST">
-                                                        <button class="btn btn-danger m-2 text" type="submit">Delete</button>
-                                                      </form>
-                                                      <a href="/admin/updateCategory/<%= category._id %>" class="btn btn-warning text-white catagoryEdit" style="color:rgb(7, 7, 7)">Edit</a>
-                                                    </td>
-                                                  </tr>
-                                                <% }); %>
-                                              </tbody>
-                                              
+                                                <% CategoryData.forEach((category,index)=> { %>
+                                                    <tr>
+                                                        <th scope="row">
+                                                            <%= index+1 %>
+                                                        </th>
+                                                        <td scope="col">
+                                                            <span>
+                                                                <%= category.categoryName %>
+                                                            </span>
+                                                        </td>
+                                                        <td scope="col">
+                                                            <span>
+                                                                <%= category.categoryDiscription %>
+                                                            </span>
+                                                        </td>
+                                                        <td scope="col" class="TableButton d-flex align-items-center"
+                                                            onsubmit="return confirmUpdate()">
+                                                            <% if(category.isAvailable===true){%>
+                                                                <form
+                                                                    action="/admin/unlistCategory/<%= CategoryData[index]._id %>"
+                                                                    method="POST">
+                                                                    <button class="btn btn-danger m-2 text"
+                                                                        type="submit">Unlist</button>
+                                                                </form>
+                                                                <%}else if(category.isAvailable===false){%>
+                                                                    <form
+                                                                        action="/admin/listCategory/<%= CategoryData[index]._id %>"
+                                                                        method="POST">
+                                                                        <button class="btn btn-success m-2 text"
+                                                                            type="submit">List</button>
+                                                                    </form>
+                                                                    <%}%>
+                                                                        <a href="/admin/updateCategory/<%= category._id %>"
+                                                                            class="btn btn-warning text-white catagoryEdit"
+                                                                            style="color:rgb(7, 7, 7)">Edit</a>
+                                                        </td>
+                                                    </tr>
+                                                    <% }); %>
+                                            </tbody>
+
                                         </table>
                                     </div>
                                 </div>

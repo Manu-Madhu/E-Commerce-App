@@ -2,6 +2,7 @@ const user = require('../models/user');
 const OTP = require('../models/otpModel');
 const ProductModel = require('../models/productModel');
 const bcrypt = require('bcrypt');
+const { category } = require('./adminControllers');
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
 const client = require('twilio')(accountSid, authToken);
@@ -145,8 +146,10 @@ const successTick = (req, res) => {
 const detaildView = async (req, res) => {
     try {
         const id = req.params.id;
-        const data = await ProductModel.find({ _id: id });
-        res.render('user/productView', { title: "Product View", user: req.session.user, data })
+        const data = await ProductModel.findOne({ _id: id });
+        const cate = data.category[0];
+        const category = await ProductModel.find({category:cate});
+        res.render('user/productView', { title: "Product View", user: req.session.user, data,category })
     } catch (error) {
         console.log(error)
     }
