@@ -82,7 +82,7 @@ const registerUser = async (req, res) => {
 
         // send random number to user
         client.messages
-            .create({ body: randome, from: '+12542726949', to: number })
+            .create({ body: randome, from: '+12542726949', to: `+91${number}` })
             .then(saveUser());
 
         //save randome Number to database then render verify page

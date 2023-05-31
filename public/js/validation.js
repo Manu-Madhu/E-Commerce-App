@@ -62,12 +62,12 @@ function emailChecking() {
 }
 function numberChecking() {
     let number = document.getElementById("number").value.trim();
-    // if (/^[0-9]+$/.test(number) == false) {
-    //     re_number.innerHTML = "please enter a valid number";
-    //     return false
-    // }
-    // else
-     if (number.length != 13) {
+    if (/^[0-9]+$/.test(number) == false) {
+        re_number.innerHTML = "please enter a valid number";
+        return false
+    }
+    else
+     if (number.length != 10) {
         re_number.innerHTML = "please enter 10 digits";
         return false
     } else {

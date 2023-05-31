@@ -211,7 +211,6 @@ const p_deleting = async (req, res) => {
           // Retrieve existing product data
           const existingProduct = await productModel.findById(id);
           const existingImages = existingProduct.image;
-          console.log(existingImages)
   
           // Delete previous images from fs
           existingImages.forEach((filename) => {

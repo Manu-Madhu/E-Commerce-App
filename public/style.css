@@ -668,6 +668,54 @@ select:focus {
 #lens>* {
   cursor: none;
 }
+/* --------------profile----------------- */
+.profile_left{
+  border-radius: 13px;
+  box-shadow: 2px 2px 4px 0px rgba(0, 0, 0, 0.25);
+
+}
+.profile_left span{
+  font-size: 13px;
+  color : var(--primaryText)
+}
+.profile_Right{
+  border-radius: 13px;
+  box-shadow: 2px 2px 4px 0px rgba(0, 0, 0, 0.25);
+}
+.propic img{
+  width: 15%;
+  max-height: 120px;
+  border-radius: 50%;
+}
+.profile_info{
+  border-radius: 13px;
+  box-shadow: 0px 1px 13px 0px rgba(0, 0, 0, 0.05);
+  background: rgba(243, 241, 241, 1);
+}
+
+.profile_form label{
+  font-size: 13.5px;
+  color:#373a47;
+}
+.profile_form input{
+  background-color: #FFFEFE;
+  border-radius: 5px;
+  border: none;
+  padding: 7px;
+  padding-left: 10px;
+}
+.profile_form input::placeholder{
+  font-size: 13.5px;
+  color: #959595;
+}
+.profile_form input:focus{
+    outline: none;
+    font-size: 13px;
+    background-color:#FFFEFE;
+}
+.profile_button button{
+  width: 20%;
+}
 /* ----------------FOOTER---------------- */
 .footer {
   background: #373a47;

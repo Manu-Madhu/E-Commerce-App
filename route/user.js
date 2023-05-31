@@ -21,6 +21,12 @@ Router.get('/',userMiddlewear.islogin,userMiddlewear.userIsBlocked, userControle
 // View Product detaild view
 Router.get('/detaildView/:id',userMiddlewear.userIsBlocked, userControler.detaildView);
 
+
+// profile 
+Router.get('/profile',(req,res)=>{
+     res.render('user/account/profile')
+})
+
 // Logout
 Router.get('/logout', userControler.logOut);
 
