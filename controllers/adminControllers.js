@@ -2,6 +2,7 @@ const admin = require('../models/admin');
 const UsersModel = require('../models/user');
 const CategoryModel = require('../models/category');
 const productModel = require('../models/productModel');
+const fs = require('fs');
 const path = require('path');
 
 
@@ -207,6 +208,19 @@ const p_deleting = async (req, res) => {
 
     try {
         const id = req.params.id;
+          // Retrieve existing product data
+          const existingProduct = await productModel.findById(id);
+          const existingImages = existingProduct.image;
+          console.log(existingImages)
+  
+          // Delete previous images from fs
+          existingImages.forEach((filename) => {
+              fs.unlink(`productImages/${filename}`, (err) => {
+                  if (err) {
+                      console.log(err);
+                  }
+              });
+          });
         await productModel.findByIdAndDelete({ _id: id })
         res.redirect('/admin/productView');
     } catch (error) {
@@ -226,7 +240,19 @@ const productUpdating = async (req, res) => {
 }
 const addUpdateProduct = async (req, res) => {
     try {
-        const id = req.body.id
+        const id = req.body.id;
+          // Retrieve existing product data
+          const existingProduct = await productModel.findById(id);
+          const existingImages = existingProduct.image;
+  
+          // Delete previous images from fs
+          existingImages.forEach((filename) => {
+              fs.unlink(`productImages/${filename}`, (err) => {
+                  if (err) {
+                      console.log(err);
+                  }
+              });
+          });
         const updatedData = {
             p_name: req.body.p_name,
             price: req.body.price,
