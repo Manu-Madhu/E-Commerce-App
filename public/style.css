@@ -12,25 +12,32 @@ body {
   /* Sroll bar css */
   ::-webkit-scrollbar-track {
     -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-    border-radius: 10px;
+    border-radius: 7px;
     background-color: #f5f5f5;
   }
 
   ::-webkit-scrollbar {
-    width: 12px;
+    width: 8px;
     background-color: #f5f5f5;
   }
 
   ::-webkit-scrollbar-thumb {
-    border-radius: 10px;
+    border-radius: 7px;
     -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
     background-color: #5d5d5d;
   }
 }
 /* ------------------NAV------------- */
 .navbar {
-  height: 100px;
+  width: 100%;
+  position: fixed;
+  top: 0;
   background-color: #f3f1f1;
+}
+@media (min-width: 1200px) {
+   .navbar{
+      height: 100px;
+   }
 }
 .search {
   width: 243px;
@@ -475,8 +482,8 @@ body {
   font-size: 12px;
   font-weight: 500;
 }
-.t_Image img{
- border-radius: 8px;
+.t_Image img {
+  border-radius: 8px;
 }
 
 /* ---------PRODUCT Add ----------------- */
@@ -661,69 +668,241 @@ select:focus {
 }
 
 #zoom img {
-  
   max-width: 100%;
 }
 
-#lens>* {
+#lens > * {
   cursor: none;
 }
+
 /* --------------profile----------------- */
-.profile_left{
+.profile_left {
   border-radius: 13px;
   box-shadow: 2px 2px 4px 0px rgba(0, 0, 0, 0.25);
-
 }
-.profile_left a{
+.profile_left a {
   font-size: 13px;
-  color : var(--primaryText);
+  color: var(--primaryText);
   cursor: pointer;
 }
-.profile_left a:hover{
+.profile_left a:hover {
   color: var(--primaryBg);
 }
-.profile_Right{
+.profile_Right {
   border-radius: 13px;
   box-shadow: 2px 2px 4px 0px rgba(0, 0, 0, 0.25);
 }
-.propic img{
+.propic img {
   width: 15%;
   max-height: 120px;
   border-radius: 50%;
 }
-.propic p,span{
+.propic p,
+span {
   font-size: 13.5px;
   color: #959595;
 }
-.profile_info{
+.profile_info {
   border-radius: 13px;
   box-shadow: 0px 1px 13px 0px rgba(0, 0, 0, 0.05);
   background: rgba(243, 241, 241, 1);
 }
 
-.profile_form label{
+.profile_form label {
   font-size: 13.5px;
-  color:#373a47;
+  color: #373a47;
 }
-.profile_form input{
-  background-color: #FFFEFE;
+.profile_form input {
+  background-color: #fffefe;
   border-radius: 5px;
   border: none;
   padding: 7px;
   padding-left: 10px;
 }
-.profile_form input::placeholder{
+.profile_form input::placeholder {
   font-size: 13.5px;
   color: #959595;
 }
-.profile_form input:focus{
-    outline: none;
-    font-size: 13px;
-    background-color:#FFFEFE;
+.profile_form input:focus {
+  outline: none;
+  font-size: 13px;
+  background-color: #fffefe;
 }
-.profile_button button{
+.profile_button button {
   width: 20%;
 }
+
+/* profileAddress */
+.address_Form {
+  border-radius: 13px;
+  box-shadow: 0px 1px 13px 0px rgba(0, 0, 0, 0.05);
+  background: rgba(243, 241, 241, 1);
+}
+.address_Form form label {
+  font-size: 13px;
+  color: #939393;
+}
+.address_Form form input {
+  background-color: #fffefe;
+  border-radius: 5px;
+  border: none;
+  padding: 7px;
+  padding-left: 10px;
+}
+.address_Form form input::placeholder {
+  font-size: 13.5px;
+  color: #959595;
+}
+.address_Form form input:focus {
+  outline: none;
+  font-size: 13px;
+  background-color: #fffefe;
+}
+.address_Form button {
+  width: 40%;
+  border-radius: 14px;
+  font-size: 13px;
+}
+.address_view button {
+  width: 22%;
+  border-radius: 14px;
+  font-size: 13px;
+}
+.address_selecter {
+  border-radius: 12px;
+  overflow: scroll;
+  overflow-x: hidden;
+  max-height: 100px;
+}
+
+.address_selecter p {
+  font-size: 13.5px;
+  color: #959595;
+}
+.address_Form input:focus {
+  outline: none;
+  font-size: 13px;
+  background-color: #fffefe;
+}
+
+/*hide inputarrows*/
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  margin: 0;
+}
+/*end*/
+
+/* Billing details */
+.billing_address {
+  border-radius: 13px;
+  box-shadow: 0px 1px 13px 0px rgba(0, 0, 0, 0.05);
+  background: rgb(255, 255, 255);
+}
+.billing_address_view button {
+  width: 30%;
+  border-radius: 14px;
+  font-size: 13px;
+}
+.billing_Form {
+  border-radius: 13px;
+  box-shadow: 0px 1px 13px 0px rgba(0, 0, 0, 0.05);
+  background: rgba(243, 241, 241, 1);
+}
+.billing_Form form label {
+  font-size: 13px;
+  color: #939393;
+}
+.billing_Form form input {
+  background-color: #fffefe;
+  border-radius: 5px;
+  border: none;
+  padding: 7px;
+  padding-left: 10px;
+}
+.billing_Form form input::placeholder {
+  font-size: 13.5px;
+  color: #959595;
+}
+.billing_Form form input:focus {
+  outline: none;
+  font-size: 13px;
+  background-color: #fffefe;
+}
+
+.billing_form {
+  border-radius: 13px;
+  box-shadow: 0px 1px 13px 0px rgba(0, 0, 0, 0.05);
+  background: rgba(243, 241, 241, 1);
+  overflow: scroll;
+  overflow-x: hidden;
+  max-height: 100px;
+}
+.billing_button button {
+  width: 100%;
+  border-radius: 14px;
+  font-size: 13px;
+}
+.billing_img {
+  border-radius: 13px;
+  box-shadow: 0px 1px 13px 0px rgba(0, 0, 0, 0.05);
+  background: rgba(243, 241, 241, 1);
+  min-height: 205px;
+  max-height: 205px;
+  overflow: scroll;
+  overflow-x: hidden;
+}
+.billing_Totall {
+  border-radius: 10px;
+}
+.billing_radio input[type="radio"] {
+  border: 0px;
+  width: 10%;
+  height: 1em;
+}
+.billing_coupon button {
+  width: 30%;
+  border-radius: 14px;
+  font-size: 13px;
+}
+
+.billing_coupon input {
+  background-color: #fff;
+  border-radius: 10px;
+  border: none;
+  padding: 7px;
+  padding-left: 10px;
+}
+
+.billing_coupon input::placeholder {
+  font-size: 13.5px;
+  color: rgb(111, 111, 111);;
+}
+.billing_coupon input:focus{
+  outline: none;
+  font-size: 13px;
+  background-color: #fffefe;
+}
+.billing_bg{
+  border-radius: 13px;
+  box-shadow: 0px 1px 13px 0px rgba(0, 0, 0, 0.05);
+  background: rgba(243, 241, 241, 1);
+  max-height: 200px;
+}
+
+/* ----------------Cart---------------- */
+.cart_table{
+  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.25);
+  background: rgba(243, 241, 241, 1);
+  border-radius: 14px;
+  margin: 10px;
+}
+
+.cart_table th{
+}
+
 /* ----------------FOOTER---------------- */
 .footer {
   background: #373a47;

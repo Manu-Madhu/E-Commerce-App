@@ -6,23 +6,22 @@ const islogin = async (req, res, next) => {
         if (req.session.user) {
             next()
         } else {
+            const user = req.session.user;
             const data = await ProductModel.find()
-            res.render('user/home',{title: 'Home', data})
+            res.render('user/home', { title: 'Home', user, data });
         }
-
     } catch (err) {
         console.log(err)
     }
 }
 
-const isLogOut = async(req, res, next) => {
+const isLogOut = async (req, res, next) => {
     try {
         if (req.session.user) {
             res.redirect('/');
         } else {
             next()
         }
-
     } catch (error) {
         console.log(error);
     }

@@ -1,12 +1,15 @@
 
-
 const profile =(req,res)=>{
-      res.render('user/account/profile');
+    const user = req.session.user
+      res.render('user/account/profile',{user,title:"Profile"});
 }
 
 const profileAddress = (req,res)=>{
-     res.render('user/account/adress')
+    const user = req.session.user
+     res.render('user/account/address', {user,title:"Address"})
 }
+
+
 
 module.exports ={
     profile,

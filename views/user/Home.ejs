@@ -1,5 +1,5 @@
 <%- include("../partials/header.ejs")%>
-    <div class="container-fluid p-0 min-vh-100">
+    <div class="container-fluid p-0 min-vh-100" style="margin-top: 8%;">
         <%- include("../partials/navBar.ejs")%>
 
             <!-- CAROUSEL -->
@@ -94,7 +94,55 @@
 
                 <!-- line -->
                 <div class="container">
-                    <hr class="line bg-dark">
+                    <hr class="line bg-dark mt-5">
+                </div>
+
+                <!-- view Accessory -->
+                <div class="container d-flex p-3  justify-content-between ">
+                    <div class="textHeading fw-bold fs-4">Latest Women Accessory</div>
+                    <button class="productviewButton">view all products</button>
+                </div>
+
+                <!--Accessory Container -->
+                <div class="row">
+                    <% data.forEach((data,index)=>{ %>
+                        <div class=" col-lg-3 col-sm-6 p-3">
+                            <div class="container bg-white ProductCard">
+                                <!-- image rendering  -->
+                                <a href="/detaildView/<%= data._id%>">
+                                    <div class="cardImage mb-2">
+                                        <img src="productImages/<%=data.image[0] %>" alt="Product Image">
+                                    </div>
+                                </a>
+                                <span>
+                                    <%= data.p_name %>
+                                </span>
+                                <div class="p_price d-flex justify-content-between">
+                                    <div class="price text-danger">₹ <text>
+                                            <%= data.price %>
+                                        </text> &nbsp; <span>₹ 1160</span></div>
+                                    <div class="favor" style=" cursor: pointer;">
+                                        <i class="fa-regular fa-heart"></i>
+                                    </div>
+                                </div>
+                                <div class="rating d-flex align-items-center">
+                                    <div class="star d-flex align-items-center">
+                                        <img src="/assets/product/star.png" alt="">
+                                        <img src="/assets/product/star.png" alt="">
+                                        <img src="/assets/product/star.png" alt="">
+                                        <img src="/assets/product/star.png" alt="">
+                                        <img src="/assets/product/star.png" alt="">
+                                    </div>
+                                    <div class="value ms-2">(75)</div>
+                                </div>
+                            </div>
+                        </div>
+                        <% }); %>
+                </div>
+
+                <!-- line -->
+                <div class="container">
+                    <hr class="line bg-dark mt-5">
                 </div>
 
                 <!-- Service Card -->
@@ -125,9 +173,6 @@
                             <p style="font-size: 12px;">Free delivery for all orders over $140</p>
                         </div>
                     </div>
-                </div>
-                <div class="mb-3">
-                    <hr class="line bg-dark">
                 </div>
             </div>
     </div>

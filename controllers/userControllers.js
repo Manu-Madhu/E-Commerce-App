@@ -27,7 +27,7 @@ const home = async (req, res) => {
 
 // LOGIN VALIDATION
 const login = (req, res) => {
-    res.render('user/login', { title: 'Login' })
+    res.render('user/login', { title: 'Login',user: req.session.user })
 }
 const validation = async (req, res) => {
     try {
@@ -42,14 +42,14 @@ const validation = async (req, res) => {
                     req.session.email = userData.email;
                     res.redirect('/')
                 } else {
-                    res.render("user/login", { fail: "Ckeck Your Password" })
+                    res.render("user/login", { fail: "Ckeck Your Password",user: req.session.user})
                 }
 
             } else {
-                res.render('user/login', { fail: "Check Your Email" })
+                res.render('user/login', { fail: "Check Your Email",user: req.session.user })
             }
         } else {
-            res.render('user/login', { fail: "Pease Contact Your Admin You are not Allow to Use this Account AnyMore" })
+            res.render('user/login', { fail: "Pease Contact Your Admin You are not Allow to Use this Account AnyMore",user: req.session.user })
         }
 
 
@@ -59,12 +59,9 @@ const validation = async (req, res) => {
 }
 
 
-
-
-
 // REGISTRATION
 const signup = (req, res) => {
-    res.render('user/signUp', { title: "Sign Up" })
+    res.render('user/signUp', { title: "Sign Up",user: req.session.user })
 }
 const registerUser = async (req, res) => {
     try {
@@ -100,7 +97,7 @@ const registerUser = async (req, res) => {
     }
     catch (error) {
         console.log(error)
-        res.render('user/signUp', { succ: "Please Use a Uniqe Email ID" })
+        res.render('user/signUp', { succ: "Please Use a Uniqe Email ID",user: req.session.user })
     }
 }
 const OTPValidation = async (req, res) => {
@@ -124,11 +121,11 @@ const OTPValidation = async (req, res) => {
                             console.log("error while deleting", err);
                         });
                 } else {
-                    res.render('user/verification', { fal: "Please Check Your OTP" })
+                    res.render('user/verification', { fal: "Please Check Your OTP",user: req.session.user })
                 }
             })
             .catch((err) => {
-                res.render('user/verification', { fal: "Please Check Your OTP" })
+                res.render('user/verification', { fal: "Please Check Your OTP",user: req.session.user})
             })
     } catch (error) {
         console.log(error)
@@ -138,7 +135,7 @@ const OTPValidation = async (req, res) => {
 
 // Success
 const successTick = (req, res) => {
-    res.render('user/successTick', { title: "Account", succ: "SuccessFully Create Your Account" })
+    res.render('user/successTick', { title: "Account", succ: "SuccessFully Create Your Account",user: req.session.user })
 }
 
 // Detaild view
@@ -154,13 +151,22 @@ const detaildView = async (req, res) => {
     }
 }
 
+const Checkout = (req,res)=>{
+    const user = req.session.user;
+    res.render('user/account/billing',{user,title:"Check"})
+}
+
+const cart =(req,res)=>{
+    const user = req.session.user;
+    res.render('user/Cart',{user,title:"Cart"})
+}
+
 // LOGOUT
 const logOut = async (req, res) => {
     try {
         req.session.user = null;
         req.session.email = null;
-        const data = await ProductModel.find();
-        res.render('user/Home', { title: "Home", data })
+        res.redirect('/');
     } catch (error) {
         console.log(error)
     }
@@ -176,5 +182,7 @@ module.exports = {
     registerUser,
     validation,
     logOut,
-    detaildView
+    detaildView,
+    Checkout,
+    cart
 }

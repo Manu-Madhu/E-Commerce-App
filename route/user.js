@@ -27,6 +27,12 @@ Router.get('/detaildView/:id',userMiddlewear.userIsBlocked, userControler.detail
 Router.get('/profile',profileController.profile);
 Router.get('/profile/address',profileController.profileAddress);
 
+// CheckOut 
+Router.get('/CheckOut',userControler.Checkout);
+
+// Cart
+Router.get('/cart',userControler.cart);
+
 // Logout
 Router.get('/logout', userControler.logOut);
 

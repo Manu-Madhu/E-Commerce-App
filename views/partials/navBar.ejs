@@ -15,9 +15,17 @@
                     <li class="nav-item">
                         <a class="nav-link" href="#">About</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/logout"><%= locals.log?log:"" %></a>
-                    </li>
+
+                    <%if(user){%>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/logout">logOut</a>
+                        </li>
+                        <%}else{%>
+                            <li class="nav-item"></li>
+                            <a class="nav-link" href="/logout">login</a>
+                            </li>
+                        <%}%>
+
                 </ul>
                 <form class="Nav_icon d-flex gap-4 justify-content-cneter align-items-center">
                     <input class="search p-3" type="search" placeholder="What you looking for?" aria-label="Search">
@@ -25,7 +33,7 @@
                     <i class="fa-solid fa-cart-shopping "></i>
                     <div class="d-flex flex-column align-items-center">
                         <div class="iconP">
-                            <a href="/login" ><i class="fa-regular fa-user"></i></a>
+                            <a href="/login"><i class="fa-regular fa-user"></i></a>
                         </div>
                         <span class="text-success fw-bold ">
                             <%= locals.user?user:"" %>
