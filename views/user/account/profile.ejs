@@ -1,72 +1,80 @@
 <%- include('../../partials/header.ejs') %>
-    <%-include('../../partials/navbar.ejs') %>
-        <div class="container min-vh-100">
-            <div class="row p-5">
-                <div class="container col-lg-3 col-md-3 col-12 p-3 m-0">
-                    <div class="container bg-white profile_left p-5">
-                        <div class="mb-4 d-flex flex-column">
-                            <h6>Manage My Account</h6>
-                            <span class="text-danger">My profile</span>
-                        </div>
-                        <div class="mb-4 d-flex flex-column">
-                            <h6>My Orders</h6>
-                            <span class=" ">My Return</span>
-                            <span class=" ">My Orders</span>
-                        </div>
-                        <div class="mb-4 d-flex flex-column">
-                            <h6>My WhishList</h6>
-                        </div>
-                        <div class="mb-4 d-flex flex-column">
-                            <h6>My Address</h6>
+    <div class="container-fluid p-0 min-vh-100">
+        <%-include('../../partials/navbar.ejs') %>
+            <div class="container ">
+                <div class="row p-4">
+                    <div class="container col-lg-3 col-md-3 col-12 p-3 m-0">
+                        <div class="container bg-white profile_left p-5">
+                            <div class="mb-4 d-flex flex-column">
+                                <h6>Manage My Account</h6>
+                                <a href="" class="text-decoration-none text-danger">My Profile</a>
+                            </div>
+                            <div class="mb-4 d-flex flex-column">
+                                <h6>My Orders</h6>
+                                <a href="" class="text-decoration-none">My Orders</a>   
+                                <a href="" class="text-decoration-none">My Return</a>
+                            </div>
+                            <div class="mb-4 d-flex flex-column">
+                                <h6>My WishList</h6>
+                                <a href="" class="text-decoration-none">My WishList</a>
+                            </div>
+                            <div class="mb-4 d-flex flex-column">
+                                <h6>My Address</h6>
+                                <a href="" class="text-decoration-none">My Address</a>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="container col-lg-9 col-md-9 col-12 py-3 p-0 m-0">
-                    <div class="container-fluid bg-white profile_Right p-4">
-                        <div class="propic d-flex align-items-center gap-4 px-5">
-                            <img src="/assets/admin/7.JPG" alt="" class="img-fluid">
-                            <div class="flex-column">
-                                <h3>Manu M</h3>
-                                <p>maunm@gmail.com</p>
-                            </div>
-                        </div>
-                        <div class="conatiner profile_info p-4 mt-3">
-                            <div class="container px-5">
-                                <h6 class="text-danger">Edit Your Profile</h6>
-                            </div>
-                            <div class="row d-flex px-5 mt-3 profile_form">
-                                <div class="d-flex flex-column col-lg-6 ">
-                                    <label for="" class="py-1">First Name</label>
-                                    <input type="text" >
-                                </div>
-                                <div class="d-flex flex-column col-lg-6 ">
-                                    <label for="" class="py-1">Last Name</label>
-                                    <input type="text">
+                    <div class="container col-lg-9 col-md-9 col-12 py-3 p-0 m-0">
+                        <div class="container-fluid bg-white profile_Right p-4">
+                            <div class="propic d-flex align-items-center gap-4 px-5">
+                                <img src="/assets/admin/7.JPG" alt="" class="img-fluid">
+                                <div class="flex-column">
+                                    <h3>Manu M</h3>
+                                    <p class="p-0 m-0">Email : <span>manum@gmail.com</span></p>
+                                    <p class="p-0 m-0">Phone : <span>7356924029</span></p>
                                 </div>
                             </div>
-                            <div class="row d-flex px-5 mt-3 profile_form">
-                                <div class="d-flex flex-column col-lg-6 ">
-                                    <label for="" class="py-1">Email</label>
-                                    <input type="email" >
+                            <form action="">
+                                <div class="conatiner profile_info p-3 mt-3">
+                                    <div class="container px-5 pt-4">
+                                        <h6 class="text-danger">Edit Your Profile</h6>
+                                    </div>
+                                    <div class="row d-flex px-5 mt-3 profile_form">
+                                        <div class="d-flex flex-column col-lg-6 ">
+                                            <label for="" class="py-1">First Name</label>
+                                            <input type="text">
+                                        </div>
+                                        <div class="d-flex flex-column col-lg-6 ">
+                                            <label for="" class="py-1">Last Name</label>
+                                            <input type="text">
+                                        </div>
+                                    </div>
+                                    <div class="row d-flex px-5 mt-3 profile_form">
+                                        <div class="d-flex flex-column col-lg-6 ">
+                                            <label for="" class="py-1">Email</label>
+                                            <input type="email">
+                                        </div>
+                                    </div>
+                                    <div class="row d-flex px-5 mt-3 profile_form">
+                                        <div class="d-flex flex-column">
+                                            <label for="" class="py-1">Password</label>
+                                            <input type="email" class="mb-3" placeholder="Current Password">
+                                            <input type="email" class="mb-3" placeholder="New Password">
+                                            <input type="email" class="mb-3" placeholder="Conform New Password">
+                                        </div>
+                                    </div>
+                                    <div class="row px-5 my-3 pb-3 profile_button align-items-center">
+                                        <button class="btn btn-danger col-lg-6 col-md-6 col-12 ms-3" style="border-radius: 14px; font-size: 13.5px;">
+                                            Save Changes
+                                        </button>
+                                        <a href="" class="text-decoration-none text-dark col-lg-6 col-md-6 col-12 p-3"
+                                            style="font-size: 14px; font-weight: 500; padding-left: 2%;">Cancel</a>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="row d-flex px-5 mt-3 profile_form">
-                                <div class="d-flex flex-column">
-                                    <label for="" class="py-1">Password</label>
-                                    <input type="email" class="mb-3" placeholder="Current Password">
-                                    <input type="email" class="mb-3" placeholder="New Password">
-                                    <input type="email" class="mb-3" placeholder="Conform New Password">
-                                </div>
-                            </div>
-                            <div  class="px-5 my-3 profile_button">
-                                <button class="btn btn-danger" style="border-radius: 14px; font-size: 13.5px;">
-                                    Save Changes
-                                </button>
-                                <a href="" class="text-decoration-none text-dark" style="font-size: 14px; font-weight: 500; padding-left: 2%;">Cancel</a>
-                            </div>
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <%-include('../../partials/footer.ejs') %>
+    </div>
+    <%-include('../../partials/footer.ejs') %>

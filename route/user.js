@@ -6,6 +6,7 @@ const Router = express.Router();
 // Routers
 const userMiddlewear = require('../middleWeare/user');
 const userControler = require('../controllers/userControllers');
+const profileController =require('../controllers/profileController');
 Router.get('/login',userMiddlewear.isLogOut, userControler.login);
 Router.post('/login', userControler.validation);
 
@@ -23,9 +24,8 @@ Router.get('/detaildView/:id',userMiddlewear.userIsBlocked, userControler.detail
 
 
 // profile 
-Router.get('/profile',(req,res)=>{
-     res.render('user/account/profile')
-})
+Router.get('/profile',profileController.profile);
+Router.get('/profile/address',profileController.profileAddress);
 
 // Logout
 Router.get('/logout', userControler.logOut);
