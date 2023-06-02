@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+const productModel = require('./productModel');
+
 
 const userSchema = new mongoose.Schema({
     name: {
@@ -7,7 +9,7 @@ const userSchema = new mongoose.Schema({
     },
     email: {
         type: String,
-        unique:true,
+        unique: true,
         required: true
     },
     number: {
@@ -18,13 +20,13 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    isBlocked:{
-        type:Boolean,
+    isBlocked: {
+        type: Boolean,
         default: false,
         require: true
-    }
-},{timestamps:true});
+    },
+}, { timestamps: true });
 
-const user = mongoose.model("user",userSchema);
-module.exports =user
+const user = mongoose.model("user", userSchema);
+module.exports = user
 

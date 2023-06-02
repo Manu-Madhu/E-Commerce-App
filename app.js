@@ -10,7 +10,7 @@ const cookiePaser = require('cookie-parser');
 
 // MONGO CONNECTION
 dotenv.config({ path: './.env' });
-url = process.env.URL
+const url = process.env.URL
 mongoose.connect(url)
 
 // EJS SETTING

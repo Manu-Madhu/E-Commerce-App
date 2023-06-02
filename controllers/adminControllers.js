@@ -11,7 +11,8 @@ const path = require('path');
 
 // ADMIN lOGIN
 const adminLogin = (req, res) => {
-    res.render('admin/adminLogin', { title: "Admin" })
+    const user = req.session.user;
+    res.render('admin/adminLogin', { title: "Admin",user })
 }
 const adminVerification = async (req, res) => {
     try {

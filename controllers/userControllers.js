@@ -1,4 +1,4 @@
-const user = require('../models/user');
+const UserModel = require('../models/user');
 const OTP = require('../models/otpModel');
 const ProductModel = require('../models/productModel');
 const bcrypt = require('bcrypt');
@@ -33,7 +33,7 @@ const validation = async (req, res) => {
     try {
         const email = req.body.email;
         const password = req.body.password;
-        const userData = await user.findOne({ email: email });
+        const userData = await UserModel.findOne({ email: email });
         if (userData.isBlocked === false) {
             if (userData) {
                 const VPWD = await bcrypt.compare(password, userData.password);
@@ -156,10 +156,19 @@ const Checkout = (req,res)=>{
     res.render('user/account/billing',{user,title:"Check"})
 }
 
-const cart =(req,res)=>{
-    const user = req.session.user;
-    res.render('user/Cart',{user,title:"Cart"})
+const cart =async(req,res)=>{
+    try{
+        const id = req.params.id;
+        const email =req.session.email;
+        const user = req.session.user;
+        res.render('user/Cart',{user,title:"Cart",user})
+    }catch(error){
+       console.log(error);
+    }
+   
 }
+
+
 
 // LOGOUT
 const logOut = async (req, res) => {

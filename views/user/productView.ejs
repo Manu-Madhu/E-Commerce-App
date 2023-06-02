@@ -58,11 +58,11 @@
                         <h5 class="pt-2">Colors:</h5>
                         <h5 class="pt-2">Size:</h5>
                         <div class="d-flex p_Cart_Buy gap-4 pt-2">
-                            <form action="">
-                                <button class="btn btn-warning text-white px-5 p-2" style="font-size: 13px;">Add to Cart</button>
+                            <form action="" method="post">
+                                <button class="btn btn-warning text-white px-5 p-2" style="font-size: 13px;">Buy Now</button>
                             </form>
-                            <form action="">
-                                <button class="btn btn-danger text-white px-5 p-2" style="font-size: 13px;">Add to Cart</button>
+                            <form action="/cart/<%= data._id%>" method="post">
+                                <button type="submit" class="btn btn-danger text-white px-5 p-2" style="font-size: 13px;">Add to Cart</button>
                             </form>
                         </div>
                         <div class="pt-4">

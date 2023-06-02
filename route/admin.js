@@ -22,7 +22,7 @@ const adminController = require('../controllers/adminControllers');
 const adminMiddleWeare = require('../middleWeare/admin');
 
 // Admin login&Dashboard
-admin.get('/',adminController.adminLogin);
+admin.get('/',adminMiddleWeare.isAdmin, adminController.adminLogin);
 admin.post('/', adminController.adminVerification)
 admin.get('/Dashboard', adminMiddleWeare.isLogOut, adminController.dashboard);
 
