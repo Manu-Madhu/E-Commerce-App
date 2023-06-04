@@ -47,9 +47,17 @@ const userIsBlocked = async (req, res, next) => {
     }
 }
 
+const userCheking = (req,res,next)=>{
+   if(req.session.user){
+    next()
+   }else{
+    res.redirect('/login');
+   }
+}
 
 module.exports = {
     islogin,
     isLogOut,
-    userIsBlocked
+    userIsBlocked,
+    userCheking
 }

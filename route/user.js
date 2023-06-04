@@ -31,8 +31,7 @@ Router.get('/profile/address',profileController.profileAddress);
 Router.get('/CheckOut',userControler.Checkout);
 
 // Cart
-Router.get('/cart',userMiddlewear.islogin,userMiddlewear.userIsBlocked, userControler.cart);
-Router.post('/cart/:id',userMiddlewear.islogin,userMiddlewear.userIsBlocked, userControler.cart);
+Router.post('/cart/:id',userMiddlewear.userCheking,userMiddlewear.userIsBlocked, userControler.cart);
 
 // Logout
 Router.get('/logout', userControler.logOut);

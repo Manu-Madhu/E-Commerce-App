@@ -18,7 +18,7 @@ const pwdEncription = (password) => {
 const home = async (req, res) => {
     try {
         const data = await ProductModel.find();
-        res.render('user/Home', {log:"LogOut", title: "Home", user: req.session.user, data })
+        res.render('user/Home', { log: "LogOut", title: "Home", user: req.session.user, data })
     } catch (error) {
         console.log(error);
         res.status(500).send("internal error")
@@ -27,7 +27,7 @@ const home = async (req, res) => {
 
 // LOGIN VALIDATION
 const login = (req, res) => {
-    res.render('user/login', { title: 'Login',user: req.session.user })
+    res.render('user/login', { title: 'Login', user: req.session.user })
 }
 const validation = async (req, res) => {
     try {
@@ -42,14 +42,14 @@ const validation = async (req, res) => {
                     req.session.email = userData.email;
                     res.redirect('/')
                 } else {
-                    res.render("user/login", { fail: "Ckeck Your Password",user: req.session.user})
+                    res.render("user/login", { fail: "Ckeck Your Password", user: req.session.user })
                 }
 
             } else {
-                res.render('user/login', { fail: "Check Your Email",user: req.session.user })
+                res.render('user/login', { fail: "Check Your Email", user: req.session.user })
             }
         } else {
-            res.render('user/login', { fail: "Pease Contact Your Admin You are not Allow to Use this Account AnyMore",user: req.session.user })
+            res.render('user/login', { fail: "Pease Contact Your Admin You are not Allow to Use this Account AnyMore", user: req.session.user })
         }
 
 
@@ -61,15 +61,16 @@ const validation = async (req, res) => {
 
 // REGISTRATION
 const signup = (req, res) => {
-    res.render('user/signUp', { title: "Sign Up",user: req.session.user })
+    res.render('user/signUp', { title: "Sign Up", user: req.session.user })
 }
 const registerUser = async (req, res) => {
     try {
         const enPwd = await pwdEncription(req.body.password);
         req.body.password = enPwd;
         req.body.isBlocked = false;
+        console.log(req.body)
         // USER INFO SAVING TO DB
-        await user.create(req.body)
+        await UserModel.create(req.body)
 
         // OTP CODE
         const number = req.body.number
@@ -88,7 +89,7 @@ const registerUser = async (req, res) => {
             })
             newUser.save()
                 .then(() => {
-                    res.render('user/verification');
+                    res.render('user/verification', { user: req.session.user });
                 })
                 .catch((error) => {
                     console.log("error generating numb", error);
@@ -97,7 +98,7 @@ const registerUser = async (req, res) => {
     }
     catch (error) {
         console.log(error)
-        res.render('user/signUp', { succ: "Please Use a Uniqe Email ID",user: req.session.user })
+        res.render('user/signUp', { succ: "Please Use a Uniqe Email ID", user: req.session.user })
     }
 }
 const OTPValidation = async (req, res) => {
@@ -121,11 +122,11 @@ const OTPValidation = async (req, res) => {
                             console.log("error while deleting", err);
                         });
                 } else {
-                    res.render('user/verification', { fal: "Please Check Your OTP",user: req.session.user })
+                    res.render('user/verification', { fal: "Please Check Your OTP", user: req.session.user })
                 }
             })
             .catch((err) => {
-                res.render('user/verification', { fal: "Please Check Your OTP",user: req.session.user})
+                res.render('user/verification', { fal: "Please Check Your OTP", user: req.session.user })
             })
     } catch (error) {
         console.log(error)
@@ -135,7 +136,7 @@ const OTPValidation = async (req, res) => {
 
 // Success
 const successTick = (req, res) => {
-    res.render('user/successTick', { title: "Account", succ: "SuccessFully Create Your Account",user: req.session.user })
+    res.render('user/successTick', { title: "Account", succ: "SuccessFully Create Your Account", user: req.session.user })
 }
 
 // Detaild view
@@ -144,28 +145,48 @@ const detaildView = async (req, res) => {
         const id = req.params.id;
         const data = await ProductModel.findOne({ _id: id });
         const cate = data.category[0];
-        const category = await ProductModel.find({category:cate});
-        res.render('user/productView', { title: "Product View", user: req.session.user, data,category })
+        const category = await ProductModel.find({ category: cate });
+        res.render('user/productView', { title: "Product View", user: req.session.user, data, category })
     } catch (error) {
         console.log(error)
     }
 }
 
-const Checkout = (req,res)=>{
+const Checkout = (req, res) => {
     const user = req.session.user;
-    res.render('user/account/billing',{user,title:"Check"})
+    res.render('user/account/billing', { user, title: "Check" })
 }
 
-const cart =async(req,res)=>{
-    try{
+// cart
+const cart = async (req, res) => {
+    try {
         const id = req.params.id;
-        const email =req.session.email;
+        const userEmail = req.session.email;
         const user = req.session.user;
-        res.render('user/Cart',{user,title:"Cart",user})
-    }catch(error){
-       console.log(error);
+        const userData = await UserModel.findOne({ email: userEmail });
+        console.log(userData);
+
+        const cartItems = userData.cart.items;
+        const existingCartItem = cartItems.find(item => item.productId.toString() === id);
+
+        if (existingCartItem) {
+            existingCartItem.quantity += 1;
+            
+        } else {
+            const newCartItem = {
+                productId: id,
+                quantity: 1
+            };
+            userData.cart.items.push(newCartItem);
+        }
+
+        await userData.save();
+        const cartProducts = await ProductModel.find({ _id: { $in: cartItems.map(item => item.productId) } });
+        res.render('user/Cart', { title: "Cart", user,cartProducts });
+        console.log("Cart successfully updated");
+    } catch (error) {
+        console.log('Error adding to cart:', error);
     }
-   
 }
 
 
