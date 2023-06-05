@@ -24,14 +24,18 @@ Router.get('/detaildView/:id',userMiddlewear.userIsBlocked, userControler.detail
 
 
 // profile 
-Router.get('/profile',profileController.profile);
+Router.get('/profile',userMiddlewear.userCheking,userMiddlewear.userIsBlocked, profileController.profile);
 Router.get('/profile/address',profileController.profileAddress);
+
+// Cart
+Router.get('/cart',userMiddlewear.userCheking,userMiddlewear.userIsBlocked, userControler.cartload);
+Router.post('/cart/:id',userMiddlewear.userCheking,userMiddlewear.userIsBlocked, userControler.cart);
+Router.post('/cart/update/:id',userMiddlewear.userCheking,userMiddlewear.userIsBlocked, userControler.cart);
+Router.post('/cartDelete/:id',userControler.cartDelete);
 
 // CheckOut 
 Router.get('/CheckOut',userControler.Checkout);
-
-// Cart
-Router.post('/cart/:id',userMiddlewear.userCheking,userMiddlewear.userIsBlocked, userControler.cart);
+Router.post('/CheckOut',userControler.addressAdding)
 
 // Logout
 Router.get('/logout', userControler.logOut);

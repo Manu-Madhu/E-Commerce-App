@@ -34,9 +34,43 @@ const userSchema = new mongoose.Schema({
             quantity: {
                 type: Number,
                 default: 1
+            },
+            price: {
+                type: Number,
+                require: true
             }
         }]
-    }
+    },
+    address:[{
+        name: {
+            type: String,
+            required: true
+        },
+        houseName: {
+            type: String,
+            required: true
+        },
+        street: {
+            type: String,
+            required: true
+        },
+        city: {
+            type: String,
+            required: true
+        },
+        state: {
+            type: String,
+            required: true
+        },
+        phone: {
+            type: Number,
+            required: true
+        },
+        postalCode: {
+            type: Number,
+            required: true
+        }
+    }]
 }, { timestamps: true });
 
 const user = mongoose.model("user", userSchema);

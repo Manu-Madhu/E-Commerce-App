@@ -24,21 +24,28 @@
                             <li class="nav-item"></li>
                             <a class="nav-link" href="/login">login</a>
                             </li>
-                        <%}%>
+                            <%}%>
 
                 </ul>
                 <form class="Nav_icon d-flex gap-4 justify-content-cneter align-items-center">
                     <input class="search p-3" type="search" placeholder="What you looking for?" aria-label="Search">
-                    <i class="fa-regular fa-heart"></i>
-                    <i class="fa-solid fa-cart-shopping "></i>
-                    <div class="d-flex flex-column align-items-center">
-                        <div class="iconP">
-                            <a href="/login"><i class="fa-regular fa-user"></i></a>
-                        </div>
-                        <span class="text-success fw-bold ">
-                            <%= locals.user?user:"" %>
-                        </span>
-                    </div>
+                    <% if(user) {%>
+                        <i class="fa-regular fa-heart"></i>
+                        <a href="/cart" class="link-dark">
+                            <i class="fa-solid fa-cart-shopping "></i>
+                        </a>
+                        <%}else{%>
+                            <i class="fa-regular fa-heart"></i>
+                            <i class="fa-solid fa-cart-shopping "></i>
+                            <%}%>
+                                <div class="d-flex flex-column align-items-center">
+                                    <div class="iconP ">
+                                        <a href="/profile"><i class="fa-regular fa-user text-dark"></i></a>
+                                    </div>
+                                    <span class="text-danger fw-bold ">
+                                        <%= locals.user?user:"" %>
+                                    </span>
+                                </div>
                 </form>
             </div>
         </div>

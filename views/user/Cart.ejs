@@ -6,54 +6,191 @@
                     <div class="p-2 px-4 py-4">
                         <h4 class="fw-bold">Shopping Cart</h4>
                     </div>
-                    <div class="container bg-white Cart_table_wapper p-4 mx-3">
-                        <div class="Cart_list">
-                            <div class="px-2">
-                                <table style="width:100%;">
-                                    <thead class="cartTop" style="position:sticky; top: 0;;">
-                                        <tr class="cart_table">
-                                            <th class="first p-3"><span>Product</span></th>
-                                            <th class="p-3"><span>Quantity</span></th>
-                                            <th class="p-3"><span>Price</span></th>
-                                            <th class="third p-3"><span>Action</span></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <% cartProducts.forEach((data)=>{%>
-                                            <tr>
-                                                <td class="p-3 d-flex align-items-center">
-                                                    <img src="/productImages/<%= data.image[0]%>" alt=""
-                                                        class="img-fluid" width="70px" style="border-radius: 5px;">
-                                                    <h6 for="" class="fw-bold ps-3" style="font-size: 13.5px;">
-                                                        <%=data.p_name%>
-                                                    </h6>
-                                                    <span></span>
-                                                </td>
-                                                <td class="p-3">
-                                                    <input type="number" value="<%= data.quantity%>"
-                                                        style="width: 50px; border: 2px solid #020202; border-radius: 4px;">
-                                                </td>
-                                                <td class="p-3">
-                                                    <h6 for="" class="fw-bold">₹ 2000</h6>
-                                                </td>
-                                                <td class="p-3">
-                                                    <button class="btn btn-danger"
-                                                        style="border-radius: 10px; font-size:13px; width:50%"> Remove
-                                                    </button>
-                                                </td>
+                    <div class="row d-flex mx-2">
+                        <div class="container col-lg-7 col-md-7 col-12 bg-white Cart_table_wapper p-4 m-0 mb-2">
+                            <div class="Cart_list">
+                                <div class="px-2">
+                                    <table style="width:100%;">
+                                        <thead class="cartTop" style="position:sticky; top: 0;;">
+                                            <tr class="cart_table">
+                                                <th class="first p-3"><span>Product</span></th>
+                                                <th class="p-3"><span>Quantity</span></th>
+                                                <th class="p-3"><span>Price</span></th>
+                                                <th class="third p-3"><span>Action</span></th>
                                             </tr>
-                                        <%})%>
-                                    </tbody>
-                                </table>
+                                        </thead>
+                                        <tbody>
+                                            <% cartProducts.forEach((data,index)=>{%>
+                                                <tr>
+                                                    <td class=" p-3 d-flex align-items-center">
+                                                        <a href="/detaildView/<%= data._id%>" class="container d-flex align-items-center text-decoration-none text-dark">
+                                                        <img src="/productImages/<%= data.image[0]%>" alt=""
+                                                            class="img-fluid" width="70px" style="border-radius: 5px;">
+                                                        <h6 for="" class="fw-bold ps-3" style="font-size: 13.5px;">
+                                                            <%=data.p_name%>
+                                                        </h6>
+                                                    </a>
+                                                        <span></span>
+                                                    </td>
+                                                    <td class="p-3">
+                                                        <input type="number" class="d-flex align-items-center"
+                                                            value="<%= cartItems.find(item => item.productId.toString() === data._id.toString()).quantity %>"
+                                                            style="width: 50px; border: 2px solid #020202; border-radius: 4px;"
+                                                            onchange="updateQuantity('<%= data._id.toString() %>', this.value)"
+                                                            data-product-id="<%= data._id.toString() %>">
+                                                    </td>
+                                                    <td class="p-3" data-product-id="<%= data._id.toString() %>">
+                                                        <h6 for="" class="fw-bold">₹ <%= (
+                                                                cartItems.find(item=> item.productId.toString() ===
+                                                                data._id.toString()).price) %></h6>
+                                                    </td>
+                                                    <td class="p-3">
+                                                        <form action="/cartDelete/<%= (
+                                                            cartItems.find(item=> item.productId.toString() ===
+                                                            data._id.toString())._id) %>" method="post">
+                                                            <button class="btn btn-danger p-2"
+                                                            style="border-radius: 10px; font-size:13px; width:80%">
+                                                            Remove
+                                                        </button>
+                                                        </form>
+                                                    </td>
+                                                </tr>
+                                            <%})%>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-5 mb-2">
+                            <div class="cart_Bill p-5 d-flex flex-column justify-content-center">
+                                <div class="p-5 border billing_Totall d-flex align-items-center">
+                                    <div class="col-lg-6">
+                                        <h6 class="fw-bold">Grant Price </h6>
+                                        <h6 class="fw-bold">Discount Price </h6>
+                                        <h5 class="fw-bold">Total price </h5>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <h6>:<span id="totalPrice">
+                                                <%= totalPrice %>
+                                            </span></h6>
+                                        <h6>:<span> 500</span></h6>
+                                        <h5>: <span>
+                                                <%= totalPrice %>
+                                            </span></h5>
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-center mt-4">
+                                   <form action="/CheckOut" method="get">
+                                     <button class="btn btn-danger" type="submit" style="border-radius:10px; font-size:13.5px; ">
+                                        Procced to pay
+                                     </button>
+                                   </form>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="m-3">
+                    <div class="mt-3">
                         <hr class="line bg-dark">
                     </div>
                     <!--Accessory Container -->
-                    <div class="row d-flex justify-content-center mx-3">
-                        <div class="row col-lg-6 col-md-6 p-3">
+                    <div class="row d-flex align-items-center mx-3">
+                        <div class="p-2 px-4 py-4">
+                            <h4 class="fw-bold">Related Adds</h4>
+                        </div>
+                        <div class="row col-lg-12 p-3">
+                            <div class="container bg-white ProductCard mt-2">
+                                <!-- image rendering  -->
+                                <a href="#">
+                                    <div class="cardImage mb-2 d-flex align-items-center justify-content-center">
+                                        <img src="/assets/product/4.jpg" alt="Product Image">
+                                    </div>
+                                </a>
+                                <div class="px-3">
+                                    <span class="text-dark">
+                                        product name
+                                    </span>
+                                    <div class="p_price d-flex justify-content-between">
+                                        <div class="price text-danger">₹ <text>
+                                                1400
+                                            </text> &nbsp; <span>₹ 1160</span></div>
+                                        <div class="favor" style="cursor: pointer;">
+                                            <i class="fa-regular fa-heart"></i>
+                                        </div>
+                                    </div>
+                                    <div class="rating d-flex align-items-center">
+                                        <div class="star d-flex align-items-center">
+                                            <img src="/assets/product/star.png" alt="">
+                                            <img src="/assets/product/star.png" alt="">
+                                            <img src="/assets/product/star.png" alt="">
+                                            <img src="/assets/product/star.png" alt="">
+                                            <img src="/assets/product/star.png" alt="">
+                                        </div>
+                                        <div class="value ms-2">(75)</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="container bg-white ProductCard mt-2">
+                                <!-- image rendering  -->
+                                <a href="#">
+                                    <div class="cardImage mb-2 d-flex align-items-center justify-content-center">
+                                        <img src="/assets/product/4.jpg" alt="Product Image">
+                                    </div>
+                                </a>
+                                <div class="px-3">
+                                    <span class="text-dark">
+                                        product name
+                                    </span>
+                                    <div class="p_price d-flex justify-content-between">
+                                        <div class="price text-danger">₹ <text>
+                                                1400
+                                            </text> &nbsp; <span>₹ 1160</span></div>
+                                        <div class="favor" style="cursor: pointer;">
+                                            <i class="fa-regular fa-heart"></i>
+                                        </div>
+                                    </div>
+                                    <div class="rating d-flex align-items-center">
+                                        <div class="star d-flex align-items-center">
+                                            <img src="/assets/product/star.png" alt="">
+                                            <img src="/assets/product/star.png" alt="">
+                                            <img src="/assets/product/star.png" alt="">
+                                            <img src="/assets/product/star.png" alt="">
+                                            <img src="/assets/product/star.png" alt="">
+                                        </div>
+                                        <div class="value ms-2">(75)</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="container bg-white ProductCard mt-2">
+                                <!-- image rendering  -->
+                                <a href="#">
+                                    <div class="cardImage mb-2 d-flex align-items-center justify-content-center">
+                                        <img src="/assets/product/4.jpg" alt="Product Image">
+                                    </div>
+                                </a>
+                                <div class="px-3">
+                                    <span class="text-dark">
+                                        product name
+                                    </span>
+                                    <div class="p_price d-flex justify-content-between">
+                                        <div class="price text-danger">₹ <text>
+                                                1400
+                                            </text> &nbsp; <span>₹ 1160</span></div>
+                                        <div class="favor" style="cursor: pointer;">
+                                            <i class="fa-regular fa-heart"></i>
+                                        </div>
+                                    </div>
+                                    <div class="rating d-flex align-items-center">
+                                        <div class="star d-flex align-items-center">
+                                            <img src="/assets/product/star.png" alt="">
+                                            <img src="/assets/product/star.png" alt="">
+                                            <img src="/assets/product/star.png" alt="">
+                                            <img src="/assets/product/star.png" alt="">
+                                            <img src="/assets/product/star.png" alt="">
+                                        </div>
+                                        <div class="value ms-2">(75)</div>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="container bg-white ProductCard mt-2">
                                 <!-- image rendering  -->
                                 <a href="#">
@@ -86,29 +223,10 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-6 col-md-6 p-3 ">
-                            <div class="cart_Bill p-5 d-flex flex-column justify-content-center">
-                                <div class="p-5 border billing_Totall d-flex align-items-center">
-                                    <div class="col-lg-6">
-                                        <h6 class="fw-bold">Grant Price </h6>
-                                        <h6 class="fw-bold">Discount Price </h6>
-                                        <h5 class="fw-bold">Total price </h5>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <h6>:<span> 2000</span></h6>
-                                        <h6>:<span> 500</span></h6>
-                                        <h5>: <span>₹ 1500</span></h5>
-                                    </div>
-                                </div>
-                                <div class="d-flex justify-content-center mt-4">
-                                    <button class="btn btn-danger" type="submit" style="border-radius:10px">
-                                        Procced to pay
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
     </div>
+
+    <script src="/js/cart.js"></script>
     <%-include('../partials/footer.ejs') %>

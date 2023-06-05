@@ -8,22 +8,32 @@
                     </div>
                     <div class="container col-lg-6 col-md-6 col-12 p-3 m-0">
                         <div class="container p-0 m-0 px-1 ">
-                            <div class="billing_address bg-white p-4">
+                            <div class="billing_address bg-white p-4" >
                                 <form action="">
                                     <div class="p-2">
                                         <h5 class="text-danger fw-bold">Address</h5>
                                     </div>
                                     <div class=" p-4 billing_form">
+                                        <% address.forEach((data)=>{%>
                                         <div class="d-flex align-items-center gap-2">
                                             <input type="radio">
                                             <h6>Select Address</h6>
                                         </div>
                                         <div class="address p-2 px-3">
-                                            <span>Manu Nivas, PezhumKala, Palakadavu, Neyyattinkara p o, 695121</span>
+                                            <span>
+                                                <Span><%=data.houseName%>,</Span>
+                                                <Span><%=data.street%>,</Span>
+                                                <Span><%=data.city%>,</Span>
+                                                <Span><%=data.state%>,</Span> <br>
+                                                <Span>Ph :<%=data.phone%>,</Span>
+                                                <Span>Pin :<%=data.postalCode%></Span>
+                                                <Span hidden="hidden"><%=data._id%>,</Span>
+                                            </span>
                                         </div>
                                         <div class="mt-2">
                                             <hr class="bg-dark p-0 ">
                                         </div>
+                                        <%})%>
                                     </div>
                                 </form>
                             </div>
@@ -32,44 +42,44 @@
                             <div class="row ">
                                 <div class="container p-0 m-0 p-3 ">
                                     <div class="billing_Form p-4">
-                                        <form action="">
+                                        <form action="/CheckOut" method="post">
                                             <div class="row d-flex">
                                                 <div class="col-lg-6 col-12 d-flex flex-column p-2 gap-2 ">
-                                                    <label for="">First Name*</label>
-                                                    <input type="text" name="" required>
+                                                    <label for="">Full Name*</label>
+                                                    <input type="text" name="name" required>
                                                 </div>
                                                 <div class="col-lg-6 col-12 d-flex flex-column p-2 gap-2 ">
-                                                    <label for="">Last Name*</label>
-                                                    <input type="text" name="" required>
+                                                    <label for="">House Name*</label>
+                                                    <input type="text" name="houseName" required>
                                                 </div>
                                             </div>
                                             <div class="row d-flex">
                                                 <div class="d-flex col-lg-6 col-12 flex-column p-2 gap-2 ">
-                                                    <label for="">House Name*</label>
-                                                    <input type="text" name="" required>
+                                                    <label for="">Street*</label>
+                                                    <input type="text" name="street" required>
                                                 </div>
                                                 <div class="d-flex col-lg-6 col-12 flex-column p-2 gap-2 ">
-                                                    <label for="">Street*</label>
-                                                    <input type="text" name="" required>
+                                                    <label for="">Town/City*</label>
+                                                    <input type="text" name="city" required>
                                                 </div>
                                             </div>
                                             <div class="d-flex row">
                                                 <div class="d-flex col-lg-6 flex-column p-2 gap-2 ">
-                                                    <label for="">Town/City*</label>
-                                                    <input type="text" name="" required>
+                                                    <label for="">State*</label>
+                                                    <input type="text" name="state" required>
                                                 </div>
                                                 <div class="d-flex col-lg-6 flex-column p-2 gap-2 ">
                                                     <label for="">Phone*</label>
-                                                    <input type="number" name="" required>
+                                                    <input type="number" name="phone" required>
                                                 </div>
                                             </div>
                                             <div class="row f-flex align-items-end">
                                                 <div class="d-flex col-lg-6 flex-column p-2 gap-2 ">
                                                     <label for="">pin*</label>
-                                                    <input type="number" name="" required>
+                                                    <input type="number" name="postalCode" required>
                                                 </div>
                                                 <div class="p-2 col-lg-6 billing_button">
-                                                    <button class="btn btn-danger p-2">
+                                                    <button class="btn btn-danger p-2" type="submit">
                                                         Add New Address
                                                     </button>
                                                 </div>
@@ -81,19 +91,23 @@
                         </div>
                     </div>
                     <div class="container col-lg-6 col-md-6 col-12 py-3 p-0 m-0">
-                        <div class="container-fluid bg-white profile_Right p-4">
+                        <div class="container-fluid bg-white profile_Right p-3">
                             <div class="p-2">
                                 <h5 class="text-danger fw-bold">Product Summary</h5>
                             </div>
                             <div class="container billing_img p-3">
+                            <% cartProducts.forEach((data)=>{%>
                                 <ul class="p-0" style="list-style-type: none;">
-                                    <li class="d-flex align-items-center gap-5 p-2">
-                                        <img src="/assets/product/4.jpg" width="50px" alt="" class="shadow"
+                                    <li class="d-flex align-items-center justify-content-between gap-5 p-2">
+                                        <img src="/productImages/<%=data.image[0]%>" width="50px" alt="" class="shadow"
                                             style="border-radius: 5px; ">
-                                        <span>Saree</span>
-                                        <span>₹ <span>1500</span></span>
+                                        <span class="fw-bold" style="color: #9a9a9a;"><%=data.p_name%></span>
+                                        <span style="color: #9a9a9a;">₹ <span style="color: #9a9a9a;"><%= (
+                                            cartItems.find(item=> item.productId.toString() ===
+                                            data._id.toString()).price) %></span></span>
                                     </li>
                                 </ul>
+                            <%}) %>
                             </div>
                             <div class="p-5 border mt-3 billing_Totall d-flex">
                                 <div class="col-lg-6">
@@ -101,7 +115,7 @@
                                     <h6 class="fw-bold">Shipping </h6>
                                 </div>
                                 <div class="col-lg-6">
-                                    <h6>: <span>₹ 1500</span></h6>
+                                    <h6>: <span>₹ <%= totalPrice%></span></h6>
                                     <h6>:<span> Free</span></h6>
                                 </div>
                             </div>
@@ -123,9 +137,10 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="container-fluid mt-3 p-0 billing_coupon d-flex ">
-                                 <button class="btn btn-danger p-2">Pay Now</button>
+                            <div class="container-fluid mt-3 pb-2 p-0 billing_coupon d-flex ">
+                                 <button class="btn btn-danger p-2">Order Place Now</button>
                             </div>
+                            
                         </div>
                     </div>
                 </div>

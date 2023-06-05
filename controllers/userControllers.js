@@ -68,7 +68,6 @@ const registerUser = async (req, res) => {
         const enPwd = await pwdEncription(req.body.password);
         req.body.password = enPwd;
         req.body.isBlocked = false;
-        console.log(req.body)
         // USER INFO SAVING TO DB
         await UserModel.create(req.body)
 
@@ -152,43 +151,134 @@ const detaildView = async (req, res) => {
     }
 }
 
-const Checkout = (req, res) => {
-    const user = req.session.user;
-    res.render('user/account/billing', { user, title: "Check" })
-}
+// Cart
+const cartload = async (req, res) => {
+    try {
+        const userEmail = req.session.email;
+        const user = req.session.user;
+        const userData = await UserModel.findOne({ email: userEmail });
+        const cartItems = userData.cart.items;
+        const cartProductIds = cartItems.map(item => item.productId);
+        const cartProducts = await ProductModel.find({ _id: { $in: cartProductIds } });
 
-// cart
+        const totalQuantity = cartItems.reduce((total, item) => total + item.quantity, 0);
+        let totalPrice = 0;
+        for (const item of cartItems) {
+            const product = cartProducts.find(prod => prod._id.toString() === item.productId.toString());
+            totalPrice += item.quantity * product.price;
+        }
+
+        res.render('user/Cart', { title: "Cart", user, cartProducts, cartItems, totalQuantity, totalPrice });
+    } catch (error) {
+        console.log(error);
+        res.status(500).send("Internal error from cart side");
+    }
+};
+
 const cart = async (req, res) => {
     try {
         const id = req.params.id;
         const userEmail = req.session.email;
         const user = req.session.user;
         const userData = await UserModel.findOne({ email: userEmail });
-        console.log(userData);
-
         const cartItems = userData.cart.items;
         const existingCartItem = cartItems.find(item => item.productId.toString() === id);
+        const cartPrtoduct = await ProductModel.findOne({ _id: id });
+        const productPrice = cartPrtoduct.price;
 
         if (existingCartItem) {
             existingCartItem.quantity += 1;
-            
+            existingCartItem.price = existingCartItem.quantity * productPrice;
         } else {
             const newCartItem = {
                 productId: id,
-                quantity: 1
+                quantity: 1,
+                price: cartPrtoduct.price
             };
             userData.cart.items.push(newCartItem);
         }
 
         await userData.save();
-        const cartProducts = await ProductModel.find({ _id: { $in: cartItems.map(item => item.productId) } });
-        res.render('user/Cart', { title: "Cart", user,cartProducts });
-        console.log("Cart successfully updated");
+        const cartProductIds = cartItems.map(item => item.productId);
+        const cartProducts = await ProductModel.find({ _id: { $in: cartProductIds } });
+
+        const totalQuantity = cartItems.reduce((total, item) => total + item.quantity, 0);
+        let totalPrice = 0;
+        for (const item of cartItems) {
+            const product = cartProducts.find(prod => prod._id.toString() === item.productId.toString());
+            if (product && product.price) {
+                totalPrice += item.quantity * product.price;
+            }
+        }
+
+        res.render('user/Cart', { title: "Cart", user, cartProducts, cartItems, totalQuantity, totalPrice });
     } catch (error) {
         console.log('Error adding to cart:', error);
     }
+};
+
+const cartDelete = async (req, res) => {
+    try {
+        const id = req.params.id;
+        const userEmail = req.session.email;
+        await UserModel.updateOne(
+            { email: userEmail },
+            { $pull: { 'cart.items': { _id: id } } }
+        );
+        res.redirect('/cart');
+    } catch (error) {
+        console.log(error);
+        res.status(500).send("internal error at cartDelete")
+    }
 }
 
+// Check out 
+const Checkout = async (req, res) => {
+    try {
+        const user = req.session.user;
+        const userFinder = req.session.email;
+        const userDetails = await UserModel.findOne({ email: userFinder });
+        const cartItems = userDetails.cart.items;
+        const cartProductIds = cartItems.map(item => item.productId.toString());
+        const cartProducts = await ProductModel.find({ _id: { $in: cartProductIds } });
+        const address = userDetails.address;
+        let totalPrice = 0;
+        cartItems.map(item => totalPrice += item.price);
+        res.render('user/account/billing', { title: "Check", user, cartItems, cartProducts, totalPrice, address})
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+const addressAdding = async (req, res) => {
+    try {
+        const email = req.session.email;
+        const { name, houseName, street, city, state, phone, postalCode } = req.body;
+
+        const userData = await UserModel.findOne({ email: email });
+
+        if (!userData) {
+            return res.status(404).send("User not found");
+        }
+
+        const newAddress = {
+            name: name,
+            houseName: houseName,
+            street: street,
+            city: city,
+            state: state,
+            phone: phone,
+            postalCode: postalCode
+        };
+
+        userData.address.push(newAddress);
+        await userData.save();
+        res.redirect('/CheckOut');
+    } catch (error) {
+        console.log(error);
+        res.status(500).send("Internal server error");
+    }
+};
 
 
 // LOGOUT
@@ -214,5 +304,8 @@ module.exports = {
     logOut,
     detaildView,
     Checkout,
-    cart
+    cartload,
+    cart,
+    cartDelete,
+    addressAdding
 }
