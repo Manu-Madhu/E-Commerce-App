@@ -1,8 +1,6 @@
 const express = require('express');
 const Router = express.Router();
 
-
-
 // Routers
 const userMiddlewear = require('../middleWeare/user');
 const userControler = require('../controllers/userControllers');
@@ -25,7 +23,10 @@ Router.get('/detaildView/:id',userMiddlewear.userIsBlocked, userControler.detail
 
 // profile 
 Router.get('/profile',userMiddlewear.userCheking,userMiddlewear.userIsBlocked, profileController.profile);
-Router.get('/profile/address',profileController.profileAddress);
+Router.get('/profile/address',userMiddlewear.userCheking,userMiddlewear.userIsBlocked,profileController.profileAddress);
+Router.post('/profile/address/editAddress',userMiddlewear.userCheking,userMiddlewear.userIsBlocked,profileController.editAddress);
+Router.post('/profile/address/updateAddress',userMiddlewear.userCheking,userMiddlewear.userIsBlocked,profileController.newAddress);
+Router.post('/profileUpdate',userMiddlewear.userCheking,userMiddlewear.userIsBlocked, profileController.profileUpdate);
 
 // Cart
 Router.get('/cart',userMiddlewear.userCheking,userMiddlewear.userIsBlocked, userControler.cartload);
@@ -34,8 +35,9 @@ Router.post('/cart/update/:id',userMiddlewear.userCheking,userMiddlewear.userIsB
 Router.post('/cartDelete/:id',userControler.cartDelete);
 
 // CheckOut 
-Router.get('/CheckOut',userControler.Checkout);
-Router.post('/CheckOut',userControler.addressAdding)
+Router.get('/CheckOut',userMiddlewear.userCheking,userMiddlewear.userIsBlocked,userControler.Checkout);
+Router.post('/CheckOut',userMiddlewear.userCheking,userMiddlewear.userIsBlocked,userControler.addressAdding);
+Router.post('/checkOut/orderSuccess',userMiddlewear.userCheking,userMiddlewear.userIsBlocked,userControler.orderSuccess)
 
 // Logout
 Router.get('/logout', userControler.logOut);

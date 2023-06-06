@@ -20,59 +20,12 @@
                             </div>
                             <div class="mb-4 d-flex flex-column">
                                 <h6>My Address</h6>
-                                <a href="#" class="text-decoration-none  text-danger">My Address</a>
+                                <a href="/profile/address" class="text-decoration-none  text-danger">My Address</a>
                             </div>
                         </div>
                     </div>
                     <div class="container col-lg-9 col-md-9 col-12 py-3 p-0 m-0">
                         <div class="container-fluid bg-white profile_Right p-4">
-                            <div class="p-3">
-                                <h5 class="text-danger fw-bold">My Address</h5>
-                            </div>
-                            <div class="row px-3">
-                                <div class="container p-0 m-0 px-1">
-                                    <div class="address_Form p-4">
-                                        <form action="/profile/address/editAddress" method="post">
-                                        <div class="address_bg bg-white p-3" style="border-radius: 12px;">
-                                            <% if(userAddress.length == 0){%>
-                                                <div class="bg-white p-2  d-flex align-items-center justify-content-center"  style="position: relative;">
-                                                    <h2  style="color: #9a9a9a; opacity: 50%;" >No Address Found !</h2>
-                                                    <lottie-player src="https://assets7.lottiefiles.com/packages/lf20_uio5iafn.json"  background="transparent"
-                                                      speed="1"  style="width: 150px; "  loop  autoplay>
-                                                    </lottie-player>
-
-                                                </div>
-                                                <%}else{%>
-                                                    <div class="bg-white p-2 address_selecter">
-                                                        <% userAddress.forEach((data,index)=>{%>
-                                                        <div class="d-flex align-items-center gap-2">
-                                                            <input type="radio" name="selectedAddress" value="<%=data._id%>">
-                                                            <h6>Select Address</h6>
-                                                        </div>
-                                                        <div class="address p-2 px-3">
-                                                            <span style="color: #9a9a9a; font-size: 13.5px;">
-                                                                <Span><%=data.name%>, </Span>
-                                                                <Span><%=data.houseName%>, </Span>
-                                                                <Span><%=data.street%>,</Span>
-                                                                <Span><%=data.city%>,</Span>
-                                                                <Span><%=data.state%>,</Span> 
-                                                                <br>
-                                                                <Span>Ph :<%=data.phone%>,</Span>
-                                                                <Span>Pin :<%=data.postalCode%></Span>
-                                                            </span>
-                                                        </div>
-                                                        <%})%>
-                                                    </div>
-                                                    <%}%>
-                                              </div>
-                                            <div class="pt-3 address_view d-flex justify-content-end">
-                                                <button class="btn btn-danger p-2" type="submit">
-                                                    Edit Address
-                                                </button>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
                                 <div class="py-3 pt-4">
                                     <h5 class="text-danger fw-bold">Add New Address</h5>
                                 </div>
@@ -82,41 +35,42 @@
                                             <div class="row d-flex">
                                                 <div class="col-lg-6 col-12 d-flex flex-column p-2 gap-2 ">
                                                     <label for="">Full Name*</label>
-                                                    <input type="text" name="name" required>
+                                                    <input type="text" name="name" value="<%=selectedAddress.name%>" required>
+                                                    <input type="hidden" name="AddressId" value="<%=selectedAddress._id%>" required>
                                                 </div>
                                                 <div class="col-lg-6 col-12 d-flex flex-column p-2 gap-2 ">
                                                     <label for="">House Name*</label>
-                                                    <input type="text" name="houseName" required>
+                                                    <input type="text" name="houseName" value="<%=selectedAddress.houseName%>" required>
                                                 </div>
                                             </div>
                                             <div class="row d-flex">
                                                 <div class="d-flex col-lg-6 col-12 flex-column p-2 gap-2 ">
                                                     <label for="">Street*</label>
-                                                    <input type="text" name="street" required>
+                                                    <input type="text" name="street" value="<%=selectedAddress.street%>" required>
                                                 </div>
                                                 <div class="d-flex col-lg-6 col-12 flex-column p-2 gap-2 ">
                                                     <label for="">Town/City*</label>
-                                                    <input type="text" name="city" required>
+                                                    <input type="text" name="city" value="<%=selectedAddress.city%>" required>
                                                 </div>
                                             </div>
                                             <div class="d-flex row">
                                                 <div class="d-flex col-lg-6 flex-column p-2 gap-2 ">
                                                     <label for="">State*</label>
-                                                    <input type="text" name="state" required>
+                                                    <input type="text" name="state" value="<%=selectedAddress.state%>" required>
                                                 </div>
                                                 <div class="d-flex col-lg-6 flex-column p-2 gap-2 ">
                                                     <label for="">Phone*</label>
-                                                    <input type="number" name="phone" required>
+                                                    <input type="number" name="phone" value="<%=selectedAddress.phone%>" required>
                                                 </div>
                                             </div>
                                             <div class="row f-flex align-items-end">
                                                 <div class="d-flex col-lg-6 flex-column p-2 gap-2 ">
                                                     <label for="">pin*</label>
-                                                    <input type="number" name="postalCode" required>
+                                                    <input type="number" name="postalCode" value="<%=selectedAddress.postalCode%>" required>
                                                 </div>
                                                 <div class="p-2 col-lg-6 billing_button">
-                                                    <button class="btn btn-danger p-2" type="submit">
-                                                        Add New Address
+                                                    <button class="btn btn-success p-2" type="submit">
+                                                        Update Address
                                                     </button>
                                                 </div>
                                             </div>

@@ -1,6 +1,7 @@
 const UserModel = require('../models/user');
 const OTP = require('../models/otpModel');
 const ProductModel = require('../models/productModel');
+const OrderModel = require('../models/order');
 const bcrypt = require('bcrypt');
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
@@ -244,7 +245,7 @@ const Checkout = async (req, res) => {
         const address = userDetails.address;
         let totalPrice = 0;
         cartItems.map(item => totalPrice += item.price);
-        res.render('user/account/billing', { title: "Check", user, cartItems, cartProducts, totalPrice, address})
+        res.render('user/account/billing', { title: "Check", user, cartItems, cartProducts, totalPrice, address })
     } catch (error) {
         console.log(error);
     }
@@ -258,7 +259,7 @@ const addressAdding = async (req, res) => {
         const userData = await UserModel.findOne({ email: email });
 
         if (!userData) {
-            return res.status(404).send("User not found");
+            return console.log("User not found")
         }
 
         const newAddress = {
@@ -280,6 +281,39 @@ const addressAdding = async (req, res) => {
     }
 };
 
+const orderSuccess = async (req, res) => {
+    try {
+        const data = req.body
+        const user = req.session.user;
+        const email = req.session.email;
+        const foundUser = await UserModel.findOne({ email: email });
+        const userId = foundUser._id;        
+        const cartItems = foundUser.cart.items;
+        const cartProductIds = cartItems.map(item => item.productId.toString());
+
+        const addressId = data.selectedAddress;
+        const method = data.method;
+        const amount = data.amount;
+        
+        const newOrder = new OrderModel({
+            userId: userId,
+            address:addressId,
+            payment:{
+                method:method,
+                amount:amount
+            },
+            status: "Processing"
+        });
+        await newOrder.save();
+        foundUser.cart.items = [];
+        await foundUser.save();
+
+        res.render('user/successTick.ejs',{user,succ:"Your Order Will Conformed...."})
+}catch (error) {
+    console.log('data not comming');
+    res.status(500).send('An error occurred While saving data in DB');
+}
+}
 
 // LOGOUT
 const logOut = async (req, res) => {
@@ -307,5 +341,6 @@ module.exports = {
     cartload,
     cart,
     cartDelete,
-    addressAdding
+    addressAdding,
+    orderSuccess
 }

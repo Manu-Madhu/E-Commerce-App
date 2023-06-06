@@ -7,38 +7,10 @@
                         <h4 class="fw-bold">Billing Details </h4>
                     </div>
                     <div class="container col-lg-6 col-md-6 col-12 p-3 m-0">
-                        <div class="container p-0 m-0 px-1 ">
-                            <div class="billing_address bg-white p-4" >
-                                <form action="">
-                                    <div class="p-2">
-                                        <h5 class="text-danger fw-bold">Address</h5>
-                                    </div>
-                                    <div class=" p-4 billing_form">
-                                        <% address.forEach((data)=>{%>
-                                        <div class="d-flex align-items-center gap-2">
-                                            <input type="radio">
-                                            <h6>Select Address</h6>
-                                        </div>
-                                        <div class="address p-2 px-3">
-                                            <span>
-                                                <Span><%=data.houseName%>,</Span>
-                                                <Span><%=data.street%>,</Span>
-                                                <Span><%=data.city%>,</Span>
-                                                <Span><%=data.state%>,</Span> <br>
-                                                <Span>Ph :<%=data.phone%>,</Span>
-                                                <Span>Pin :<%=data.postalCode%></Span>
-                                                <Span hidden="hidden"><%=data._id%>,</Span>
-                                            </span>
-                                        </div>
-                                        <div class="mt-2">
-                                            <hr class="bg-dark p-0 ">
-                                        </div>
-                                        <%})%>
-                                    </div>
-                                </form>
+                        <div class="container-fluid bg-white profile_Right p-3">
+                            <div class="p-2">
+                                <h5 class="text-danger fw-bold">Address</h5>
                             </div>
-                        </div>
-                        <div class="container-fluid bg-white profile_Right p-3 mt-3">
                             <div class="row ">
                                 <div class="container p-0 m-0 p-3 ">
                                     <div class="billing_Form p-4">
@@ -88,62 +60,115 @@
                                     </div>
                                 </div>
                             </div>
+                            <!-- <div class="container p-0 m-0 px-1 ">
+                                <div class="billing_address bg-white p-4" >
+                                
+                                </div>
+                            </div> -->
                         </div>
                     </div>
                     <div class="container col-lg-6 col-md-6 col-12 py-3 p-0 m-0">
-                        <div class="container-fluid bg-white profile_Right p-3">
-                            <div class="p-2">
-                                <h5 class="text-danger fw-bold">Product Summary</h5>
-                            </div>
-                            <div class="container billing_img p-3">
-                            <% cartProducts.forEach((data)=>{%>
-                                <ul class="p-0" style="list-style-type: none;">
-                                    <li class="d-flex align-items-center justify-content-between gap-5 p-2">
-                                        <img src="/productImages/<%=data.image[0]%>" width="50px" alt="" class="shadow"
-                                            style="border-radius: 5px; ">
-                                        <span class="fw-bold" style="color: #9a9a9a;"><%=data.p_name%></span>
-                                        <span style="color: #9a9a9a;">₹ <span style="color: #9a9a9a;"><%= (
-                                            cartItems.find(item=> item.productId.toString() ===
-                                            data._id.toString()).price) %></span></span>
-                                    </li>
-                                </ul>
-                            <%}) %>
-                            </div>
-                            <div class="p-5 border mt-3 billing_Totall d-flex">
-                                <div class="col-lg-6">
-                                    <h6 class="fw-bold">Grant Totall </h6>
-                                    <h6 class="fw-bold">Shipping </h6>
+                        <form action="/checkOut/orderSuccess" method="post">
+                            <div class="container-fluid bg-white profile_Right p-4">
+                                <div class="p-2">
+                                    <h5 class="text-danger fw-bold">Product Summary</h5>
                                 </div>
-                                <div class="col-lg-6">
-                                    <h6>: <span>₹ <%= totalPrice%></span></h6>
-                                    <h6>:<span> Free</span></h6>
+                                <div class="container billing_img p-3 mt-3">
+                                    <% cartProducts.forEach((data)=>{%>
+                                        <ul class="p-0" style="list-style-type: none;">
+                                            <li class="d-flex align-items-center justify-content-between gap-5 p-2">
+                                                <img src="/productImages/<%=data.image[0]%>" width="50px" alt=""
+                                                    class="shadow" style="border-radius: 5px; ">
+                                                <span class="fw-bold" style="color: #9a9a9a;">
+                                                    <%=data.p_name%>
+                                                </span>
+                                                <span class="fw-bold" style="color: #9a9a9a;">
+                                                    <%=(cartItems.find(item=> data._id.toString() ===
+                                                        item.productId.toString()).quantity)%>
+                                                </span>
+                                                <span style="color: #9a9a9a;">₹ <span style="color: #9a9a9a;">
+                                                        <%= ( cartItems.find(item=> item.productId.toString() ===
+                                                            data._id.toString()).price) %>
+                                                    </span>
+                                                </span>
+                                            </li>
+                                            <input type="hidden" name="productId" value="<%=data._id%>">
+                                            <input type="hidden" name="quantity"
+                                                value="<%= cartItems.find(item => data._id.toString() === item.productId.toString()).quantity %>">
+                                            <input type="hidden" name="CartProduct_Id"
+                                                value="<%= cartItems.find(item => item.productId.toString() === data._id.toString()).price%>">
+                                        </ul>
+                                     <%}) %>
                                 </div>
-                            </div>
-                            <div class="container-fluid  billing_bg mt-3">
-                                <div class="row d-flex  p-4">
-                                    <div class="p-2 col-lg-5 col-12">
-                                        <div class="d-flex gap-2 billing_radio align-items-center">
-                                            <input type="radio">
-                                            <label for="" class="fw-bold">Bank</label>
+                                <div class=" p-2 px-3 my-3 border billinf_form_Wrapper">
+                                    <div class=" billing_form">
+                                        <% address.forEach((data,index)=>{%>
+                                            <div class="d-flex align-items-center gap-2">
+                                                <input type="radio" name="selectedAddress" value="<%=data._id%>">
+                                                <h6>Select Address</h6>
+                                            </div>
+                                            <div class="address p-2 px-3">
+                                                <span style="color: #9a9a9a; font-size: 13.5px;">
+                                                    <Span><%=data.name%>, </Span>
+                                                    <Span><%=data.houseName%>, </Span>
+                                                    <Span><%=data.street%>,</Span>
+                                                    <Span><%=data.city%>,</Span>
+                                                    <Span><%=data.state%>,</Span> 
+                                                    <br>
+                                                    <Span>Ph :<%=data.phone%>,</Span>
+                                                    <Span>Pin :<%=data.postalCode%></Span>
+                                                </span>
+                                            </div>
+                                            <div class="mt-2">
+                                                <hr class="bg-dark p-0 ">
+                                            </div>
+                                            <%})%>
+                                    </div>
+                                </div>
+                                <div class="container-fluid  billing_bg mt-3">
+                                    <div class="row d-flex  p-4">
+                                        <div class="p-2 col-lg-5 col-12">
+                                            <div class="d-flex gap-2 billing_radio align-items-center">
+                                                <input type="radio" name="method" value="BnakTransaction">
+                                                <label for="" class="fw-bold">Bank</label>
+                                            </div>
+                                            <div class="d-flex gap-2 billing_radio align-items-center">
+                                                <input type="radio" name="method" value="COD">
+                                                <label for="" class="fw-bold">Cash On Delivery</label>
+                                            </div>
                                         </div>
-                                        <div class="d-flex gap-2 billing_radio align-items-center">
-                                            <input type="radio">
-                                            <label for="" class="fw-bold">Cash On Delivery</label>
+                                        <div class="container p-2 billing_coupon gap-2 col-lg-7 col-12 d-flex">
+                                            <input type="text" name="coupon" placeholder="Coupon Code">
+                                            <button class="btn btn-danger p-2">Apply</button>
                                         </div>
                                     </div>
-                                    <div class="container p-2 billing_coupon gap-2 col-lg-7 col-12 d-flex">
-                                         <input type="text" name="" placeholder="Coupon Code">
-                                         <button class="btn btn-danger p-2">Apply</button>
+                                </div>
+                                <div class="p-5 border mt-3 billing_Totall d-flex">
+                                    <div class="col-lg-6">
+                                        <h6 class="fw-bold">Grant Totall </h6>
+                                        <h6 class="fw-bold">Shipping </h6>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <h6>: <span>₹ <%= totalPrice%></span></h6>
+                                        <input type="hidden" name="amount" value="<%=totalPrice%>">
+                                        <h6>:<span> Free</span></h6>
                                     </div>
                                 </div>
+                                <div class="container-fluid mt-4 pb-2 p-0 billing_coupon d-flex ">
+                                    <button class="btn btn-danger p-2" type="submit">Order Place Now</button>
+                                </div>
                             </div>
-                            <div class="container-fluid mt-3 pb-2 p-0 billing_coupon d-flex ">
-                                 <button class="btn btn-danger p-2">Order Place Now</button>
-                            </div>
-                            
-                        </div>
+                        </form>
                     </div>
                 </div>
             </div>
     </div>
+    <script>
+        let inputvalue = document.getElementsByName('selectedAddress')
+            .forEach((radio) => {
+                if (radio.checked) {
+                    console.log(radio.value);
+                }
+            })
+    </script>
     <%-include('../../partials/footer.ejs') %>
