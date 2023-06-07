@@ -1,5 +1,6 @@
-const user = require('../models/user');
 const userModel = require('../models/user');
+const orderModel = require('../models/order');
+const productModel = require('../models/productModel');
 const bcrypt = require('bcrypt');
 
 
@@ -111,19 +112,47 @@ const editAddress = async (req, res) => {
         console.log(error)
     }
 }
-const editedAddressUpdation = async (req, res) => {
+
+// My Order
+const order = async (req, res) => {
     try {
-        res.redirect('/profile/address');
+        const user = req.session.user;
+        const email = req.session.email;
+        const userDetails = await userModel.findOne({ email: email });
+        const userid = userDetails._id;
+        const order = await orderModel.find({ userId: userid });
+        const product = order.map(data => data.products);
+        const newProduct = product.flat();
+        const status = order.map(data => data.status);
+        const orderstatus = order.map(data => data.orderCancleRequest);
+        const Date = order.map(data => data.expectedDelivery.toLocaleDateString());
+        res.render('user/account/myOrder', { user, newProduct, status, Date, order,orderstatus, title: "OrderPage" })
     } catch (error) {
         console.log(error)
     }
 }
 
+const orderCancel = async (req, res) => {
+    try {
+        const id = req.params.id;
+        await orderModel.findByIdAndUpdate({_id:id},
+            {
+                $set:{
+                    orderCancleRequest:true
+                }
+            });
+
+            res.redirect('/profile/order');
+    } catch (error) {
+        console.log(error)
+    }
+}
 module.exports = {
     profile,
     profileAddress,
     profileUpdate,
     newAddress,
     editAddress,
-    editedAddressUpdation
+    order,
+    orderCancel
 };

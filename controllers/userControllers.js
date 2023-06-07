@@ -3,6 +3,7 @@ const OTP = require('../models/otpModel');
 const ProductModel = require('../models/productModel');
 const OrderModel = require('../models/order');
 const bcrypt = require('bcrypt');
+const product = require('../models/productModel');
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
 const client = require('twilio')(accountSid, authToken);
@@ -283,36 +284,51 @@ const addressAdding = async (req, res) => {
 
 const orderSuccess = async (req, res) => {
     try {
+        const currentDate = new Date();
         const data = req.body
         const user = req.session.user;
         const email = req.session.email;
         const foundUser = await UserModel.findOne({ email: email });
-        const userId = foundUser._id;        
+        const userId = foundUser._id;
         const cartItems = foundUser.cart.items;
         const cartProductIds = cartItems.map(item => item.productId.toString());
+        const cartProducts = await ProductModel.find({ _id: { $in: cartProductIds } });
 
         const addressId = data.selectedAddress;
         const method = data.method;
         const amount = data.amount;
-        
+
+        const productData = cartProducts.map(product => ({
+            p_name: product.p_name,
+            price: product.price,
+            description: product.description,
+            image: product.image,
+            category: product.category,
+            quantity: product.quantity
+        }));
+        const deliveryDate = new Date();
+        deliveryDate.setDate(currentDate.getDate() + 5);
         const newOrder = new OrderModel({
             userId: userId,
-            address:addressId,
-            payment:{
-                method:method,
-                amount:amount
+            address: addressId,
+            products: productData,
+            payment: {
+                method: method,
+                amount: amount
             },
-            status: "Processing"
+            status: "Processing",
+            createdAt: currentDate,
+            expectedDelivery: deliveryDate
         });
         await newOrder.save();
         foundUser.cart.items = [];
         await foundUser.save();
 
-        res.render('user/successTick.ejs',{user,succ:"Your Order Will Conformed...."})
-}catch (error) {
-    console.log('data not comming');
-    res.status(500).send('An error occurred While saving data in DB');
-}
+        res.render('user/successTick.ejs', { user, succ: "Your Order Will Conformed...." })
+    } catch (error) {
+        console.log('data not comming');
+        res.status(500).send('An error occurred While saving data in DB');
+    }
 }
 
 // LOGOUT

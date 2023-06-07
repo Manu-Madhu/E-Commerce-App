@@ -11,6 +11,40 @@ const orderSchema = new mongoose.Schema({
        type:mongoose.Schema.Types.ObjectId,
        ref:userModel
     },
+    products:[{
+      p_name: {
+         type: String,
+         require: true
+     },
+     price: {
+         type: String,
+         require: true
+     },
+     description: {
+         type: String,
+         require: true
+     },
+     image: [{
+         type: String,
+         require: true
+     }],
+     category: [{
+         type: String,
+         require: true
+     }],
+     size: {
+         type: String,
+         require: true
+     },
+     color: {
+         type: String,
+         require: true
+     },
+     quantity: {
+         type: String,
+         require: true
+     },
+    }],
     payment:{
        method:{
         type:String,
@@ -18,6 +52,10 @@ const orderSchema = new mongoose.Schema({
        amount:{
         type:String,
        }
+    },
+    orderCancleRequest:{
+        type:Boolean,
+        default:false
     },
     status:{
         type:String,
@@ -28,6 +66,9 @@ const orderSchema = new mongoose.Schema({
         immutable: true,
         default: () => Date.now()
       },
+      expectedDelivery:{
+        type:Date,
+      }
 });
 
 const orderModel = mongoose.model('order',orderSchema);

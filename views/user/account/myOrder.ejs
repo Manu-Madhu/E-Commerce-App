@@ -1,0 +1,136 @@
+<%- include('../../partials/header.ejs') %>
+    <div class="container-fluid p-0 min-vh-100" style="margin-top: 6%;">
+        <%-include('../../partials/navbar.ejs') %>
+            <div class="container ">
+                <div class="row p-4 mb-4">
+                    <div class="container col-lg-3 col-md-3 col-12 p-3 m-0">
+                        <div class="container bg-white profile_left p-5">
+                            <div class="mb-4 d-flex flex-column">
+                                <h6>Manage My Account</h6>
+                                <a href="/profile" class="text-decoration-none">My Profile</a>
+                            </div>
+                            <div class="mb-4 d-flex flex-column">
+                                <h6>My Orders</h6>
+                                <a href="/profile/order" class="text-decoration-none text-danger">My Orders</a>
+                                <a href="" class="text-decoration-none">My Return</a>
+                            </div>
+                            <div class="mb-4 d-flex flex-column">
+                                <h6>My WishList</h6>
+                                <a href="" class="text-decoration-none">My WishList</a>
+                            </div>
+                            <div class="mb-4 d-flex flex-column">
+                                <h6>My Address</h6>
+                                <a href="/profile/address" class="text-decoration-none ">My Address</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container col-lg-9 col-md-9 col-12 py-3 p-0 m-0">
+                        <div class="container-fluid bg-white profile_Right p-4">
+                            <div class="p-3">
+                                <h5 class="text-danger fw-bold">My Orders</h5>
+                            </div>
+                            <div class="container  p-2 m-0 mb-2">
+                                <div class="Cart_list">
+                                    <div class="px-2">
+                                        <table style="width:100%;">
+                                            <n av class="navbar navbar-expand-lg navbar-light shadow bg-light" style="z-index:1;">
+                                                <thead class="cartTop" style="position:sticky; top: 0; z-index: 1;">
+                                                    <tr class="cart_table">
+                                                        <th class="first p-3 px-4"><span>Product</span></th>
+                                                        <th class="p-3"><span>Status</span></th>
+                                                        <th class="p-3"><span>Price</span></th>
+                                                        <th class="p-3"><span>Expected Date</span></th>
+                                                        <th class="third p-3"><span>Cancel Order</span></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <% newProduct.forEach((data,index)=>{%>
+                                                        <tr>
+                                                            <td class=" py-3 d-flex align-items-center">
+                                                                <% if(orderstatus[index]===true){%>
+                                                                    <a href=""
+                                                                        class="container d-flex align-items-center text-decoration-none text-dark">
+                                                                        <div style="position: relative;">
+                                                                            <h3 class="text-white bg-danger "
+                                                                                style="position: absolute; font-size: 13px; padding: 7.5px; border-radius: 7px;">
+                                                                                Order Canceld</h3>
+                                                                            <img src="/productImages/<%=data.image[0]%>"
+                                                                                alt="" class="img-fluid" width="100px"
+                                                                                style="border-radius: 5px;">
+                                                                        </div>
+                                                                        <h6 for="" class="ps-3" style=" color:#959595">
+                                                                            <span>
+                                                                                <%=data.p_name%>
+                                                                            </span>
+                                                                        </h6>
+                                                                    </a>
+                                                            <td class="py-3 p-4" style="font-size: 13px; color:#959595">
+                                                                <h6 for="" class=""><span>Order Canceled</span></h6>
+                                                            </td>
+                                                            <%} else{%>
+                                                                <a href=""
+                                                                    class="container d-flex align-items-center text-decoration-none text-dark">
+                                                                    <img src="/productImages/<%=data.image[0]%>" alt=""
+                                                                        class="img-fluid" width="100px"
+                                                                        style="border-radius: 5px;">
+
+                                                                    <h6 for="" class="ps-3" style=" color:#959595">
+                                                                        <span>
+                                                                            <%=data.p_name%>
+                                                                        </span>
+                                                                    </h6>
+                                                                </a>
+                                                                <span></span>
+                                                                </td>
+                                                                <td class="py-3 p-4"
+                                                                    style="font-size: 13px; color:#959595">
+                                                                    <h6 for="" class="">
+                                                                        <span>
+                                                                            <%= status[index] %>
+                                                                        </span>
+                                                                    </h6>
+                                                                </td>
+                                                                <%}%>
+                                                                    <td class="py-3 p-4"
+                                                                        style="font-size: 13px; color:#959595">
+                                                                        <h6 for="" class="">₹ 
+                                                                            <span>
+                                                                                <%=data.price%>
+                                                                            </span>
+                                                                        </h6>
+                                                                    </td>
+                                                                    <td class="py-3 p-4"
+                                                                        style="font-size: 13px; color:#959595">
+                                                                        <h6 for="" class="">
+                                                                            <%=Date[index]%>
+                                                                        </h6>
+                                                                    </td>
+                                                                    <td class="py-3 p-4"
+                                                                        style="font-size: 13px; color:#959595">
+                                                                        <% if(orderstatus[index]===true){%>
+                                                                            <form action="#" method="post">
+                                                                                <button class="btn btn-success p-2" style="font-size: 13px; border-radius: 5px;">
+                                                                                    Re-Order
+                                                                                </button>
+                                                                            </form>
+                                                                        <%} else{%>
+                                                                            <form action="/profile/order/<%= order[index]._id%>" method="post">
+                                                                                <button class="btn btn-danger p-2" style="font-size: 13px; border-radius: 5px;">
+                                                                                     Cancel
+                                                                                </button>
+                                                                            </form>
+                                                                        <%}%>
+                                                                    </td>
+                                                        </tr>
+                                                </tbody>
+                                            <%})%>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+    <%-include('../../partials/footer.ejs') %>

@@ -23,6 +23,8 @@ Router.get('/detaildView/:id',userMiddlewear.userIsBlocked, userControler.detail
 
 // profile 
 Router.get('/profile',userMiddlewear.userCheking,userMiddlewear.userIsBlocked, profileController.profile);
+Router.get('/profile/order',userMiddlewear.userCheking,userMiddlewear.userIsBlocked, profileController.order);
+Router.post('/profile/order/:id',userMiddlewear.userCheking,userMiddlewear.userIsBlocked, profileController.orderCancel);
 Router.get('/profile/address',userMiddlewear.userCheking,userMiddlewear.userIsBlocked,profileController.profileAddress);
 Router.post('/profile/address/editAddress',userMiddlewear.userCheking,userMiddlewear.userIsBlocked,profileController.editAddress);
 Router.post('/profile/address/updateAddress',userMiddlewear.userCheking,userMiddlewear.userIsBlocked,profileController.newAddress);
