@@ -31,13 +31,14 @@ const userIsBlocked = async (req, res, next) => {
     try {
         if (req.session.user) {
             const email = req.session.email;
-            const user = await userModel.findOne({ email: email });
-            if (user.isBlocked === false) {
+            const user = req.session.user;
+            const useremail = await userModel.findOne({ email: email });
+            if (useremail.isBlocked === false) {
                 next()
             } else {
                 req.session.email = null;
                 req.session.user = null;
-                res.render("user/login", { fail: "Please contact Your Admin You are no longer to access this account" });
+                res.render("user/login", {user, fail: "Please contact Your Admin You are no longer to access this account" });
             }
         } else {
             next()

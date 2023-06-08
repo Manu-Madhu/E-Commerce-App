@@ -12,7 +12,7 @@ const path = require('path');
 // ADMIN lOGIN
 const adminLogin = (req, res) => {
     const user = req.session.user;
-    res.render('admin/adminLogin', { title: "Admin",user })
+    res.render('admin/adminLogin', { title: "Admin", user })
 }
 const adminVerification = async (req, res) => {
     try {
@@ -111,9 +111,9 @@ const CategoryAdding = async (req, res) => {
 const unlistCategory = async (req, res) => {
     try {
         const id = req.params.id
-        await CategoryModel.findByIdAndUpdate({ _id: id },{
-            $set:{
-                isAvailable: false 
+        await CategoryModel.findByIdAndUpdate({ _id: id }, {
+            $set: {
+                isAvailable: false
             }
         })
         res.redirect('/admin/category')
@@ -124,9 +124,9 @@ const unlistCategory = async (req, res) => {
 const listCategory = async (req, res) => {
     try {
         const id = req.params.id
-        await CategoryModel.findByIdAndUpdate({ _id: id },{
-            $set:{
-                isAvailable: true 
+        await CategoryModel.findByIdAndUpdate({ _id: id }, {
+            $set: {
+                isAvailable: true
             }
         })
         res.redirect('/admin/category')
@@ -175,7 +175,8 @@ const productView = async (req, res) => {
 }
 const productAdding = async (req, res) => {
     try {
-        const category = await CategoryModel.find();
+        const category = await CategoryModel.find({ isAvailable: true });
+        console.log(category)
         res.render('admin/productAdding', { title: "Product", admin: req.session.admin, category })
     } catch (error) {
         console.log(error);
@@ -209,18 +210,18 @@ const p_deleting = async (req, res) => {
 
     try {
         const id = req.params.id;
-          // Retrieve existing product data
-          const existingProduct = await productModel.findById(id);
-          const existingImages = existingProduct.image;
-  
-          // Delete previous images from fs
-          existingImages.forEach((filename) => {
-              fs.unlink(`productImages/${filename}`, (err) => {
-                  if (err) {
-                      console.log(err);
-                  }
-              });
-          });
+        // Retrieve existing product data
+        const existingProduct = await productModel.findById(id);
+        const existingImages = existingProduct.image;
+
+        // Delete previous images from fs
+        existingImages.forEach((filename) => {
+            fs.unlink(`productImages/${filename}`, (err) => {
+                if (err) {
+                    console.log(err);
+                }
+            });
+        });
         await productModel.findByIdAndDelete({ _id: id })
         res.redirect('/admin/productView');
     } catch (error) {
@@ -241,18 +242,18 @@ const productUpdating = async (req, res) => {
 const addUpdateProduct = async (req, res) => {
     try {
         const id = req.body.id;
-          // Retrieve existing product data
-          const existingProduct = await productModel.findById(id);
-          const existingImages = existingProduct.image;
-  
-          // Delete previous images from fs
-          existingImages.forEach((filename) => {
-              fs.unlink(`productImages/${filename}`, (err) => {
-                  if (err) {
-                      console.log(err);
-                  }
-              });
-          });
+        // Retrieve existing product data
+        const existingProduct = await productModel.findById(id);
+        const existingImages = existingProduct.image;
+
+        // Delete previous images from fs
+        existingImages.forEach((filename) => {
+            fs.unlink(`productImages/${filename}`, (err) => {
+                if (err) {
+                    console.log(err);
+                }
+            });
+        });
         const updatedData = {
             p_name: req.body.p_name,
             price: req.body.price,
@@ -272,6 +273,19 @@ const addUpdateProduct = async (req, res) => {
     }
 }
 
+// Order LIsting 
+
+const orderList = async (req, res) => {
+    try {
+        const user = req.session.user;
+        res.render('admin/orderlisting',{user})
+
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+// LogOut
 const adminLogout = async (req, res) => {
     try {
         req.session.admin = null;
@@ -280,6 +294,7 @@ const adminLogout = async (req, res) => {
         console.log(error)
     }
 }
+
 
 module.exports = {
     adminLogin,
@@ -301,5 +316,6 @@ module.exports = {
     addUpdateProduct,
     userBlocking,
     userUnBlocking,
-    adminLogout
+    adminLogout,
+    orderList
 }

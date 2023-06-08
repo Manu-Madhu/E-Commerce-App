@@ -12,7 +12,7 @@
                             </li>
                             <li class="dashOther fw-bold p-1 ps-4 m-2">
                                 <img src="/assets/admin/d3.png" alt="" class="img-fluid me-2">
-                                <span><a href="/admin/catagory" class="text-decoration-none"
+                                <span><a href="/admin/category" class="text-decoration-none"
                                         style="color: #cdcdcd;">Category</a></span>
                             </li>
                             <li class="dashOther fw-bold p-1 ps-4 m-2">
@@ -30,7 +30,7 @@
                             <li class="dashOther fw-bold p-1 ps-4 m-2">
                                 <img src="/assets/admin/d5.png" alt="" class="img-fluid me-2">
                                 <span></span>
-                                <a href="#" class="text-decoration-none" style="color: #cdcdcd;">Order</a></span>
+                                <a href="/admin/order" class="text-decoration-none" style="color: #cdcdcd;">Order</a></span>
                             </li>
                             <li class="dashOther fw-bold p-1 ps-4 m-2">
                                 <img src="/assets/admin/d6.png" alt="" class="img-fluid me-2">
@@ -127,38 +127,4 @@
     </div>
 
     <script src="/js/alert.js"></script>
-    <script>
-        // Find the parent container (replace "container" with the appropriate selector)
-        const parentContainer = document.querySelector('.toggle-button');
-        // Add click event listener to the parent container
-        parentContainer.addEventListener('click', function (event) {
-            if (event.target.classList.contains('toggle-button')) {
-                const button = event.target;
-                const userId = button.getAttribute('data-user-id');
-
-                // Check the current state of the button
-                const isBlocked = button.classList.contains('blocked');
-
-                // Call the toggleBlock function with the user ID and current state
-                toggleBlock(userId, isBlocked, button);
-            }
-        });
-
-        function toggleBlock(userId, isBlocked, button) {
-            // Send AJAX request to the server to toggle the block status
-
-            // Assuming a successful response from the server, update the button state
-            if (isBlocked) {
-                // Change from blocked to unblocked
-                button.textContent = 'Block';
-                button.classList.remove('blocked');
-            } else {
-                // Change from unblocked to blocked
-                button.textContent = 'Unblock';
-                button.classList.add('blocked');
-            }
-        }
-
-    </script>
-
-    <%- include('../partials/adminfooter.ejs')%>
+<%- include('../partials/adminfooter.ejs')%>

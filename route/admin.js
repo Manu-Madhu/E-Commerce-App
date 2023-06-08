@@ -46,6 +46,9 @@ admin.post("/p_delete/:id", adminController.p_deleting)
 admin.get('/updateProduct/:id', adminController.productUpdating);
 admin.post('/addUpdatedProducts', upload.array("image"), adminController.addUpdateProduct);
 
+// Order 
+admin.get('/order',adminController.orderList)
+
 // user 
 admin.get('/coustomers', adminController.userView);
 admin.post('/userBlocking/:id', adminController.userBlocking);
