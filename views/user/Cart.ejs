@@ -247,17 +247,17 @@
             </div>
     </div>
     <script>
-    //  function updateQuantity(data){
-    //     console.log(data)
-    //     $.ajax({
-    //         type:"post",
-    //         url:"/cart/update",
-    //         data:data,
-    //         success:function (res){
-    //              console(res)
-    //         }
-    //     })
+     function updateQuantity(data){
+        console.log(data)
+        $.ajax({
+            type:"post",
+            url:"/cart/update",
+            data:data,
+            success:function (res){
+                 console(res)
+            }
+        })
 
-    //  }
+     }
     </script>
     <%-include('../partials/footer.ejs') %>
