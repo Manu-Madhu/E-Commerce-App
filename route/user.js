@@ -24,8 +24,8 @@ Router.get('/detaildView/:id',userMiddlewear.userIsBlocked, userControler.detail
 // profile 
 Router.get('/profile',userMiddlewear.userCheking,userMiddlewear.userIsBlocked, profileController.profile);
 Router.get('/profile/order',userMiddlewear.userCheking,userMiddlewear.userIsBlocked, profileController.order);
-Router.post('/profile/order/:id',userMiddlewear.userCheking,userMiddlewear.userIsBlocked, profileController.orderCancel);
 Router.get('/profile/address',userMiddlewear.userCheking,userMiddlewear.userIsBlocked,profileController.profileAddress);
+Router.post('/profile/order/:id',userMiddlewear.userCheking,userMiddlewear.userIsBlocked, profileController.orderCancel);
 Router.post('/profile/address/editAddress',userMiddlewear.userCheking,userMiddlewear.userIsBlocked,profileController.editAddress);
 Router.post('/profile/address/updateAddress',userMiddlewear.userCheking,userMiddlewear.userIsBlocked,profileController.newAddress);
 Router.post('/profileUpdate',userMiddlewear.userCheking,userMiddlewear.userIsBlocked, profileController.profileUpdate);
@@ -37,9 +37,10 @@ Router.post('/cart/update/:id',userMiddlewear.userCheking,userMiddlewear.userIsB
 Router.post('/cartDelete/:id',userControler.cartDelete);
 
 // CheckOut 
-Router.get('/CheckOut',userMiddlewear.userCheking,userMiddlewear.userIsBlocked,userControler.Checkout);
-Router.post('/CheckOut',userMiddlewear.userCheking,userMiddlewear.userIsBlocked,userControler.addressAdding);
-Router.post('/checkOut/orderSuccess',userMiddlewear.userCheking,userMiddlewear.userIsBlocked,userControler.orderSuccess)
+Router.get('/CheckOutPage',userMiddlewear.userCheking,userMiddlewear.userIsBlocked,userControler.Checkout);
+Router.post('/AddressUpdate',userMiddlewear.userCheking,userMiddlewear.userIsBlocked,userControler.addressAdding);
+Router.post('/CheckOut',userMiddlewear.userCheking,userMiddlewear.userIsBlocked,userControler.orderSuccess);
+Router.post('/saveOrderData',userMiddlewear.userCheking,userMiddlewear.userIsBlocked,userControler.savingData);
 
 // Logout
 Router.get('/logout', userControler.logOut);

@@ -1,6 +1,6 @@
 <%- include("../partials/header.ejs")%>
     <div class="container-fluid p-0 " style="margin-top: 7%;">
-        <%- include("../partials/navBar.ejs")%>
+        <%- include("../partials/navbar.ejs")%>
             <section class="container my-5 pt-3 p-5">
                 <div class="row m-4">
                     <div class="col-1 p-0"></div>
@@ -64,15 +64,18 @@
                         <h5 class="pt-2">Size:</h5>
                         <div class="d-flex p_Cart_Buy gap-4 pt-2">
                             <form action="" method="post">
-                                <button class="btn btn-warning text-white px-5 p-2" style="font-size: 13px;">Buy
-                                    Now</button>
+                                <button class="btn btn-warning text-white px-5 p-2" style="font-size: 13px;">
+                                    Add to Whishlist
+                                </button>
                             </form>
-                            <form action="/cart/<%= data._id%>" method="post">
+                            <form action="" method="post" id="CartForm">
+                                <input type="hidden" value="<%= data._id%>" id="cartProductId">
                                 <button type="submit" class="btn btn-danger text-white px-5 p-2"
-                                    style="font-size: 13px;">Add to Cart</button>
+                                    style="font-size: 13px;" id="addtoCart">Add to Cart</button>
                             </form>
                         </div>
-                        <div class="pt-4">
+                        <p class="text-success fw-bold mt-4 " id="CartSuccMsg"></p>
+                        <div class="pt-3">
                             <div class="border border-dark p_Delivery_Border" style="max-width: 350px;">
                                 <div class="d-flex align-items-center p-3 gap-3">
                                     <img class="img-fluid" src="/assets/product/icon-delivery.png" alt=""
@@ -128,10 +131,31 @@
                         </div>
                         <%});%>
                 </div>
-              </div>
-           </section>
-        </div>
+    </div>
+    </section>
+    </div>
     <script src="/zoom/zoom.js"></script>
     <script src="/zoom/zoomsl.min.js"></script>
     <script src="/js/P_Image.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const form = document.getElementById('CartForm');
+            const succMsg = document.getElementById('CartSuccMsg');
+            const cartItemCount = document.getElementById('cartItemCount');
+            form.addEventListener('submit', (event) => {
+                event.preventDefault();
+                $.ajax({
+                    type: 'post',
+                    url: '/cart/<%= data._id%>',
+                    success: function (res) {
+                        succMsg.textContent = "Product Successfully Added Your Cart"
+                        const currentCount = parseInt(cartItemCount.textContent) || 0;
+                        const newCount = currentCount + 1;
+                        cartItemCount.textContent = newCount;
+                    }
+                })
+
+            })
+        })
+    </script>
     <%- include("../partials/footer.ejs")%>

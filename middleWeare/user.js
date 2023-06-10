@@ -8,7 +8,8 @@ const islogin = async (req, res, next) => {
         } else {
             const user = req.session.user;
             const data = await ProductModel.find()
-            res.render('user/home', { title: 'Home', user, data });
+            let cartCount;
+            res.render('user/home', { title: 'Home', user, data,cartCount });
         }
     } catch (err) {
         console.log(err)

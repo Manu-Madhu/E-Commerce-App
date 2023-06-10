@@ -12,10 +12,13 @@ const pwdEncription = (password) => {
 
 const profile = async (req, res) => {
     try {
+        const userDetails = await userModel.findOne({ email: req.session.email });
+        let cart = userDetails.cart.items;
+        let cartCount = cart.length;
         const user = req.session.user;
         const FoundUser = req.session.email;
         const userData = await userModel.findOne({ email: FoundUser });
-        res.render('user/account/profile', { title: "Profile", user, userData });
+        res.render('user/account/profile', { title: "Profile", user, userData,cartCount });
     } catch (error) {
         console.log(error)
     }
@@ -28,6 +31,8 @@ const profileUpdate = async (req, res) => {
         const user = req.session.user;
         const FoundUser = req.session.email;
         const userData = await userModel.findOne({ email: FoundUser });
+        let cart = userData.cart.items;
+        let cartCount = cart.length;
         const { name, email, number, password, password1, password2 } = req.body;
 
         if (password1 !== password2) {
@@ -42,9 +47,9 @@ const profileUpdate = async (req, res) => {
                 userData.password = encryptedPwd;
             await userData.save();
             req.session.email = userData.email
-            res.render('user/account/profile', { title: "Profile", user, userData, success: "Successfully Updated" });
+            res.render('user/account/profile', { title: "Profile", user, userData, success: "Successfully Updated",cartCount });
         } else {
-            res.render('user/account/profile', { title: "Profile", user, userData, error: "Please check Your Current Password & Updated Email ID" });
+            res.render('user/account/profile', { title: "Profile", user, userData, error: "Please check Your Current Password & Updated Email ID",cartCount });
         }
     } catch (error) {
         console.log(error)
@@ -57,8 +62,10 @@ const profileAddress = async (req, res) => {
         const user = req.session.user;
         const userEmail = req.session.email;
         const userData = await userModel.findOne({ email: userEmail });
+        let cart = userData.cart.items;
+        let cartCount = cart.length;
         const userAddress = userData.address;
-        res.render('user/account/address', { user, title: "Address", userAddress })
+        res.render('user/account/address', { user, title: "Address", userAddress,cartCount })
     } catch (error) {
         console.log(error)
     }
@@ -105,9 +112,11 @@ const editAddress = async (req, res) => {
         const user = req.session.user;
         const addressId = req.body.selectedAddress;
         const userDetails = await userModel.findOne({ email: req.session.email });
+        let cart = userData.cart.items;
+        let cartCount = cart.length;
         const address = userDetails.address;
         const selectedAddress = address.find((data) => data._id.toString() === addressId);
-        res.render('user/account/editAddress', { user, title: "Edit Address", selectedAddress })
+        res.render('user/account/editAddress', { user, title: "Edit Address", selectedAddress,cartCount })
     } catch (error) {
         console.log(error)
     }
@@ -119,6 +128,8 @@ const order = async (req, res) => {
         const user = req.session.user;
         const email = req.session.email;
         const userDetails = await userModel.findOne({ email: email });
+        let cart = userDetails.cart.items;
+        let cartCount = cart.length;
         const userid = userDetails._id;
         const order = await orderModel.find({ userId: userid });
         const product = order.map(data => data.products);
@@ -126,7 +137,7 @@ const order = async (req, res) => {
         const status = order.map(data => data.status);
         const orderstatus = order.map(data => data.orderCancleRequest);
         const Date = order.map(data => data.expectedDelivery.toLocaleDateString());
-        res.render('user/account/myOrder', { user, newProduct, status, Date, order,orderstatus, title: "OrderPage" })
+        res.render('user/account/myOrder', { user, newProduct, status, Date, order,orderstatus, title: "OrderPage",cartCount })
     } catch (error) {
         console.log(error)
     }

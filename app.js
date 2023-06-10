@@ -30,7 +30,7 @@ app.use(
         cookie: { maxAge: oneDay },
         resave: false,
         store: new MongoStore({mongooseConnection: mongoose.connection })
-    })
+    })   
 );
 
 app.use(express.urlencoded({ extended: false }));

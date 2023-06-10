@@ -1,5 +1,5 @@
 <%- include("../partials/header.ejs")%>
-    <n av class="navbar navbar-expand-lg navbar-light shadow bg-light" style="z-index:10;">
+    <nav class="navbar navbar-expand-lg navbar-light shadow bg-light" style="z-index:10;">
         <div class="container ">
             <a class="navbar-brand fw-bold" href="#">Asthra Fashion World</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -15,38 +15,49 @@
                     <li class="nav-item">
                         <a class="nav-link" href="#">About</a>
                     </li>
-
                     <%if(user){%>
                         <li class="nav-item">
                             <a class="nav-link" href="/logout">logOut</a>
                         </li>
-                        <%}else{%>
-                            <li class="nav-item"></li>
-                            <a class="nav-link" href="/login">login</a>
-                            </li>
-                            <%}%>
-
+                    <%}else{%>
+                        <li class="nav-item"></li>
+                           <a class="nav-link" href="/login">login</a>
+                        </li>
+                    <%}%>
                 </ul>
                 <form class="Nav_icon d-flex gap-4 justify-content-cneter align-items-center">
                     <input class="search p-3" type="search" placeholder="What you looking for?" aria-label="Search">
                     <% if(user) {%>
                         <i class="fa-regular fa-heart"></i>
-                        <a href="/cart" class="link-dark">
+                        <a href="/cart" class="link-dark text-center" style="position: relative;">
                             <i class="fa-solid fa-cart-shopping "></i>
+                            <% if(locals.cartCount){%>
+                                <span id="cartItemCount"
+                                    class="badge badge-pill bg-danger d-flex justify-content-center align-items-center p-1"
+                                    style="border-radius: 50%; position: absolute; top: -5px; right: -10px; width: 18px; height: 18px;font-size: 9px;">
+                                    <%=locals.cartCount%>
+                                </span>
+                            <%}else{%>
+                                <span id="cartItemCount"
+                                    class="badge badge-pill bg-danger d-flex justify-content-center align-items-center p-1"
+                                    style="border-radius: 50%; position: absolute; top: -5px; right: -10px; width: 18px; height: 18px;font-size: 9px;">
+                                    0   
+                                </span>
+                            <%}%>
                         </a>
-                        <%}else{%>
+                   <%}else{%>
                             <i class="fa-regular fa-heart"></i>
                             <i class="fa-solid fa-cart-shopping "></i>
-                            <%}%>
-                                <div class="d-flex flex-column align-items-center">
-                                    <div class="iconP ">
-                                        <a href="/profile"><i class="fa-regular fa-user text-dark"></i></a>
-                                    </div>
-                                    <span class="text-danger fw-bold ">
-                                        <%= locals.user?user:"" %>
-                                    </span>
-                                </div>
+                    <%}%>
+                    <div class="d-flex flex-column align-items-center">
+                        <div class="iconP ">
+                             <a href="/profile"><i class="fa-regular fa-user text-dark"></i></a>
+                        </div>
+                        <span class="text-danger fw-bold ">
+                            <%= locals.user?user:"" %>
+                        </span>
+                    </div>
                 </form>
             </div>
         </div>
-    </n>
+    </nav>

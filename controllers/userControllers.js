@@ -4,10 +4,16 @@ const ProductModel = require('../models/productModel');
 const OrderModel = require('../models/order');
 const bcrypt = require('bcrypt');
 const product = require('../models/productModel');
+const Razorpay = require('razorpay');
+
+// Twilio
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
 const client = require('twilio')(accountSid, authToken);
 
+// Razorpoy
+const key_id = process.env.RAZORPAY_API_KEY;
+const key_secret = process.env.RAZORPAY_API_SECRET
 
 //---------- USER CONTROLLER----------------
 
@@ -16,11 +22,15 @@ const pwdEncription = (password) => {
     const hashedPWD = bcrypt.hash(password, 10)
     return hashedPWD
 }
+
 // HOME
 const home = async (req, res) => {
     try {
         const data = await ProductModel.find();
-        res.render('user/Home', { log: "LogOut", title: "Home", user: req.session.user, data })
+        const userData = await UserModel.findOne({ email: req.session.email });
+        let cart = userData.cart.items;
+        let cartCount = cart.length;
+        res.render('user/Home', { log: "LogOut", title: "Home", user: req.session.user, data, cartCount })
     } catch (error) {
         console.log(error);
         res.status(500).send("internal error")
@@ -29,13 +39,16 @@ const home = async (req, res) => {
 
 // LOGIN VALIDATION
 const login = (req, res) => {
-    res.render('user/login', { title: 'Login', user: req.session.user })
+    let cartCount;
+    res.render('user/login', { title: 'Login', user: req.session.user, cartCount })
 }
 const validation = async (req, res) => {
     try {
         const email = req.body.email;
         const password = req.body.password;
         const userData = await UserModel.findOne({ email: email });
+        let cart = userData.cart.items;
+        let cartCount = cart.length;
         if (userData.isBlocked === false) {
             if (userData) {
                 const VPWD = await bcrypt.compare(password, userData.password);
@@ -44,14 +57,14 @@ const validation = async (req, res) => {
                     req.session.email = userData.email;
                     res.redirect('/')
                 } else {
-                    res.render("user/login", { fail: "Ckeck Your Password", user: req.session.user })
+                    res.render("user/login", { fail: "Ckeck Your Password", user: req.session.user, cartCount })
                 }
 
             } else {
-                res.render('user/login', { fail: "Check Your Email", user: req.session.user })
+                res.render('user/login', { fail: "Check Your Email", user: req.session.user, cartCount })
             }
         } else {
-            res.render('user/login', { fail: "Pease Contact Your Admin You are not Allow to Use this Account AnyMore", user: req.session.user })
+            res.render('user/login', { fail: "Pease Contact Your Admin You are not Allow to Use this Account AnyMore", user: req.session.user, cartCount })
         }
 
 
@@ -63,13 +76,15 @@ const validation = async (req, res) => {
 
 // REGISTRATION
 const signup = (req, res) => {
-    res.render('user/signUp', { title: "Sign Up", user: req.session.user })
+    let cartCount;
+    res.render('user/signUp', { title: "Sign Up", user: req.session.user, cartCount })
 }
 const registerUser = async (req, res) => {
     try {
         const enPwd = await pwdEncription(req.body.password);
         req.body.password = enPwd;
         req.body.isBlocked = false;
+        let cartCount;
         // USER INFO SAVING TO DB
         await UserModel.create(req.body)
 
@@ -90,7 +105,7 @@ const registerUser = async (req, res) => {
             })
             newUser.save()
                 .then(() => {
-                    res.render('user/verification', { user: req.session.user });
+                    res.render('user/verification', { user: req.session.user, cartCount });
                 })
                 .catch((error) => {
                     console.log("error generating numb", error);
@@ -99,10 +114,12 @@ const registerUser = async (req, res) => {
     }
     catch (error) {
         console.log(error)
-        res.render('user/signUp', { succ: "Please Use a Uniqe Email ID", user: req.session.user })
+        let cartCount;
+        res.render('user/signUp', { succ: "Please Use a Uniqe Email ID", user: req.session.user, cartCount })
     }
 }
 const OTPValidation = async (req, res) => {
+    let cartCount;
     try {
         const num1 = req.body.num_1;
         const num2 = req.body.num_2;
@@ -123,11 +140,11 @@ const OTPValidation = async (req, res) => {
                             console.log("error while deleting", err);
                         });
                 } else {
-                    res.render('user/verification', { fal: "Please Check Your OTP", user: req.session.user })
+                    res.render('user/verification', { fal: "Please Check Your OTP", user: req.session.user, cartCount })
                 }
             })
             .catch((err) => {
-                res.render('user/verification', { fal: "Please Check Your OTP", user: req.session.user })
+                res.render('user/verification', { fal: "Please Check Your OTP", user: req.session.user, cartCount })
             })
     } catch (error) {
         console.log(error)
@@ -137,17 +154,21 @@ const OTPValidation = async (req, res) => {
 
 // Success
 const successTick = (req, res) => {
-    res.render('user/successTick', { title: "Account", succ: "SuccessFully Create Your Account", user: req.session.user })
+    let cartCount;
+    res.render('user/successTick', { title: "Account", succ: "SuccessFully Create Your Account", user: req.session.user, cartCount })
 }
 
 // Detaild view
 const detaildView = async (req, res) => {
     try {
+        const userData = await UserModel.findOne({ email: req.session.email });
+        const cart = userData.cart.items;
+        let cartCount = cart.length;
         const id = req.params.id;
         const data = await ProductModel.findOne({ _id: id });
         const cate = data.category[0];
         const category = await ProductModel.find({ category: cate });
-        res.render('user/productView', { title: "Product View", user: req.session.user, data, category })
+        res.render('user/productView', { title: "Product View", user: req.session.user, data, category, cartCount })
     } catch (error) {
         console.log(error)
     }
@@ -160,6 +181,7 @@ const cartload = async (req, res) => {
         const user = req.session.user;
         const userData = await UserModel.findOne({ email: userEmail });
         const cartItems = userData.cart.items;
+        const cartCount = cartItems.length;
         const cartProductIds = cartItems.map(item => item.productId);
         const cartProducts = await ProductModel.find({ _id: { $in: cartProductIds } });
 
@@ -170,18 +192,17 @@ const cartload = async (req, res) => {
             totalPrice += item.quantity * product.price;
         }
 
-        res.render('user/Cart', { title: "Cart", user, cartProducts, cartItems, totalQuantity, totalPrice });
+        res.render('user/Cart', { title: "Cart", user, cartProducts, cartItems, totalQuantity, totalPrice, cartCount });
     } catch (error) {
         console.log(error);
         res.status(500).send("Internal error from cart side");
     }
 };
 
-const cart = async (req, res) => {
+const cart = async(req, res) => {
     try {
         const id = req.params.id;
         const userEmail = req.session.email;
-        const user = req.session.user;
         const userData = await UserModel.findOne({ email: userEmail });
         const cartItems = userData.cart.items;
         const existingCartItem = cartItems.find(item => item.productId.toString() === id);
@@ -201,19 +222,7 @@ const cart = async (req, res) => {
         }
 
         await userData.save();
-        const cartProductIds = cartItems.map(item => item.productId);
-        const cartProducts = await ProductModel.find({ _id: { $in: cartProductIds } });
-
-        const totalQuantity = cartItems.reduce((total, item) => total + item.quantity, 0);
-        let totalPrice = 0;
-        for (const item of cartItems) {
-            const product = cartProducts.find(prod => prod._id.toString() === item.productId.toString());
-            if (product && product.price) {
-                totalPrice += item.quantity * product.price;
-            }
-        }
-
-        res.render('user/Cart', { title: "Cart", user, cartProducts, cartItems, totalQuantity, totalPrice });
+        res.json("successfully cart u r product")
     } catch (error) {
         console.log('Error adding to cart:', error);
     }
@@ -241,12 +250,13 @@ const Checkout = async (req, res) => {
         const userFinder = req.session.email;
         const userDetails = await UserModel.findOne({ email: userFinder });
         const cartItems = userDetails.cart.items;
+        const cartCount = cartItems.length;
         const cartProductIds = cartItems.map(item => item.productId.toString());
         const cartProducts = await ProductModel.find({ _id: { $in: cartProductIds } });
         const address = userDetails.address;
         let totalPrice = 0;
         cartItems.map(item => totalPrice += item.price);
-        res.render('user/account/billing', { title: "Check", user, cartItems, cartProducts, totalPrice, address })
+        res.render('user/account/billing', { title: "Check", user, cartItems, cartProducts, totalPrice, address, cartCount })
     } catch (error) {
         console.log(error);
     }
@@ -275,29 +285,30 @@ const addressAdding = async (req, res) => {
 
         userData.address.push(newAddress);
         await userData.save();
-        res.redirect('/CheckOut');
+        res.redirect('/CheckOutPage');
     } catch (error) {
         console.log(error);
         res.status(500).send("Internal server error");
     }
 };
 
+// dta storing for saving data in db after online payment easy access!!!!!!
+let newOrder;
 const orderSuccess = async (req, res) => {
     try {
         const currentDate = new Date();
         const data = req.body
-        const user = req.session.user;
         const email = req.session.email;
         const foundUser = await UserModel.findOne({ email: email });
-        const userId = foundUser._id;
         const cartItems = foundUser.cart.items;
         const cartProductIds = cartItems.map(item => item.productId.toString());
         const cartProducts = await ProductModel.find({ _id: { $in: cartProductIds } });
 
+        const userId = foundUser._id;
         const addressId = data.selectedAddress;
         const method = data.method;
         const amount = data.amount;
-
+        // Data cillecting for db Storing
         const productData = cartProducts.map(product => ({
             p_name: product.p_name,
             price: product.price,
@@ -308,7 +319,7 @@ const orderSuccess = async (req, res) => {
         }));
         const deliveryDate = new Date();
         deliveryDate.setDate(currentDate.getDate() + 5);
-        const newOrder = new OrderModel({
+        newOrder = new OrderModel({
             userId: userId,
             address: addressId,
             products: productData,
@@ -320,16 +331,65 @@ const orderSuccess = async (req, res) => {
             createdAt: currentDate,
             expectedDelivery: deliveryDate
         });
-        await newOrder.save();
-        foundUser.cart.items = [];
-        await foundUser.save();
+        if (method === "InternetBanking") {
+            const instance = new Razorpay({
+                key_id: key_id,
+                key_secret: key_secret
+            });
+            let order = await instance.orders.create({
+                amount: amount * 100,
+                currency: "INR",
+                receipt: 'new id u want to impliment',
+            })
+            res.json(order);
+        } else if (method === "COD") {
+            await newOrder.save();
+            for (let values of cartItems) {
+                for (let products of cartProducts) {
+                    if (new String(values.productId).trim() == new String(products._id).trim()) {
+                        products.quantity = products.quantity - values.quantity;
+                        await products.save()
+                    }
+                }
+            }
+            foundUser.cart.items = [];
+            await foundUser.save();
+            res.json("successFully cod Playsed")
+        } else {
+            res.status(400).send("individual payment")
+        }
 
-        res.render('user/successTick.ejs', { user, succ: "Your Order Will Conformed...." })
     } catch (error) {
         console.log('data not comming');
         res.status(500).send('An error occurred While saving data in DB');
     }
 }
+const savingData = async (req, res) => {
+    try {
+        await newOrder.save();
+        const email = req.session.email;
+        const userData = await UserModel.findOne({ email: email });
+        const cartItems = userData.cart.items;
+        const cartProductIds = cartItems.map(item => item.productId.toString());
+        const cartProducts = await ProductModel.find({ _id: { $in: cartProductIds } });
+
+        for (let values of cartItems) {
+            for (let product of cartProducts) {
+                if (String(values.productId).trim() === String(product._id).trim()) {
+                    product.quantity -= values.quantity;
+                    await product.save();
+                }
+            }
+        }
+
+        userData.cart.items = [];
+        await userData.save();
+        res.json("data is saved")
+    } catch (error) {
+        console.log(error);
+        res.status(500).send('An error occurred while saving the order and updating product quantities');
+    }
+};
 
 // LOGOUT
 const logOut = async (req, res) => {
@@ -340,7 +400,6 @@ const logOut = async (req, res) => {
     } catch (error) {
         console.log(error)
     }
-
 }
 
 module.exports = {
@@ -358,5 +417,6 @@ module.exports = {
     cart,
     cartDelete,
     addressAdding,
-    orderSuccess
+    orderSuccess,
+    savingData
 }

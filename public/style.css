@@ -1,6 +1,7 @@
 :root {
   --primaryText: #9a9a9a;
   --primaryBg: #db4444;
+  --primary-dark: #a6a6a6;
 }
 
 body {
@@ -8,6 +9,37 @@ body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+
+  .btns {
+    border: 0;
+    border-radius: 5px;
+    box-shadow:
+   -7px -7px 20px 0px #fff9,
+   -4px -4px 5px 0px #fff9,
+   7px 7px 20px 0px #0002,
+   4px 4px 5px 0px #0001;
+  transition: all 0.3s ease;
+    cursor: pointer;
+    font-weight: 500;
+    height: 50px;
+    padding: 5px;
+    /* transition: box-shadow 0.2s ease-in-out, margin-top 0.2s ease-in-out,
+      opacity 0.2s ease-in-out; */
+  }
+  
+  .btns:hover,
+  .btns:focus {
+    opacity: 0.9;
+    outline: none;
+    
+  }
+  
+  .btns:active {
+    box-shadow: none;
+    margin-top: 6px;
+    transform: translateY(5px);
+  }
+  
 
   /* Sroll bar css */
   ::-webkit-scrollbar-track {
@@ -790,13 +822,13 @@ select:focus {
 }
 
 /*hide inputarrows*/
-input[type="number"]::-webkit-inner-spin-button,
+/* input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
   margin: 0;
-} 
+}  */
 
 /* Billing details */
 .billing_address {
