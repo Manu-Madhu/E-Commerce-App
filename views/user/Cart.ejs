@@ -37,15 +37,15 @@
                                                             <span></span>
                                                         </td>
                                                         <td class="p-3">
-                                                            <input type="number" id="quantityUpdate"
+                                                            <input type="number" id="quantityUpdate-<%= cartItems[index]._id %>"
                                                                 class="d-flex align-items-center"
                                                                 data-item-id="<%= cartItems[index]._id %>" name="quantity"
                                                                 value="<%= cartItems.find(item => item.productId.toString() === data._id.toString()).quantity %>"
                                                                 style="width: 50px; border: 2px solid #020202; border-radius: 4px;"
-                                                                onchange="updateQuantity(this)">
+                                                                onchange="updateQuantity(this,'<%= cartItems[index]._id %>')">
                                                         </td>
                                                         <td class="p-3">
-                                                            <h6 for="" class="fw-bold" id="cartPrice">₹
+                                                            <h6 for="" class="fw-bold" id="cartPrice-<%= cartItems[index]._id %>">₹
                                                                 <%= ( cartItems.find(item=> item.productId.toString()
                                                                     === data._id.toString()).price) %>
                                                             </h6>
@@ -77,11 +77,11 @@
                                             <h5 class="fw-bold">Total price </h5>
                                         </div>
                                         <div class="col-lg-6">
-                                            <h6>:<span id="totalPrice">
+                                            <h6>:<span id="totalPrice1">
                                                     <%= totalPrice %>
                                                 </span></h6>
                                             <h6>:<span> 500</span></h6>
-                                            <h5>: <span >
+                                            <h5>: <span id="totalPrice2">
                                                     <%= totalPrice %>
                                                 </span></h5>
                                         </div>
@@ -252,27 +252,22 @@
             </div>
     </div>
     <script>
-        const CartPrice = document.getElementById('cartPrice');
-        const totalPrice = document.getElementById('totalPrice');
-        // Handle quantity update using AJAX
-        function updateQuantity(input) {
-            let itemId = $(input).data('item-id');
+        function updateQuantity(input,itemId) {
+            const cartPrice = document.getElementById(`cartPrice-${itemId}`);
+            const totalPrice1 = document.getElementById('totalPrice1');
+            const totalPrice2 = document.getElementById('totalPrice2');
             let quantity = $(input).val();
-            console.log(itemId)
-            console.log(quantity)
-            // AJAX call to update the quantity
+
             $.ajax({
                 url: '/cart/quantityUpdate/' + itemId,
                 method: 'POST',
                 data: { quantity: quantity },
                 success: function (response) {
-                    // Handle the response, if needed
-                    console.log(response);
-                    CartPrice.innerHTML = response.cartPrice;
-                    totalPrice.innerText =response.total
+                    cartPrice.textContent = `₹ ${response.cartPrice}`;
+                    totalPrice1.textContent =response.total
+                    totalPrice2.innerText =response.total
                 },
                 error: function (error) {
-                    // Handle the error, if any
                     console.log('Error updating quantity:', error);
                 }
             });

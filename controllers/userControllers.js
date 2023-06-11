@@ -246,51 +246,13 @@ const cartQuantityUpdate = async (req, res) => {
         await product.save();
         await userDetails.save();
 
-        res.json({ cartPrice});
+        res.json({ cartPrice,total});
     } catch (error) {
         console.log(error);
         res.status(500).json({ error: 'An error occurred while updating the quantity.' });
     }
 };
-// const cartQuantityUpdate = async (req, res) => {
-//     try {
-//       const cartId = req.params.itemId;
-//       const quantity = Number(req.body.quantity);
-//       const userEmail = req.session.email;
-//       const userDetails = await UserModel.findOne({ email: userEmail });
-//       const cartItems = userDetails.cart.items;
-//       const cartItem = cartItems.find(item => item._id.toString() === cartId);
-      
-//       if (!cartItem) {
-//         return res.status(404).json({ error: 'Cart item not found' });
-//       }
   
-//       const product = await ProductModel.findById(cartItem.productId);
-  
-//       if (!product) {
-//         return res.status(404).json({ error: 'Product not found' });
-//       }
-  
-//       const oldQuantity = cartItem.quantity;
-//       const quantityDifference = quantity - oldQuantity;
-//       product.quantity -= quantityDifference;
-  
-//       cartItem.quantity = quantity;
-//       cartItem.price = product.price * quantity;
-  
-//       await product.save();
-//       await userDetails.save();
-  
-//       const cartPrice = cartItems.reduce((total, item) => total + item.price, 0);
-  
-//       res.json({ cartPrice });
-//     } catch (error) {
-//       console.log(error);
-//       res.status(500).json({ error: 'An error occurred while updating the quantity.' });
-//     }
-//   };
-  
-
 const cartDelete = async (req, res) => {
     try {
         const id = req.params.id;
