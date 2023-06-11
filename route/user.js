@@ -34,6 +34,7 @@ Router.post('/profileUpdate',userMiddlewear.userCheking,userMiddlewear.userIsBlo
 Router.get('/cart',userMiddlewear.userCheking,userMiddlewear.userIsBlocked, userControler.cartload);
 Router.post('/cart/:id',userMiddlewear.userCheking,userMiddlewear.userIsBlocked, userControler.cart);
 Router.post('/cart/update/:id',userMiddlewear.userCheking,userMiddlewear.userIsBlocked, userControler.cart);
+Router.post('/cart/quantityUpdate/:itemId',userMiddlewear.userCheking,userMiddlewear.userIsBlocked, userControler.cartQuantityUpdate);
 Router.post('/cartDelete/:id',userControler.cartDelete);
 
 // CheckOut 

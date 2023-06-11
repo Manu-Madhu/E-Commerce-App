@@ -111,8 +111,7 @@ const registerUser = async (req, res) => {
                     console.log("error generating numb", error);
                 });
         }
-    }
-    catch (error) {
+    } catch (error) {
         console.log(error)
         let cartCount;
         res.render('user/signUp', { succ: "Please Use a Uniqe Email ID", user: req.session.user, cartCount })
@@ -199,7 +198,7 @@ const cartload = async (req, res) => {
     }
 };
 
-const cart = async(req, res) => {
+const cart = async (req, res) => {
     try {
         const id = req.params.id;
         const userEmail = req.session.email;
@@ -232,16 +231,25 @@ const cartDelete = async (req, res) => {
     try {
         const id = req.params.id;
         const userEmail = req.session.email;
-        await UserModel.updateOne(
-            { email: userEmail },
-            { $pull: { 'cart.items': { _id: id } } }
-        );
+        await UserModel.updateOne({ email: userEmail }, { $pull: { 'cart.items': { _id: id } } });
         res.redirect('/cart');
     } catch (error) {
         console.log(error);
         res.status(500).send("internal error at cartDelete")
     }
 }
+
+const cartQuantityUpdate = async (req, res) => {
+    try {
+        const cartId = req.params.itemId;
+        const data = req.body;
+        console.log({data,cartId});
+        res.json("success the request reached")
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ error: 'An error occurred while updating the quantity.' });
+    }
+};
 
 // Check out 
 const Checkout = async (req, res) => {
@@ -418,5 +426,6 @@ module.exports = {
     cartDelete,
     addressAdding,
     orderSuccess,
-    savingData
+    savingData,
+    cartQuantityUpdate
 }
