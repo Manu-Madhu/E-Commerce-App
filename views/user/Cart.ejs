@@ -45,7 +45,7 @@
                                                                 onchange="updateQuantity(this)">
                                                         </td>
                                                         <td class="p-3">
-                                                            <h6 for="" class="fw-bold">₹
+                                                            <h6 for="" class="fw-bold" id="cartPrice">₹
                                                                 <%= ( cartItems.find(item=> item.productId.toString()
                                                                     === data._id.toString()).price) %>
                                                             </h6>
@@ -81,7 +81,7 @@
                                                     <%= totalPrice %>
                                                 </span></h6>
                                             <h6>:<span> 500</span></h6>
-                                            <h5>: <span>
+                                            <h5>: <span >
                                                     <%= totalPrice %>
                                                 </span></h5>
                                         </div>
@@ -252,6 +252,8 @@
             </div>
     </div>
     <script>
+        const CartPrice = document.getElementById('cartPrice');
+        const totalPrice = document.getElementById('totalPrice');
         // Handle quantity update using AJAX
         function updateQuantity(input) {
             let itemId = $(input).data('item-id');
@@ -266,6 +268,8 @@
                 success: function (response) {
                     // Handle the response, if needed
                     console.log(response);
+                    CartPrice.innerHTML = response.cartPrice;
+                    totalPrice.innerText =response.total
                 },
                 error: function (error) {
                     // Handle the error, if any
