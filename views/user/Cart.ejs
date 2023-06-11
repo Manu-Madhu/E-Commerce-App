@@ -263,9 +263,9 @@
                 method: 'POST',
                 data: { quantity: quantity },
                 success: function (response) {
-                    cartPrice.textContent = `₹ ${response.cartPrice}`;
-                    totalPrice1.textContent =response.total
-                    totalPrice2.innerText =response.total
+                    cartPrice.innerText = `₹ ${response.cartPrice}`;
+                    totalPrice1.innerText =response.total;
+                    totalPrice2.innerText =response.total;
                 },
                 error: function (error) {
                     console.log('Error updating quantity:', error);

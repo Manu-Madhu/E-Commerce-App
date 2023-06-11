@@ -2,6 +2,7 @@
   --primaryText: #9a9a9a;
   --primaryBg: #db4444;
   --primary-dark: #a6a6a6;
+  --primaryBgColllor: #e7e5e5;
 }
 
 body {
@@ -9,37 +10,6 @@ body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-
-  .btns {
-    border: 0;
-    border-radius: 5px;
-    box-shadow:
-   -7px -7px 20px 0px #fff9,
-   -4px -4px 5px 0px #fff9,
-   7px 7px 20px 0px #0002,
-   4px 4px 5px 0px #0001;
-  transition: all 0.3s ease;
-    cursor: pointer;
-    font-weight: 500;
-    height: 50px;
-    padding: 5px;
-    /* transition: box-shadow 0.2s ease-in-out, margin-top 0.2s ease-in-out,
-      opacity 0.2s ease-in-out; */
-  }
-  
-  .btns:hover,
-  .btns:focus {
-    opacity: 0.9;
-    outline: none;
-    
-  }
-  
-  .btns:active {
-    box-shadow: none;
-    margin-top: 6px;
-    transform: translateY(5px);
-  }
-  
 
   /* Sroll bar css */
   ::-webkit-scrollbar-track {
@@ -741,7 +711,7 @@ select:focus {
 .profile_info {
   border-radius: 13px;
   box-shadow: 0px 1px 13px 0px rgba(0, 0, 0, 0.05);
-  background: rgba(243, 241, 241, 1);
+  background: var(--primaryBgColllor);
 }
 
 .profile_form label {
@@ -772,7 +742,7 @@ select:focus {
 .address_Form {
   border-radius: 13px;
   box-shadow: 0px 1px 13px 0px rgba(0, 0, 0, 0.05);
-  background: rgba(243, 241, 241, 1);
+  background: var(--primaryBgColllor);
 }
 .address_Form form label {
   font-size: 13px;
@@ -844,7 +814,7 @@ input[type="number"]::-webkit-outer-spin-button {
 .billing_Form {
   border-radius: 13px;
   box-shadow: 0px 1px 13px 0px rgba(0, 0, 0, 0.05);
-  background: rgba(243, 241, 241, 1);
+  background: var(--primaryBgColllor);
 }
 .billing_Form form label {
   font-size: 13px;
@@ -882,10 +852,12 @@ input[type="number"]::-webkit-outer-spin-button {
   border-radius: 14px;
   font-size: 13px;
 }
+.proSumWraper{
+  border-radius: 13px;
+  background:var(--primaryBgColllor);
+}
 .billing_img {
   border-radius: 13px;
-  box-shadow: 0px 1px 13px 0px rgba(0, 0, 0, 0.05);
-  background: rgba(243, 241, 241, 1);
   min-height: 205px;
   max-height: 205px;
   overflow: scroll;
@@ -925,7 +897,7 @@ input[type="number"]::-webkit-outer-spin-button {
 .billing_bg {
   border-radius: 13px;
   box-shadow: 0px 1px 13px 0px rgba(0, 0, 0, 0.05);
-  background: rgba(243, 241, 241, 1);
+  background: var(--primaryBgColllor);
   max-height: 200px;
 }
 
@@ -945,11 +917,11 @@ input[type="number"]::-webkit-outer-spin-button {
 .cart_table {
   width: 100%;
   box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.25);
-  background: rgba(243, 241, 241, 1);
+  background: var(--primaryBgColllor);
   border-radius: 14px;
 }
 .cart_table tr {
-  background: rgba(243, 241, 241, 1);
+  background: var(--primaryBgColllor);
   border-radius: 14px;
   width: 100%;
 }
@@ -960,7 +932,7 @@ input[type="number"]::-webkit-outer-spin-button {
 
 .first {
   border-radius: 14px 0px 0px 14px;
-  background: rgba(243, 241, 241, 1);
+  background: var(--primaryBgColllor);
 }
 .third {
   border-radius: 0px 14px 14px 0px;

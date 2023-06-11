@@ -74,7 +74,8 @@
                                 <div class="p-2">
                                     <h5 class="text-danger fw-bold">Product Summary</h5>
                                 </div>
-                                <div class="container billing_img p-3 mt-3">
+                               <div class="container p-2 px-3 my-3 proSumWraper" >
+                                <div class="container billing_img">
                                     <% cartProducts.forEach((data)=>{%>
                                         <ul class="p-0" style="list-style-type: none;">
                                             <li class="d-flex align-items-center justify-content-between gap-5 p-2">
@@ -101,6 +102,7 @@
                                         </ul>
                                         <%}) %>
                                 </div>
+                               </div>
                                 <div class=" p-2 px-3 my-3 border billinf_form_Wrapper">
                                     <div class=" billing_form">
                                         <% address.forEach((data,index)=>{%>
@@ -217,9 +219,6 @@
                                         window.location.href = 'http://localhost:5000/success';
                                     }
                                 })
-                                // alert(response.razorpay_payment_id);
-                                // alert(response.razorpay_order_id);
-                                // alert(response.razorpay_signature)
                             },
                             "prefill": {
                                 "name": "Gaurav Kumar",
