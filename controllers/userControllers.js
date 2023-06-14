@@ -3,7 +3,6 @@ const OTP = require('../models/otpModel');
 const ProductModel = require('../models/productModel');
 const OrderModel = require('../models/order');
 const bcrypt = require('bcrypt');
-const product = require('../models/productModel');
 const Razorpay = require('razorpay');
 const couponModle = require('../models/coupon');
 
@@ -175,14 +174,73 @@ const detaildView = async (req, res) => {
 }
 
 // WhishList
-const WhishListLoad =async(req,res)=>{
-   try{
-    res.render("user/whishLIst")
-
-   }catch(error){
-      console.log(error)
-   }
+const WhishListLoad = async (req, res) => {
+    try {
+        const user = req.session.user;
+        const email = req.session.email;
+        const userDetails = await UserModel.findOne({email:email});
+        const productData = userDetails.wishlist;
+        const cart = userDetails.cart.items;
+        let cartCount = cart.length;
+        const productId = productData.map(items =>items.productId);
+        const productDetails = await ProductModel.find({_id:{$in:productId}});
+        res.render('user/whishList',{user, productDetails,cartCount})
+    } catch (error) {
+        console.log(error)
+    }
 }
+const addingWhishList = async (req, res) => {
+    try {
+        const productId = req.params.id;
+        const user = req.session.email;
+        const userDetails = await UserModel.findOne({ email: user });
+        const productExist = userDetails.wishlist.map(items => items.productId.toString() === productId)
+        console.log(productExist)
+        
+        if (productExist.includes(true)) {
+            console.log("Already Existe")
+            return res.json("Already Existe")
+        } else {
+            const WhishList = {
+                productId: productId
+            }
+            userDetails.wishlist.push(WhishList);
+            await userDetails.save()
+            console.log(productId)
+           return res.json('server got this....');
+        }
+    } catch (error) {
+        console.log(error)
+    }
+}
+const addingWhishListtoCart = async (req, res) => {
+    try {
+        const id= req.body.productId;
+        const userEmail = req.session.email;
+        const userData = await UserModel.findOne({ email: userEmail });
+        const cartItems = userData.cart.items;
+        const existingCartItem = cartItems.find(item => item.productId.toString() === id);
+        const cartPrtoduct = await ProductModel.findOne({ _id: id });
+        const productPrice = cartPrtoduct.price;
+
+        if (existingCartItem) {
+            existingCartItem.quantity += 1;
+            existingCartItem.price = existingCartItem.quantity * productPrice;
+        } else {
+            const newCartItem = {
+                productId: id,
+                quantity: 1,
+                price: cartPrtoduct.price
+            };
+            userData.cart.items.push(newCartItem);
+        }
+
+        await userData.save();
+        res.json("successfully cart u r product")
+    } catch (error) {
+        console.log('Error adding to cart:', error);
+    }
+};
 
 // Cart
 const cartload = async (req, res) => {
@@ -298,10 +356,10 @@ const coupons = async (req, res) => {
                     await couponModle.updateOne({ couponName: couponCode }, { $push: { userId: userDataId } });
                     res.json({ message: 'Coupon is succefully Added', coupon: couponValue });
                 } else {
-                    res.json({ message: 'Coupon Expired', coupon: couponValue  });
+                    res.json({ message: 'Coupon Expired', coupon: couponValue });
                 }
             } else {
-                res.json({ message: 'You Already Use This Coupon', coupon: couponValue  });
+                res.json({ message: 'You Already Use This Coupon', coupon: couponValue });
             }
 
         }
@@ -490,5 +548,7 @@ module.exports = {
     savingData,
     cartQuantityUpdate,
     coupons,
-    WhishListLoad
+    WhishListLoad,
+    addingWhishList,
+    addingWhishListtoCart
 }

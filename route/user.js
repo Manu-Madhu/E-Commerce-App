@@ -40,7 +40,9 @@ Router.post('/cartDelete/:id',userControler.cartDelete);
 Router.post('/coupons/couponValidation',userMiddlewear.userCheking,userMiddlewear.userIsBlocked,userControler.coupons);
 
 // WhishList
-Router.get('/WhishList',userMiddlewear.userCheking,userMiddlewear.userIsBlocked,userControler.WhishListLoad)
+Router.get('/WhishList',userMiddlewear.userCheking,userMiddlewear.userIsBlocked,userControler.WhishListLoad);
+Router.post('/WhishList/:id',userMiddlewear.userCheking,userMiddlewear.userIsBlocked,userControler.addingWhishList);
+Router.post('/wishlist/cart',userMiddlewear.userCheking,userMiddlewear.userIsBlocked, userControler.addingWhishListtoCart);
 
 // CheckOut 
 Router.get('/CheckOutPage',userMiddlewear.userCheking,userMiddlewear.userIsBlocked,userControler.Checkout);

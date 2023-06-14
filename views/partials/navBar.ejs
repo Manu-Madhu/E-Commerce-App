@@ -28,7 +28,9 @@
                 <form class="Nav_icon d-flex gap-4 justify-content-cneter align-items-center">
                     <input class="search p-3" type="search" placeholder="What you looking for?" aria-label="Search">
                     <% if(user) {%>
-                        <i class="fa-regular fa-heart"></i>
+                        <a href="/WhishList" class="link-dark text-center" style="position: relative;">
+                            <i class="fa-regular fa-heart"></i>
+                        </a>
                         <a href="/cart" class="link-dark text-center" style="position: relative;">
                             <i class="fa-solid fa-cart-shopping "></i>
                             <% if(locals.cartCount){%>

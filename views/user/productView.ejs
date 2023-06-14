@@ -63,8 +63,9 @@
                         <h5 class="pt-2">Colors:</h5>
                         <h5 class="pt-2">Size:</h5>
                         <div class="d-flex p_Cart_Buy gap-4 pt-2">
-                            <form action="" method="post">
-                                <button class="btn btn-warning text-white px-5 p-2" style="font-size: 13px;">
+                            <form action="" method="get" id="WhishList">
+                                <input type="hidden" value="<%= data._id%>" id="whishlistProductId">
+                                <button type="submit" class="btn btn-warning text-white px-5 p-2" style="font-size: 13px;">
                                     Add to Whishlist
                                 </button>
                             </form>
@@ -156,6 +157,21 @@
                 })
 
             })
+        })
+    </script>
+    <script>
+        const form = document.getElementById('WhishList');
+        const whishlistSuccMsg = document.getElementById('CartSuccMsg');
+        form.addEventListener('submit',(event)=>{
+            event.preventDefault();
+        $.ajax({
+           url: '/WhishList/<%= data._id%>',
+           type:'post',
+           success:function (res){
+            console.log(res)
+            whishlistSuccMsg.innerText = "Product Successfully Added"
+           }
+        })
         })
     </script>
     <%- include("../partials/footer.ejs")%>
