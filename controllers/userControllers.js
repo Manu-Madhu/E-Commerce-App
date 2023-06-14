@@ -5,6 +5,7 @@ const OrderModel = require('../models/order');
 const bcrypt = require('bcrypt');
 const product = require('../models/productModel');
 const Razorpay = require('razorpay');
+const couponModle = require('../models/coupon');
 
 // Twilio
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
@@ -173,6 +174,16 @@ const detaildView = async (req, res) => {
     }
 }
 
+// WhishList
+const WhishListLoad =async(req,res)=>{
+   try{
+    res.render("user/whishLIst")
+
+   }catch(error){
+      console.log(error)
+   }
+}
+
 // Cart
 const cartload = async (req, res) => {
     try {
@@ -246,13 +257,13 @@ const cartQuantityUpdate = async (req, res) => {
         await product.save();
         await userDetails.save();
 
-        res.json({ cartPrice,total});
+        res.json({ cartPrice, total });
     } catch (error) {
         console.log(error);
         res.status(500).json({ error: 'An error occurred while updating the quantity.' });
     }
 };
-  
+
 const cartDelete = async (req, res) => {
     try {
         const id = req.params.id;
@@ -265,6 +276,40 @@ const cartDelete = async (req, res) => {
     }
 }
 
+// Coupon
+const coupons = async (req, res) => {
+    try {
+        const couponCode = req.body.coupon;
+        const TotalAmount = req.body.amount;
+        const user = req.session.email;
+        const userDetails = await UserModel.findOne({ email: user });
+        const userDataId = userDetails._id;
+        const couponValue = await couponModle.findOne({ couponName: couponCode });
+        const date = new Date();
+        const formattedDate = date.toLocaleDateString();
+        const expiryDate = couponValue.expiryDate;
+
+        if (!couponValue) {
+            res.json({ message: 'Coupon Not Valid' });
+        } else if (couponValue) {
+            const userExist = couponValue.userId.includes(userDataId);
+            if (!userExist) {
+                if (TotalAmount <= couponValue.maxValue && TotalAmount >= couponValue.minValue && formattedDate <= expiryDate) {
+                    await couponModle.updateOne({ couponName: couponCode }, { $push: { userId: userDataId } });
+                    res.json({ message: 'Coupon is succefully Added', coupon: couponValue });
+                } else {
+                    res.json({ message: 'Coupon Expired', coupon: couponValue  });
+                }
+            } else {
+                res.json({ message: 'You Already Use This Coupon', coupon: couponValue  });
+            }
+
+        }
+    } catch (error) {
+        console.log(error);
+        res.json('CouponExpired');
+    }
+}
 
 // Check out 
 const Checkout = async (req, res) => {
@@ -274,12 +319,13 @@ const Checkout = async (req, res) => {
         const userDetails = await UserModel.findOne({ email: userFinder });
         const cartItems = userDetails.cart.items;
         const cartCount = cartItems.length;
+        const coupon = await couponModle.find();
         const cartProductIds = cartItems.map(item => item.productId.toString());
         const cartProducts = await ProductModel.find({ _id: { $in: cartProductIds } });
         const address = userDetails.address;
         let totalPrice = 0;
         cartItems.map(item => totalPrice += item.price);
-        res.render('user/account/billing', { title: "Check", user, cartItems, cartProducts, totalPrice, address, cartCount })
+        res.render('user/account/billing', { title: "Check Out", user, cartItems, cartProducts, totalPrice, address, cartCount, coupon })
     } catch (error) {
         console.log(error);
     }
@@ -442,5 +488,7 @@ module.exports = {
     addressAdding,
     orderSuccess,
     savingData,
-    cartQuantityUpdate
+    cartQuantityUpdate,
+    coupons,
+    WhishListLoad
 }

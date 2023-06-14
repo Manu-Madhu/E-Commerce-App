@@ -74,35 +74,35 @@
                                 <div class="p-2">
                                     <h5 class="text-danger fw-bold">Product Summary</h5>
                                 </div>
-                               <div class="container p-2 px-3 my-3 proSumWraper" >
-                                <div class="container billing_img">
-                                    <% cartProducts.forEach((data)=>{%>
-                                        <ul class="p-0" style="list-style-type: none;">
-                                            <li class="d-flex align-items-center justify-content-between gap-5 p-2">
-                                                <img src="/productImages/<%=data.image[0]%>" width="50px" alt=""
-                                                    class="shadow" style="border-radius: 5px; ">
-                                                <span class="fw-bold" style="color: #9a9a9a;">
-                                                    <%=data.p_name%>
-                                                </span>
-                                                <span class="fw-bold" style="color: #9a9a9a;">
-                                                    <%=(cartItems.find(item=> data._id.toString() ===
-                                                        item.productId.toString()).quantity)%>
-                                                </span>
-                                                <span style="color: #9a9a9a;">₹ <span style="color: #9a9a9a;">
-                                                        <%= ( cartItems.find(item=> item.productId.toString() ===
-                                                            data._id.toString()).price) %>
+                                <div class="container p-2 px-3 my-3 proSumWraper">
+                                    <div class="container billing_img">
+                                        <% cartProducts.forEach((data)=>{%>
+                                            <ul class="p-0" style="list-style-type: none;">
+                                                <li class="d-flex align-items-center justify-content-between gap-5 p-2">
+                                                    <img src="/productImages/<%=data.image[0]%>" width="50px" alt=""
+                                                        class="shadow" style="border-radius: 5px; ">
+                                                    <span class="fw-bold" style="color: #9a9a9a;">
+                                                        <%=data.p_name%>
                                                     </span>
-                                                </span>
-                                            </li>
-                                            <input type="hidden" name="productId" value="<%=data._id%>">
-                                            <input type="hidden" name="quantity"
-                                                value="<%= cartItems.find(item => data._id.toString() === item.productId.toString()).quantity %>">
-                                            <input type="hidden" name="CartProduct_Id"
-                                                value="<%= cartItems.find(item => item.productId.toString() === data._id.toString()).price%>">
-                                        </ul>
-                                        <%}) %>
+                                                    <span class="fw-bold" style="color: #9a9a9a;">
+                                                        <%=(cartItems.find(item=> data._id.toString() ===
+                                                            item.productId.toString()).quantity)%>
+                                                    </span>
+                                                    <span style="color: #9a9a9a;">₹ <span style="color: #9a9a9a;">
+                                                            <%= ( cartItems.find(item=> item.productId.toString() ===
+                                                                data._id.toString()).price) %>
+                                                        </span>
+                                                    </span>
+                                                </li>
+                                                <input type="hidden" name="productId" value="<%=data._id%>">
+                                                <input type="hidden" name="quantity"
+                                                    value="<%= cartItems.find(item => data._id.toString() === item.productId.toString()).quantity %>">
+                                                <input type="hidden" name="CartProduct_Id"
+                                                    value="<%= cartItems.find(item => item.productId.toString() === data._id.toString()).price%>">
+                                            </ul>
+                                            <%}) %>
+                                    </div>
                                 </div>
-                               </div>
                                 <div class=" p-2 px-3 my-3 border billinf_form_Wrapper">
                                     <div class=" billing_form">
                                         <% address.forEach((data,index)=>{%>
@@ -140,7 +140,7 @@
                                     </div>
                                 </div>
                                 <div class="container-fluid  billing_bg mt-3">
-                                    <div class="row d-flex  p-4">
+                                    <div class="row d-flex p-4">
                                         <div class="p-2 col-lg-5 col-12">
                                             <div class="d-flex gap-2 billing_radio align-items-center">
                                                 <input type="radio" name="method" id="InternetBanking"
@@ -152,21 +152,56 @@
                                                 <label for="COD" class="fw-bold">Cash On Delivery</label>
                                             </div>
                                         </div>
-                                        <div class="container p-2 billing_coupon gap-2 col-lg-7 col-12 d-flex">
-                                            <input type="text" name="coupon" placeholder="Coupon Code">
-                                            <button class="btn btn-danger p-2" id="rzp-button1">Apply</button>
+                                        <div class="d-flex flex-column col-lg-7 p-0">
+                                            <div class="container p-2 billing_coupon gap-2 col-lg-12 col-12 d-flex">
+                                                <input type="text" name="coupon" id="couponValue" placeholder="Coupon Code">
+                                                <button class="btn btn-danger p-2" id="couponButton" type="button">Apply</button>
+                                            </div>
+                                            <span class="px-2 p-1 col-lg-12 col-12" style="font-size: 14px; color: #9a9a9a;">
+                                                Available Coupons?
+                                                <a href="#" id="openModalBtn" class="text-decoration-none text-danger">
+                                                    Click Here
+                                                </a>
+                                            </span>
+                                            <div id="modal" class="modal">
+                                                <div class="modal-content">
+                                                    <div class="modalWrapper">
+                                                        <div class="modelWrapper2">
+                                                            <span class="close">&times;</span>
+                                                            <h4 class="mb-4 text-dark fw-bold ms-3">Select your Coupon</h4>
+                                                            <ul  id="couponList" style="list-style: none; color: #9a9a9a;">
+                                                                <%coupon.forEach((data,index)=>{%>
+                                                                <div class="d-flex align-items-center justify-content-between mb-2">
+                                                                    <li class="text-uppercase fw-bold">#<%=index+1%></li>
+                                                                    <li class="text-uppercase fw-bold"><%=data.couponName%></li>
+                                                                    <li class=" fw-bold"><%=data.couponValue%></li>
+                                                                    <li class=" fw-bold"><%=data.expiryDate%></li>
+                                                                    <li><img src="/assets/icons/178921.png" alt="" class="img-fluid" width="25px"></li>
+                                                                </div>
+                                                                <%})%>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <span id="CouponResultS" class="px-2 p-1 col-lg-12 col-12 text-success" style="font-size: 14px;"></span>
+                                            <span id="CouponResultF" class="px-2 p-1 col-lg-12 col-12 text-danger" style="font-size: 14px;"></span>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="p-5 border mt-3 billing_Totall d-flex">
                                     <div class="col-lg-6">
-                                        <h6 class="fw-bold">Grant Totall </h6>
+                                        <h6 class="fw-bold">Totall </h6>
+                                        <h6 class="fw-bold">Discount </h6>
                                         <h6 class="fw-bold">Shipping </h6>
+                                        <h6 class="fw-bold">Grant Totall </h6>
                                     </div>
                                     <div class="col-lg-6">
                                         <h6>: <span>₹ <%= totalPrice%></span></h6>
-                                        <input type="hidden" name="amount" id="amount" value="<%=totalPrice%>">
+                                        <h6>: <span id="discountRate">₹ 0</span></h6>
                                         <h6>:<span> Free</span></h6>
+                                        <h6>: <span id="GrantTotall">₹ <%= totalPrice%></span></h6>
+                                        <input type="hidden" name="amount" id="amount" value="<%=totalPrice%>">
                                     </div>
                                 </div>
                                 <div class="container-fluid mt-4 pb-2 p-0 billing_coupon d-flex ">
@@ -178,6 +213,100 @@
                 </div>
             </div>
     </div>
+    <!-- modal -->
+    <script>  
+        const closeModal = document.getElementsByClassName("close")[0];
+        const modal = document.getElementById("modal");
+        modal.style.display = "none";
+        // Open the modal when the button is clicked
+        function openModal() {
+            const couponList = document.getElementById("couponList");
+            const testCoupon = document.getElementById("testCoupon");
+            modal.style.display = "block";
+        };
+        couponList.addEventListener("click", (event) => {
+                if (event.target.tagName === "LI") {
+                    const couponCode = event.target.textContent;
+                    navigator.clipboard.writeText(couponCode)
+                        .then(() => {
+                            alert("Coupon code copied: " + couponCode);
+                            modal.style.display = "none";
+                        })
+                        .catch(error => {
+                            console.error("Error copying coupon code:", error);
+                        });
+                }
+            });
+        closeModal.addEventListener("click", () => {
+            modal.style.display = "none";
+        });
+        window.addEventListener("click", (event) => {
+            if (event.target === modal) {
+                modal.style.display = "none";
+            }
+        });
+        const openModalBtn = document.getElementById("openModalBtn");
+        openModalBtn.addEventListener("click", openModal);
+
+    </script>
+    <!-- coupon -->
+    <script>
+        const inputValueInput = document.getElementById("couponValue");
+        const couponButton = document.getElementById('couponButton');
+        const DiscountRate = document.getElementById('discountRate');
+        const GrantTotall = document.getElementById('GrantTotall');
+        const amount = document.getElementById('amount');
+        couponButton.addEventListener('click',()=>{
+            const inputValue = inputValueInput.value;
+            const NewAmount  = amount.value
+              const requestBody = {
+                coupon:inputValue,
+                amount:NewAmount
+              }
+
+              fetch('/coupons/couponValidation',{
+                method:'post',
+                headers:{
+                    'Content-Type':'application/json'
+                },
+                body: JSON.stringify(requestBody) 
+              })
+              .then(response => response.json())
+              .then(data =>{
+                console.log(data)
+                const msg = data.message;
+                const coupon = data.coupon;
+                const NewTotall = amount.value-coupon.couponValue;
+                const CouponResultS = document.getElementById('CouponResultS');
+                const CouponResultF = document.getElementById('CouponResultF');
+                
+                if(msg == 'Coupon is succefully Added'){
+                    DiscountRate.innerText = coupon.couponValue;
+                    GrantTotall.innerText = NewTotall;
+                    amount.value = NewTotall;
+                    CouponResultS.innerText = "Coupon is succefully Added";
+                     setTimeout(() => {
+                     CouponResultS.style.display = 'none';
+                     }, 2000);
+                }else if(msg == 'Coupon Not Valid' || msg === 'Coupon Expired'){
+                    CouponResultF.innerText = "Coupon Not Valid";
+                    setTimeout(() => {
+                     CouponResultF.style.display = 'none';
+                     }, 2000);
+                }else if(msg == 'You Already Use This Coupon'){
+                    CouponResultF.innerText = "You Already Use This Coupon";
+                    setTimeout(() => {
+                     CouponResultF.style.display = 'none';
+                     }, 2000);
+                }
+              })
+              .catch(error =>{
+                console.log("Error applying coupon:", error);
+              })
+        })
+
+    </script>
+    <!-- submit -->
     <script>
         const form = document.getElementById('formSubmition');
         form.addEventListener('submit', (event) => {
@@ -233,18 +362,18 @@
                             }
                         };
                         const rzp1 = new Razorpay(options);
-                    rzp1.on('payment.success', function (response) {
-                        console.log(response)
+                        rzp1.on('payment.success', function (response) {
+                            console.log(response)
 
-                    });
-                    rzp1.on('payment.cancel', function (response) {
-                        // Handle payment cancellation
-                        console.log(response)
-                        // Reset the UI or perform any other necessary action
-                    });
-                    rzp1.open();
-                    }else if(res === 'successFully cod Playsed'){
-                          window.location.href="/success"
+                        });
+                        rzp1.on('payment.cancel', function (response) {
+                            // Handle payment cancellation
+                            console.log(response)
+                            // Reset the UI or perform any other necessary action
+                        });
+                        rzp1.open();
+                    } else if (res === 'successFully cod Playsed') {
+                        window.location.href = "/success"
                     }
                 }
             })

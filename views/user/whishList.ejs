@@ -1,0 +1,265 @@
+<%- include('../partials/header.ejs') %>
+    <div class="container-fluid p-0 min-vh-100" style="margin-top: 6%;">
+        <%-include('../partials/navbar.ejs') %>
+            <div class="container ">
+                <div class="row p-4">
+                    <div class="p-2 px-4 py-4">
+                        <h4 class="fw-bold">Shopping Cart</h4>
+                    </div>
+                        <div class="row d-flex mx-2">
+                            <div class="container col-lg-7 col-12 bg-white Cart_table_wapper p-4 m-0 mb-2">
+                                <div class="Cart_list">
+                                    <div class="px-2">
+                                        <table style="width:100%;">
+                                            <thead class="cartTop" style="position:sticky; top: 0;;">
+                                                <tr class="cart_table">
+                                                    <th class="first p-3"><span>Product</span></th>
+                                                    <th class="p-3"><span>Quantity</span></th>
+                                                    <th class="p-3"><span>Total Price</span></th>
+                                                    <th class="third p-3"><span>Action</span></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                    <tr>
+                                                        <td class=" p-3 d-flex align-items-center">
+                                                            <a href=""
+                                                                class="container d-flex align-items-center text-decoration-none text-dark">
+                                                                <img src="" alt=""
+                                                                    class="img-fluid" width="70px"
+                                                                    style="border-radius: 5px;">
+                                                                <h6 for="" class="fw-bold ps-3"
+                                                                    style="font-size: 13.5px;">
+                                                                </h6>
+                                                            </a>
+                                                            <span></span>
+                                                        </td>
+                                                        <td class="p-3">
+                                                            <input type="number" id=""
+                                                                class="d-flex align-items-center"
+                                                                data-item-id="" name="quantity"
+                                                                value=""
+                                                                style="width: 50px; border: 2px solid #020202; border-radius: 4px;"
+                                                                onchange="">
+                                                        </td>
+                                                        <td class="p-3">
+                                                            <h6 for="" class="fw-bold" id="">₹
+                                                                
+                                                            </h6>
+                                                        </td>
+                                                        <td class="p-3 text-center">
+                                                            <form action="" method="post">
+                                                                <button
+                                                                    class="btn btn-danger d-flex align-items-center justify-content-center"
+                                                                    style="border-radius: 10px; font-size:12px; width:80%">
+                                                                    <span class="p-1">Remove</span>
+                                                                </button>
+                                                            </form>
+                                                        </td>
+                                                    </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-5 col-12 mb-2">
+                                <div class="cart_Bill p-5 d-flex flex-column justify-content-center">
+                                    <div class="p-5 border billing_Totall d-flex align-items-center">
+                                        <div class="col-lg-6">
+                                            <h6 class="fw-bold">Grant Price </h6>
+                                            <h6 class="fw-bold">Discount Price </h6>
+                                            <h5 class="fw-bold">Total price </h5>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <h6>:<span id="totalPrice1">
+                                                </span></h6>
+                                            <h6>:<span> 500</span></h6>
+                                            <h5>: <span id="totalPrice2">
+                                                </span></h5>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex justify-content-center mt-4">
+                                        <form action="" method="get">
+                                            <button class="btn btn-danger" type="submit"
+                                                style="border-radius:10px; font-size:13.5px; ">
+                                                Procced to pay
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                            <div class="container mx-2  bg-white d-flex flex-column align-items-center justify-content-center p-2 px-4 py-4"
+                                style="border-radius: 14px; box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.25);">
+                                <lottie-player src=""
+                                    background="transparent" speed="5"
+                                    style="width: 300px; height: 300px; opacity: 80%;" loop autoplay></lottie-player>
+                                <div class="d-flex flex-column align-items-center justify-content-center "
+                                    style="color: #9e9e9e;">
+                                    <h5>Your Cart is Empty</h5>
+                                </div>
+                            </div>
+                                <div class="container mt-4 mx-1">
+                                    <hr class="line bg-dark">
+                                </div>
+                                <!--Accessory Container -->
+                                <div class="row d-flex align-items-center ">
+                                    <div class="p-2 px-4 py-4">
+                                        <h4 class="fw-bold">Related Adds</h4>
+                                    </div>
+                                    <div class="row col-lg-12 p-3">
+                                        <div class="container bg-white ProductCard mt-2">
+                                            <!-- image rendering  -->
+                                            <a href="#">
+                                                <div
+                                                    class="cardImage mb-2 d-flex align-items-center justify-content-center">
+                                                    <img src="/assets/product/4.jpg" alt="Product Image">
+                                                </div>
+                                            </a>
+                                            <div class="px-3">
+                                                <span class="text-dark">
+                                                    product name
+                                                </span>
+                                                <div class="p_price d-flex justify-content-between">
+                                                    <div class="price text-danger">₹ <text>
+                                                            1400
+                                                        </text> &nbsp; <span>₹ 1160</span></div>
+                                                    <div class="favor" style="cursor: pointer;">
+                                                        <i class="fa-regular fa-heart"></i>
+                                                    </div>
+                                                </div>
+                                                <div class="rating d-flex align-items-center">
+                                                    <div class="star d-flex align-items-center">
+                                                        <img src="/assets/product/star.png" alt="">
+                                                        <img src="/assets/product/star.png" alt="">
+                                                        <img src="/assets/product/star.png" alt="">
+                                                        <img src="/assets/product/star.png" alt="">
+                                                        <img src="/assets/product/star.png" alt="">
+                                                    </div>
+                                                    <div class="value ms-2">(75)</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="container bg-white ProductCard mt-2">
+                                            <!-- image rendering  -->
+                                            <a href="#">
+                                                <div
+                                                    class="cardImage mb-2 d-flex align-items-center justify-content-center">
+                                                    <img src="/assets/product/4.jpg" alt="Product Image">
+                                                </div>
+                                            </a>
+                                            <div class="px-3">
+                                                <span class="text-dark">
+                                                    product name
+                                                </span>
+                                                <div class="p_price d-flex justify-content-between">
+                                                    <div class="price text-danger">₹ <text>
+                                                            1400
+                                                        </text> &nbsp; <span>₹ 1160</span></div>
+                                                    <div class="favor" style="cursor: pointer;">
+                                                        <i class="fa-regular fa-heart"></i>
+                                                    </div>
+                                                </div>
+                                                <div class="rating d-flex align-items-center">
+                                                    <div class="star d-flex align-items-center">
+                                                        <img src="/assets/product/star.png" alt="">
+                                                        <img src="/assets/product/star.png" alt="">
+                                                        <img src="/assets/product/star.png" alt="">
+                                                        <img src="/assets/product/star.png" alt="">
+                                                        <img src="/assets/product/star.png" alt="">
+                                                    </div>
+                                                    <div class="value ms-2">(75)</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="container bg-white ProductCard mt-2">
+                                            <!-- image rendering  -->
+                                            <a href="#">
+                                                <div
+                                                    class="cardImage mb-2 d-flex align-items-center justify-content-center">
+                                                    <img src="/assets/product/4.jpg" alt="Product Image">
+                                                </div>
+                                            </a>
+                                            <div class="px-3">
+                                                <span class="text-dark">
+                                                    product name
+                                                </span>
+                                                <div class="p_price d-flex justify-content-between">
+                                                    <div class="price text-danger">₹ <text>
+                                                            1400
+                                                        </text> &nbsp; <span>₹ 1160</span></div>
+                                                    <div class="favor" style="cursor: pointer;">
+                                                        <i class="fa-regular fa-heart"></i>
+                                                    </div>
+                                                </div>
+                                                <div class="rating d-flex align-items-center">
+                                                    <div class="star d-flex align-items-center">
+                                                        <img src="/assets/product/star.png" alt="">
+                                                        <img src="/assets/product/star.png" alt="">
+                                                        <img src="/assets/product/star.png" alt="">
+                                                        <img src="/assets/product/star.png" alt="">
+                                                        <img src="/assets/product/star.png" alt="">
+                                                    </div>
+                                                    <div class="value ms-2">(75)</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="container bg-white ProductCard mt-2">
+                                            <!-- image rendering  -->
+                                            <a href="#">
+                                                <div
+                                                    class="cardImage mb-2 d-flex align-items-center justify-content-center">
+                                                    <img src="/assets/product/4.jpg" alt="Product Image">
+                                                </div>
+                                            </a>
+                                            <div class="px-3">
+                                                <span class="text-dark">
+                                                    product name
+                                                </span>
+                                                <div class="p_price d-flex justify-content-between">
+                                                    <div class="price text-danger">₹ <text>
+                                                            1400
+                                                        </text> &nbsp; <span>₹ 1160</span></div>
+                                                    <div class="favor" style="cursor: pointer;">
+                                                        <i class="fa-regular fa-heart"></i>
+                                                    </div>
+                                                </div>
+                                                <div class="rating d-flex align-items-center">
+                                                    <div class="star d-flex align-items-center">
+                                                        <img src="/assets/product/star.png" alt="">
+                                                        <img src="/assets/product/star.png" alt="">
+                                                        <img src="/assets/product/star.png" alt="">
+                                                        <img src="/assets/product/star.png" alt="">
+                                                        <img src="/assets/product/star.png" alt="">
+                                                    </div>
+                                                    <div class="value ms-2">(75)</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                </div>
+            </div>
+    </div>
+    <script>
+        function updateQuantity(input,itemId) {
+            const cartPrice = document.getElementById(`cartPrice-${itemId}`);
+            const totalPrice1 = document.getElementById('totalPrice1');
+            const totalPrice2 = document.getElementById('totalPrice2');
+            let quantity = $(input).val();
+
+            $.ajax({
+                url: '/cart/quantityUpdate/' + itemId,
+                method: 'POST',
+                data: { quantity: quantity },
+                success: function (response) {
+                    cartPrice.innerText = `₹ ${response.cartPrice}`;
+                    totalPrice1.innerText =response.total;
+                    totalPrice2.innerText =response.total;
+                },
+                error: function (error) {
+                    console.log('Error updating quantity:', error);
+                }
+            });
+        }
+    </script>
+    <%-include('../partials/footer.ejs') %>

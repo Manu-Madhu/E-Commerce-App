@@ -20,7 +20,6 @@ Router.get('/',userMiddlewear.islogin,userMiddlewear.userIsBlocked, userControle
 // View Product detaild view
 Router.get('/detaildView/:id',userMiddlewear.userIsBlocked, userControler.detaildView);
 
-
 // profile 
 Router.get('/profile',userMiddlewear.userCheking,userMiddlewear.userIsBlocked, profileController.profile);
 Router.get('/profile/order',userMiddlewear.userCheking,userMiddlewear.userIsBlocked, profileController.order);
@@ -36,6 +35,12 @@ Router.post('/cart/:id',userMiddlewear.userCheking,userMiddlewear.userIsBlocked,
 Router.post('/cart/update/:id',userMiddlewear.userCheking,userMiddlewear.userIsBlocked, userControler.cart);
 Router.post('/cart/quantityUpdate/:itemId',userMiddlewear.userCheking,userMiddlewear.userIsBlocked, userControler.cartQuantityUpdate);
 Router.post('/cartDelete/:id',userControler.cartDelete);
+
+// Coupons
+Router.post('/coupons/couponValidation',userMiddlewear.userCheking,userMiddlewear.userIsBlocked,userControler.coupons);
+
+// WhishList
+Router.get('/WhishList',userMiddlewear.userCheking,userMiddlewear.userIsBlocked,userControler.WhishListLoad)
 
 // CheckOut 
 Router.get('/CheckOutPage',userMiddlewear.userCheking,userMiddlewear.userIsBlocked,userControler.Checkout);

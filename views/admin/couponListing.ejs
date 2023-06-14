@@ -1,0 +1,183 @@
+<%- include('../partials/header.ejs')%>
+    <div class="container-fluid p-0 min-vh-100 " style="margin-top: 7%;">
+        <%- include('../partials/adminnav.ejs')%>
+            <div class="container f-flex align-items-center justify-content-center">
+                <div class="row p-4 gap-3 d-flex justify-content-center">
+                    <div class="DashBoardUl container col-md-2 p-0 m-0 bg-white d-flex pt-4 sideBar">
+                        <ul class="d-flex flex-column">
+                            <li class="dashOther fw-bold p-1 m-2 ps-4 ">
+                                <img src="/assets/admin/d1.png" alt="" class="img-fluid me-2">
+                                <span><a class="text-decoration-none" style="color: #cdcdcd ;"
+                                        href="/admin/Dashboard">DashBoard</a></span>
+                            </li>
+                            <li class="dashOther fw-bold p-1 ps-4 m-2">
+                                <img src="/assets/admin/d3.png" alt="" class="img-fluid me-2">
+                                <span><a href="/admin/category" class="text-decoration-none"
+                                        style="color: #cdcdcd;">Category</a></span>
+                            </li>
+                            <li class="dashOther fw-bold p-1 ps-4 m-2">
+                                <img src="/assets/admin/d2.png" alt="" class="img-fluid me-2">
+                                <span></span>
+                                <a href="/admin/productView" class="text-decoration-none"
+                                    style="color: #cdcdcd;">Product</a></span>
+                            </li>
+                            <li class="dashOther fw-bold p-1 ps-4 m-2">
+                                <img src="/assets/admin/d4.png" alt="" class="img-fluid me-2">
+                                <span></span>
+                                <a href="/admin/coustomers" class="text-decoration-none"
+                                    style="color: #cdcdcd;">Coustomer</a></span>
+                            </li>
+                            <li class="dashOther fw-bold p-1 ps-4 m-2">
+                                <img src="/assets/admin/d5.png" alt="" class="img-fluid me-2">
+                                <span></span>
+                                <a href="/admin/order" class="text-decoration-none"
+                                    style="color: #cdcdcd;">Order</a></span>
+                            </li>
+                            <li class="sideBarlist fw-bold p-1 ps-4 m-2">
+                                <img src="/assets/admin/d6.png" alt="" class="img-fluid me-2">
+                                <span></span>
+                                <a href="/admin/coupons" class="text-decoration-none"
+                                    style="color: white;">Coupons</a></span>
+                            </li>
+                            <li class="dashOther fw-bold p-1 ps-4 m-2">
+                                <img src="/assets/admin/d2.png" alt="" class="img-fluid me-2">
+                                <span></span>
+                                <a href="#" class="text-decoration-none" style="color: #cdcdcd;">Banner</a></span>
+                            </li>
+                            <li class="dashOther fw-bold p-1 ps-4 m-2">
+                                <img src="/assets/admin/d6.png" alt="" class="img-fluid me-2">
+                                <span></span>
+                                <a href="" class="text-decoration-none" style="color: #cdcdcd;">Logout</a></span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class=" container col-md-9 p-0 m-0">
+                        <div class="container p-0">
+                            <div class="conatiner saleTop bg-white d-flex align-items-center mb-3">
+                                <div class="container summary d-flex align-items-center justify-content-between p-4 "
+                                    id="product">
+                                    <h6 class="p-3 ps-4">Coupons</h6>
+                                    <input type="text" placeholder="what are you looking for?" class="text-center">
+                                </div>
+                            </div>
+                            <div class="container Pa_table bg-white p-2">
+                                <% if(couponData.length> 0 ){%>
+                                    <div class="container-fluid py-3">
+                                        <div class="Cart_list">
+                                            <div class="px-2">
+                                                <table class="w-100">
+                                                    <thead class="cartTop" style="position:sticky; top: 0; z-index: 1;">
+                                                        <tr class="cart_table">
+                                                            <th class="first p-3 px-4"><span>Coupon Name</span></th>
+                                                            <th class="p-3"><span>Coupon Value</span></th>
+                                                            <th class="p-3"><span>Expiry Date</span></th>
+                                                            <th class="p-3"><span>Max Value</span></th>
+                                                            <th class="p-3"><span>Min Value</span></th>
+                                                            <th class="third p-3"><span>Delete</span></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <% couponData.forEach((data,index)=>{%>
+                                                            <tr id="coupon-<%= data._id %>">
+                                                                <td scope="col" class="px-4">
+                                                                    <span class="couponListFont">
+                                                                        <%=data.couponName%>
+                                                                    </span>
+                                                                </td>
+                                                                <td scope="col" class="px-4">
+                                                                    <span class="couponListFont">
+                                                                        <%=data.couponValue%>
+                                                                    </span>
+                                                                </td>
+                                                                <td scope="col" class="px-4">
+                                                                    <span class="couponListFont">
+                                                                        <%=data.expiryDate%>
+                                                                    </span>
+                                                                </td>
+                                                                <td scope="col" class="px-4">
+                                                                    <span class="couponListFont">
+                                                                        <%=data.maxValue%>
+                                                                    </span>
+                                                                </td>
+                                                                <td scope="col" class="px-4">
+                                                                    <span class="couponListFont">
+                                                                        <%=data.minValue%>
+                                                                    </span>
+                                                                </td>
+                                                                <td scope="col"
+                                                                    class="TableButton d-flex align-items-center"
+                                                                    onsubmit="return confirmUpdate()">
+                                                                    <form action="" method="POST">
+                                                                        <div
+                                                                            class="d-flex align-items-center justify-content-center">
+                                                                            <button
+                                                                                class="btn btn-danger m-2 d-flex justify-content-center"
+                                                                                style="font-size: 13px;" type="button"
+                                                                                onclick="removeCoupon('<%= data._id %>')">
+                                                                                Remove
+                                                                            </button>
+                                                                        </div>
+                                                                    </form>
+                                                                </td>
+                                                            </tr>
+                                                            <%})%>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="conatiner ms-5 pb-2">
+                                        <button class="btn btn-danger addbutton p-2">
+                                            <a href="/admin/coupons/couponsAdding" class="text-decoration-none"
+                                                style="color: white;">Add New Coupons</a>
+                                        </button>
+                                    </div>
+                                    <%}else{%>
+                                        <div class="d-flex flex-column align-items-center justify-content-center">
+                                            <lottie-player
+                                                src="https://assets2.lottiefiles.com/private_files/lf30_cgfdhxgx.json"
+                                                background="transparent" speed="1" style="width: 300px; height: 300px;"
+                                                loop autoplay></lottie-player>
+                                            <h5 style="font-weight: 600; color: #cdcdcd;">No Coupons Are Available Here
+                                            </h5>
+                                            <div class="conatiner my-3 pb-2">
+                                                <button class="btn btn-danger p-2">
+                                                    <a href="/admin/coupons/couponsAdding" class="text-decoration-none"
+                                                        style="color: white; font-size: 13.5px;">Add New Coupons</a>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <%}%>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+    </div>
+    <script src="/js/alert.js"></script>
+    <script>
+        function removeCoupon(couponId) {
+            const confirmation = confirm("Are you sure you want to remove this coupon?");
+            if (!confirmation) {
+                return; 
+            }
+            fetch(`/admin/coupons/couponsRemove/${couponId}`, {
+                method: 'POST'
+            })
+                .then(response => {
+                    if (response.ok) {
+                        const couponRow = document.getElementById(`coupon-${couponId}`);
+                        if (couponRow) {
+                            couponRow.remove();
+                        }
+                    } else {
+                        console.error('Error removing coupon:', response.status);
+                    }
+                })
+                .catch(error => {
+                    console.error('Network error:', error);
+                });
+        }
+    </script>
+    <%- include('../partials/adminfooter.ejs')%>

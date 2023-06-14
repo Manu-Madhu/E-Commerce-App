@@ -47,7 +47,13 @@ admin.get('/updateProduct/:id', adminController.productUpdating);
 admin.post('/addUpdatedProducts', upload.array("image"), adminController.addUpdateProduct);
 
 // Order 
-admin.get('/order',adminController.orderList)
+admin.get('/order',adminController.orderList);
+
+// Order 
+admin.get('/coupons',adminController.couponsList);
+admin.get('/coupons/couponsAdding',adminController.couponsAdding);
+admin.post('/coupons/couponsAdding',adminController.couponCreation);
+admin.post('/coupons/couponsRemove/:id',adminController.couponsRemove);
 
 // user 
 admin.get('/coustomers', adminController.userView);

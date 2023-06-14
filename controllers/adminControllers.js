@@ -2,6 +2,7 @@ const admin = require('../models/admin');
 const UsersModel = require('../models/user');
 const CategoryModel = require('../models/category');
 const productModel = require('../models/productModel');
+const couponModel = require('../models/coupon');
 const fs = require('fs');
 const path = require('path');
 
@@ -176,7 +177,6 @@ const productView = async (req, res) => {
 const productAdding = async (req, res) => {
     try {
         const category = await CategoryModel.find({ isAvailable: true });
-        console.log(category)
         res.render('admin/productAdding', { title: "Product", admin: req.session.admin, category })
     } catch (error) {
         console.log(error);
@@ -277,11 +277,61 @@ const addUpdateProduct = async (req, res) => {
 
 const orderList = async (req, res) => {
     try {
-        const user = req.session.user;
-        res.render('admin/orderlisting',{user})
+        const admin = req.session.admin;
+        res.render('admin/orderlisting', { admin })
 
     } catch (error) {
         console.log(error)
+    }
+}
+
+// Coupons Adding 
+const couponsList = async (req, res) => {
+    try {
+        const admin = req.session.admin;
+        const couponData = await couponModel.find();
+        res.render('admin/couponListing', { admin,couponData })
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).send("couponRendering Error");
+    }
+}
+
+const couponsAdding = async (req, res) => {
+    try {
+        const admin = req.session.admin;
+        res.render('admin/coupon', { admin});
+    } catch (error) {
+        console.log("couponAddingPage Rendering Error");
+        res.status(500).send("couponAddingPage Rendering Error");
+    }
+}
+
+const couponsRemove =async(req,res)=>{
+    try{
+        const couponId = req.params.id;
+        await couponModel.findByIdAndDelete(couponId)
+        res.json("successfully removed");
+    }catch(error){
+       res.status(500).json("error by the server side");
+    }
+}
+
+const couponCreation = async (req, res) => {
+    try {
+        const data = req.body;
+        const couponDetails = new couponModel({
+            couponName: data.couponName,
+            couponValue: data.couponValue,
+            expiryDate: data.expiryDate,
+            maxValue: data.maxValue,
+            minValue: data.minValue
+        })
+        await couponDetails.save();
+        res.render('admin/coupon',{suMessage:"Coupon Successfully Added", admin:req.session.admin});
+    } catch (error) {
+        res.status(500).render('admin/coupon',{message:"Coupon Already Existing....", admin:req.session.admin});
     }
 }
 
@@ -317,5 +367,9 @@ module.exports = {
     userBlocking,
     userUnBlocking,
     adminLogout,
-    orderList
+    orderList,
+    couponsList,
+    couponsAdding,
+    couponCreation,
+    couponsRemove
 }

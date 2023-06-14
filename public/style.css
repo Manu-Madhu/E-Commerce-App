@@ -2,11 +2,12 @@
   --primaryText: #9a9a9a;
   --primaryBg: #db4444;
   --primary-dark: #a6a6a6;
-  --primaryBgColllor: #e7e5e5;
+  --primaryBgColllor: rgba(243, 241, 241, 1);
+  --primaryFontSize: 13px;
 }
 
 body {
-  background-color: #f3f1f1;
+  background-color: rgba(243, 241, 241, 1);
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -478,7 +479,7 @@ body {
 }
 .addbutton {
   width: 20%;
-  height: 33px;
+  height: 10%px;
   border-radius: 10px;
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset;
   font-size: 12px;
@@ -842,8 +843,7 @@ input[type="number"]::-webkit-outer-spin-button {
   overflow-x: hidden;
   max-height: 100px;
 }
-.billinf_form_Wrapper{
-
+.billinf_form_Wrapper {
   box-shadow: 0px 1px 13px 0px rgba(0, 0, 0, 0.05);
   border-radius: 13px;
 }
@@ -852,9 +852,9 @@ input[type="number"]::-webkit-outer-spin-button {
   border-radius: 14px;
   font-size: 13px;
 }
-.proSumWraper{
+.proSumWraper {
   border-radius: 13px;
-  background:var(--primaryBgColllor);
+  background: var(--primaryBgColllor);
 }
 .billing_img {
   border-radius: 13px;
@@ -872,16 +872,16 @@ input[type="number"]::-webkit-outer-spin-button {
   height: 1em;
 }
 .billing_coupon button {
-  width: 30%;
-  border-radius: 14px;
-  font-size: 13px;
+  width: 50%;
+  border-radius: 10px;
+  font-size: 13.5px;
 }
 
 .billing_coupon input {
   background-color: #fff;
-  border-radius: 10px;
+  width: 100%;
+  border-radius: 5px;
   border: none;
-  padding: 7px;
   padding-left: 10px;
 }
 
@@ -899,6 +899,69 @@ input[type="number"]::-webkit-outer-spin-button {
   box-shadow: 0px 1px 13px 0px rgba(0, 0, 0, 0.05);
   background: var(--primaryBgColllor);
   max-height: 200px;
+}
+
+/* Style the modal and overlay */
+.modal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+  margin: 15% auto; 
+  background-color: var(--primaryBgColllor);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 25px;
+  border: 1px solid #888;
+  width: 80%;
+  max-width: 600px;
+  max-height: 400px;
+}
+.modalWrapper {
+  background-color:white;
+  border-radius: 20px;
+  padding: 10px;
+  width: 95%;
+  max-height: 400px;
+  overflow: hidden;
+}
+.modelWrapper2{
+  border-radius: 20px;
+  padding: 10px;
+  overflow: scroll;
+  overflow-x: hidden;
+  width: 95%;
+  max-height: 400px;
+}
+.modelWrapper2 ul{
+  cursor: pointer;
+}
+
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
 }
 
 /* ----------------Cart---------------- */
@@ -939,7 +1002,7 @@ input[type="number"]::-webkit-outer-spin-button {
 }
 
 .cart_Bill {
-  background-image: url('../public/assets/product/2.jpg');
+  background-image: url("../public/assets/product/2.jpg");
   width: 100%;
   height: 100%;
   left: 557px;
@@ -953,6 +1016,12 @@ input[type="number"]::-webkit-outer-spin-button {
   padding-top: 5px;
   color: #959595;
 }
+
+/* CouponList */
+.couponListFont {
+  font-size: 13.5px;
+}
+
 /* ----------------FOOTER---------------- */
 .footer {
   background: #373a47;
