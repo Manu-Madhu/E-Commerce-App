@@ -1,44 +1,54 @@
 <%- include('../partials/header.ejs')%>
-    <div class="container-fluid p-0 justify-content-center align-items-center signUp min-vh-100" style="margin-top: 6%;">
-        <%- include("../partials/navBar.ejs")%>
-            <div class="container d-flex justify-content-center align-items-center">
-                <div
-                    class="container col-lg-4 d-flex flex-column justify-content-center align-items-center rounded-5 p-5 bg-white CardOTP">
-                    <div class="d-flex align-items-center justify-content-center">
-                        <img src="/assets/nav/tck.png" alt="" class="img-fluid imgOTP">
-                    </div>
-                    <span>Enter OTP Code</span>
-                    <span class="text-danger fw-bold"><%=locals.fal? fal:" " %></span>
-                    <form action="/validation" method="post" class="d-flex flex-column align-items-center">
-                        <div class="row pt-3">
-                            <input class="code" type="text" placeholder="0" min="0" max="9" name="num_1" required>
-                            <input class="code" type="text" placeholder="0" min="0" max="9" name="num_2" required>
-                            <input class="code" type="text" placeholder="0" min="0" max="9" name="num_3" required>
-                            <input class="code" type="text" placeholder="0" min="0" max="9" name="num_4" required>
-                        </div>
-                        <button class="btn mt-2 text-white" type="submit">validate</button>
-                    </form>
-                    <span class="mt-2 fs-5" id="time"></span>
-                    <div id="timer" class="OTPtext mt-2" style="display:none">Don’t get the code?<a
-                            class="text-danger text-decoration-none" href="/register">Resent</a> </div>
-                </div>
+<div class="container-fluid p-0 justify-content-center align-items-center signUp min-vh-100" style="margin-top: 6%;">
+    <%- include("../partials/navBar.ejs")%>
+    <div class="container d-flex justify-content-center align-items-center">
+        <div class="container col-lg-4 d-flex flex-column justify-content-center align-items-center rounded-5 p-5 bg-white CardOTP">
+            <div class="d-flex align-items-center justify-content-center">
+                <img src="/assets/nav/tck.png" alt="" class="img-fluid imgOTP">
             </div>
+            <span>Enter OTP Code</span>
+            <span class="text-danger fw-bold">
+                <%=locals.fal? fal:" " %></span>
+            <% if (locals.signinPage) { %>
+            <form action="/signIn" method="post" class="d-flex flex-column align-items-center">
+                <div class="row pt-3">
+                    <input class="code" type="text" placeholder="0" min="0" max="9" name="num_1" required>
+                    <input class="code" type="text" placeholder="0" min="0" max="9" name="num_2" required>
+                    <input class="code" type="text" placeholder="0" min="0" max="9" name="num_3" required>
+                    <input class="code" type="text" placeholder="0" min="0" max="9" name="num_4" required>
+                </div>
+                <button class="btn mt-2 text-white" type="submit">validate</button>
+            </form>
+            <% } else { %>
+            <form action="/validation" method="post" class="d-flex flex-column align-items-center">
+                <div class="row pt-3">
+                    <input class="code" type="text" placeholder="0" min="0" max="9" name="num_1" required>
+                    <input class="code" type="text" placeholder="0" min="0" max="9" name="num_2" required>
+                    <input class="code" type="text" placeholder="0" min="0" max="9" name="num_3" required>
+                    <input class="code" type="text" placeholder="0" min="0" max="9" name="num_4" required>
+                </div>
+                <button class="btn mt-2 text-white" type="submit">validate</button>
+            </form>
+            <% } %>
+            <span class="mt-2 fs-5" id="time"></span>
+            <div id="timer" class="OTPtext mt-2" style="display:none">Don’t get the code?<a class="text-danger text-decoration-none" href="/register">Resent</a></div>
+        </div>
     </div>
-    <script>
-        let timeLeft = 59;
-        const Counter = document.getElementById('time');
-        const timerId = setInterval(countdown, 1000);
+</div>
+<script>
+    let timeLeft = 59;
+    const Counter = document.getElementById('time');
+    const timerId = setInterval(countdown, 1000);
 
-        function countdown() {
-            const text = document.getElementById("timer");
-            if (timeLeft == -1) {
-                text.style.display = "inline-block";
-
-            } else {
-                Counter.innerHTML = '00 :' + " " + timeLeft;
-                timeLeft--;
-            }
+    function countdown() {
+        const text = document.getElementById("timer");
+        if (timeLeft == -1) {
+            text.style.display = "inline-block";
+        } else {
+            Counter.innerHTML = '00 :' + " " + timeLeft;
+            timeLeft--;
         }
-    </script>
+    }
+</script>
 
-    <%- include('../partials/footer.ejs')%>
+<%- include('../partials/footer.ejs')%>

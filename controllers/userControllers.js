@@ -53,7 +53,31 @@ const validation = async (req, res) => {
                 if (VPWD) {
                     req.session.user = userData.name;
                     req.session.email = userData.email;
-                    res.redirect('/')
+                    const userNumber = userData.number;
+                    const number = userNumber;
+                    let cartCount;
+                    let signinPage ;
+                    // generat randome 4 digit number
+                    let randome = Math.floor(Math.random() * 9000) + 1000;
+
+                    // send random number to user
+                    client.messages
+                        .create({ body: randome, from: '+12542726949', to: `+91${number}` })
+                        .then(saveUser());
+
+                    //save randome Number to database then render verify page
+                    function saveUser() {
+                        const newUser = new OTP({
+                            number: randome
+                        })
+                        newUser.save()
+                            .then(() => {
+                                res.render('user/verification', { user: req.session.user, cartCount, signinPage });
+                            })
+                            .catch((error) => {
+                                console.log("error generating numb", error);
+                            });
+                    }
                 } else {
                     const cart = userData.cart.items;
                     const cartCount = cart.length;
@@ -85,6 +109,7 @@ const registerUser = async (req, res) => {
         req.body.password = enPwd;
         req.body.isBlocked = false;
         let cartCount;
+        let signinPage;
         // USER INFO SAVING TO DB
         await UserModel.create(req.body)
 
@@ -105,7 +130,7 @@ const registerUser = async (req, res) => {
             })
             newUser.save()
                 .then(() => {
-                    res.render('user/verification', { user: req.session.user, cartCount });
+                    res.render('user/verification', { user: req.session.user, cartCount,signinPage });
                 })
                 .catch((error) => {
                     console.log("error generating numb", error);
@@ -115,6 +140,39 @@ const registerUser = async (req, res) => {
         console.log(error)
         let cartCount;
         res.render('user/signUp', { succ: "Please Use a Uniqe Email ID", user: req.session.user, cartCount })
+    }
+}
+const OTPValidationSignIn =async(req,res)=>{
+    let cartCount;
+    try {
+        const num1 = req.body.num_1;
+        const num2 = req.body.num_2;
+        const num3 = req.body.num_3;
+        const num4 = req.body.num_4;
+        const code = parseInt(num1 + num2 + num3 + num4)
+        console.log(code)
+        await OTP.find({ number: code })
+            .then((fount) => {
+                if (fount.length > 0) {
+                    res.render("successTick",{})
+                    // IF FOUND, DELETE THE OTP CODE FROM DB
+                    OTP.findOneAndDelete({ number: code })
+                        .then(() => {
+                            console.log("successfully deleted")
+                        })
+                        .catch((err) => {
+                            console.log("error while deleting", err);
+                        });
+                } else {
+                    res.render('user/verification', { fal: "Please Check Your OTP", user: req.session.user, cartCount })
+                }
+            })
+            .catch((err) => {
+                res.render('user/verification', { fal: "Please Check Your OTP", user: req.session.user, cartCount })
+            })
+    } catch (error) {
+        console.log(error)
+        res.status(500).send("Otp error")
     }
 }
 const OTPValidation = async (req, res) => {
@@ -552,5 +610,6 @@ module.exports = {
     coupons,
     WhishListLoad,
     addingWhishList,
-    addingWhishListtoCart
+    addingWhishListtoCart,
+    OTPValidationSignIn
 }

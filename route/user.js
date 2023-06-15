@@ -12,6 +12,7 @@ Router.post('/login', userControler.validation);
 Router.get('/signUp',userMiddlewear.isLogOut,userControler.signup);
 Router.post('/register', userControler.registerUser);
 Router.post('/validation', userControler.OTPValidation);
+Router.post('/signIn', userControler.OTPValidationSignIn);
 
 // success
 Router.get('/success',userControler.successTick);
