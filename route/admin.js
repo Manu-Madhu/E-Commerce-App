@@ -48,6 +48,7 @@ admin.post('/addUpdatedProducts', upload.array("image"), adminController.addUpda
 
 // Order 
 admin.get('/order',adminController.orderList);
+admin.put('/order/:id',adminController.orderstatus);
 
 // Order 
 admin.get('/coupons',adminController.couponsList);

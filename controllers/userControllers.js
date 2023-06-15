@@ -47,8 +47,6 @@ const validation = async (req, res) => {
         const email = req.body.email;
         const password = req.body.password;
         const userData = await UserModel.findOne({ email: email });
-        let cart = userData.cart.items;
-        let cartCount = cart.length;
         if (userData.isBlocked === false) {
             if (userData) {
                 const VPWD = await bcrypt.compare(password, userData.password);
@@ -57,6 +55,8 @@ const validation = async (req, res) => {
                     req.session.email = userData.email;
                     res.redirect('/')
                 } else {
+                    const cart = userData.cart.items;
+                    const cartCount = cart.length;
                     res.render("user/login", { fail: "Ckeck Your Password", user: req.session.user, cartCount })
                 }
 
@@ -178,13 +178,13 @@ const WhishListLoad = async (req, res) => {
     try {
         const user = req.session.user;
         const email = req.session.email;
-        const userDetails = await UserModel.findOne({email:email});
+        const userDetails = await UserModel.findOne({ email: email });
         const productData = userDetails.wishlist;
         const cart = userDetails.cart.items;
         let cartCount = cart.length;
-        const productId = productData.map(items =>items.productId);
-        const productDetails = await ProductModel.find({_id:{$in:productId}});
-        res.render('user/whishList',{user, productDetails,cartCount})
+        const productId = productData.map(items => items.productId);
+        const productDetails = await ProductModel.find({ _id: { $in: productId } });
+        res.render('user/whishList', { user, productDetails, cartCount })
     } catch (error) {
         console.log(error)
     }
@@ -196,7 +196,7 @@ const addingWhishList = async (req, res) => {
         const userDetails = await UserModel.findOne({ email: user });
         const productExist = userDetails.wishlist.map(items => items.productId.toString() === productId)
         console.log(productExist)
-        
+
         if (productExist.includes(true)) {
             console.log("Already Existe")
             return res.json("Already Existe")
@@ -207,7 +207,7 @@ const addingWhishList = async (req, res) => {
             userDetails.wishlist.push(WhishList);
             await userDetails.save()
             console.log(productId)
-           return res.json('server got this....');
+            return res.json('server got this....');
         }
     } catch (error) {
         console.log(error)
@@ -215,7 +215,7 @@ const addingWhishList = async (req, res) => {
 }
 const addingWhishListtoCart = async (req, res) => {
     try {
-        const id= req.body.productId;
+        const id = req.body.productId;
         const userEmail = req.session.email;
         const userData = await UserModel.findOne({ email: userEmail });
         const cartItems = userData.cart.items;
@@ -339,10 +339,12 @@ const coupons = async (req, res) => {
     try {
         const couponCode = req.body.coupon;
         const TotalAmount = req.body.amount;
+        console.log(couponCode)
         const user = req.session.email;
         const userDetails = await UserModel.findOne({ email: user });
         const userDataId = userDetails._id;
         const couponValue = await couponModle.findOne({ couponName: couponCode });
+        console.log(couponValue)
         const date = new Date();
         const formattedDate = date.toLocaleDateString();
         const expiryDate = couponValue.expiryDate;
@@ -352,7 +354,7 @@ const coupons = async (req, res) => {
         } else if (couponValue) {
             const userExist = couponValue.userId.includes(userDataId);
             if (!userExist) {
-                if (TotalAmount <= couponValue.maxValue && TotalAmount >= couponValue.minValue && formattedDate <= expiryDate) {
+                if (TotalAmount <= couponValue.maxValue && TotalAmount >= couponValue.minValue) {
                     await couponModle.updateOne({ couponName: couponCode }, { $push: { userId: userDataId } });
                     res.json({ message: 'Coupon is succefully Added', coupon: couponValue });
                 } else {

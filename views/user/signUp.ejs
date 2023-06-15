@@ -29,14 +29,22 @@
                            onchange="emailChecking()" required>
                         <span id="Email" class="text text-danger"></span>
                         <!-- PASSWORD -->
-                        <input class="signInput" type="password" placeholder="Password" name="password" id="password"
+                        <div class="d-flex">
+                           <input class="signInput" type="password" placeholder="Password" name="password" id="password"
                            onchange="passwordChecking()" required>
+                           <span class="password-toggle" onclick="togglePasswordVisibility('password')">
+                              <i class="far fa-eye"></i>
+                           </span>
+                        </div>
                         <span id="Password" class="text text-danger"></span>
+                        <!-- CONFIRM PASSWORD -->
+                        <input class="signInput" type="password" placeholder="Confirm Password" name="confirmPassword"
+                           id="confirmPassword" onchange="confirmPasswordChecking()" required>
+                        <span id="ConfirmPassword" class="text text-danger"></span>
                         <!-- BUTTON -->
                         <div class="d-flex flex-column mt-2 gap-2 align-items-center ">
-                           <button class="btn text-white " type="submit"
-                              onclick="nameChecking(),emailChecking(),numberChecking(),passwordChecking()">
-                              Create Account</button>
+                           <button class="btn text-white " type="submit" onclick="validateForm()">Create
+                              Account</button>
                            <button class="btn bg-white border text-dark col-lg-6">Sign up with Google</button>
                         </div>
                      </div>

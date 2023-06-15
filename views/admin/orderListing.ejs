@@ -62,46 +62,73 @@
                             <div class="container Pa_table bg-white p-2">
                                 <div class="container bg-white P_table">
                                     <div class="container p-3 ">
-                                        <table class="table">
-                                            <thead id="tableHeader">
+                                        <table class="table" >
+                                            <thead id="tableHeader" style="position: sticky; top: 0;">
                                                 <tr>
-                                                    <th scope="col">OrderId</th>
+                                                    <th scope="col">Id</th>
                                                     <th scope="col">Product</th>
                                                     <th scope="col">User</th>
+                                                    <th scope="col">Payment</th>
                                                     <!-- <th scope="col">Address</th> -->
                                                     <th scope="col">Phone</th>
-                                                    <th scope="col">Ststus</th>
+                                                    <th scope="col">Status</th>
+                                                    <th scope="col">ProductStatus</th>
+                                                    <th scope="col">Expected Date</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
+                                                <% orderList.forEach((data,index)=>{%>
                                                     <tr>
                                                         <th scope="row">
-                                                             <span>#1</span>
+                                                             <span>#<%=index+1%></span>
                                                         </th>
                                                         <td scope="col" class="tablefont">
                                                             <h6>
-                                                                <img src="/assets/product/4.jpg" alt="" class="img-fluid" width="100px"
-                                                                style="border-radius: 5px;">
+                                                                <% if (data.products.length > 0 && data.products[0].image.length > 0) { %>
+                                                                    <img src="../../productImages/<%= data.products[0].image[0] %>" alt="" class="img-fluid" width="100px" style="border-radius: 5px;">
+                                                                <% } else { %>
+                                                                    No Image
+                                                                <% } %>
                                                             </h6>
                                                         </td>
                                                         <td scope="col">
                                                             <span>
-                                                                Manu M
+                                                               <%= data.user.name %>
                                                             </span>
                                                         </td>
                                                         <td scope="col">
                                                             <span>
-                                                                7356924029
+                                                                <%= data.payment.method%>
                                                             </span>
                                                         </td>
-                                                        <td scope="col" class="TableButton">
-                                                            <select name="" id="">
-                                                                <option value="">Processing</option>
-                                                                <option value="">Shipped</option>
-                                                                <option value="">Out For Delivery</option>
+                                                        <td scope="col">
+                                                            <span>
+                                                                <%= data.user.number %>
+                                                            </span>
+                                                        </td>
+                                                        <td scope="col">
+                                                            <span>
+                                                                <%= data.orderCancleRequest %>
+                                                            </span>
+                                                        </td>
+                                                        <td scope="col" class="TableButton d-flex flex-column">
+                                                            <select name="status" id="status_<%= data._id %>"
+                                                                onchange="updateOrderStatus('<%= data._id %>')">
+                                                                <option value="Processing" <% if (data.status === "Processing") { %>selected<% } %>>Processing</option>
+                                                                <option value="Shipped" <% if (data.status === "Shipped") { %>selected<% } %>>Shipped</option>
+                                                                <option value="Out For Delivery" <% if (data.status === "Out For Delivery") { %>selected<% } %>>Out For Delivery</option>
+                                                                <option value="Deliverd" <% if (data.status === "Deliverd") { %>selected<% } %>>Deliverd</option>
+                                                                <option value="Canceled" <% if (data.status === "Canceled") { %>selected<% } %>>Canceled</option>
                                                             </select>
+                                                            <span class="text text-success fw-bold" id="msg"></span>
+                                                        </td>
+                                                        <td scope="col">
+                                                            <span>
+                                                                <%= new Date(data.expectedDelivery).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) %>
+                                                            </span>
                                                         </td>
                                                     </tr>
+                                                    <%})%>
                                             </tbody>
                                         </table>
                                     </div>
@@ -113,7 +140,30 @@
             </div>
     </div>
     </div>
-
-    <script src="/js/alert.js"></script>
+    <script>
+        function updateOrderStatus(orderId) {
+            const statusSelect = document.getElementById(`status_${orderId}`);
+            const selectedStatus = statusSelect.value;
+            const msg = document.getElementById('msg');
+    
+            // Send a request to update the order status
+            fetch(`/admin/order/${orderId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ status: selectedStatus })
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Handle response or perform any additional actions
+                console.log(data);
+                msg.innerText = "Status Updated...."
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
 
     <%- include('../partials/adminfooter.ejs')%>

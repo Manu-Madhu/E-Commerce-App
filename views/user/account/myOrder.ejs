@@ -33,96 +33,100 @@
                                 <div class="Cart_list">
                                     <div class="px-2">
                                         <table style="width:100%;">
-                                                <thead class="cartTop" style="position:sticky; top: 0; z-index: 1;">
-                                                    <tr class="cart_table">
-                                                        <th class="first p-3 px-4"><span>Product</span></th>
-                                                        <th class="p-3"><span>Status</span></th>
-                                                        <th class="p-3"><span>Price</span></th>
-                                                        <th class="p-3"><span>Expected Date</span></th>
-                                                        <th class="third p-3"><span>Cancel Order</span></th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <% newProduct.forEach((data,index)=>{%>
-                                                        <tr>
-                                                            <td class=" py-3 d-flex align-items-center">
-                                                                <% if(orderstatus[index]===true){%>
-                                                                    <a href=""
-                                                                        class="container d-flex align-items-center text-decoration-none text-dark">
-                                                                        <div style="position: relative;">
-                                                                            <h3 class="text-white bg-danger "
-                                                                                style="position: absolute; font-size: 13px; padding: 7.5px; border-radius: 7px;">
-                                                                                Order Canceld</h3>
-                                                                            <img src="/productImages/<%=data.image[0]%>"
-                                                                                alt="" class="img-fluid" width="100px"
-                                                                                style="border-radius: 5px;">
-                                                                        </div>
-                                                                        <h6 for="" class="ps-3" style=" color:#959595">
-                                                                            <span>
-                                                                                <%=data.p_name%>
-                                                                            </span>
-                                                                        </h6>
-                                                                    </a>
-                                                            <td class="py-3 p-4" style="font-size: 13px; color:#959595">
-                                                                <h6 for="" class=""><span>Order Canceled</span></h6>
-                                                            </td>
-                                                            <%} else{%>
+                                            <thead class="cartTop" style="position:sticky; top: 0; z-index: 1;">
+                                                <tr class="cart_table">
+                                                    <th class="first p-3 px-4"><span>Product</span></th>
+                                                    <th class="p-3"><span>Status</span></th>
+                                                    <th class="p-3"><span>Price</span></th>
+                                                    <th class="p-3"><span>Expected Date</span></th>
+                                                    <th class="third p-3"><span>Cancel Order</span></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <% newProduct.forEach((data,index)=>{%>
+                                                    <tr>
+                                                        <td class=" py-3 d-flex align-items-center">
+                                                            <% if(orderstatus[index]===true){%>
                                                                 <a href=""
                                                                     class="container d-flex align-items-center text-decoration-none text-dark">
-                                                                    <img src="/productImages/<%=data.image[0]%>" alt=""
-                                                                        class="img-fluid" width="100px"
-                                                                        style="border-radius: 5px;">
-
+                                                                    <div style="position: relative;">
+                                                                        <h3 class="text-white bg-danger "
+                                                                            style="position: absolute; font-size: 13px; padding: 7.5px; border-radius: 7px;">
+                                                                            Order Canceld</h3>
+                                                                        <img src="/productImages/<%=data.image[0]%>"
+                                                                            alt="" class="img-fluid" width="100px"
+                                                                            style="border-radius: 5px;">
+                                                                    </div>
                                                                     <h6 for="" class="ps-3" style=" color:#959595">
                                                                         <span>
                                                                             <%=data.p_name%>
                                                                         </span>
                                                                     </h6>
                                                                 </a>
-                                                                <span></span>
+                                                        <td class="py-3 p-4" style="font-size: 13px; color:#959595">
+                                                            <h6 for="" class=""><span>Order Canceled</span></h6>
+                                                        </td>
+                                                        <%} else{%>
+                                                            <a href=""
+                                                                class="container d-flex align-items-center text-decoration-none text-dark">
+                                                                <img src="/productImages/<%=data.image[0]%>" alt=""
+                                                                    class="img-fluid" width="100px"
+                                                                    style="border-radius: 5px;">
+
+                                                                <h6 for="" class="ps-3" style=" color:#959595">
+                                                                    <span>
+                                                                        <%=data.p_name%>
+                                                                    </span>
+                                                                </h6>
+                                                            </a>
+                                                            <span></span>
+                                                            </td>
+                                                            <td class="py-3 p-4" style="font-size: 13px; color:#959595">
+                                                                <h6 for="" class="">
+                                                                    <span>
+                                                                        <%= status[index] %>
+                                                                    </span>
+                                                                </h6>
+                                                            </td>
+                                                            <%}%>
+                                                                <td class="py-3 p-4"
+                                                                    style="font-size: 13px; color:#959595">
+                                                                    <h6 for="" class="">₹
+                                                                        <span>
+                                                                            <%=data.price%>
+                                                                        </span>
+                                                                    </h6>
                                                                 </td>
                                                                 <td class="py-3 p-4"
                                                                     style="font-size: 13px; color:#959595">
                                                                     <h6 for="" class="">
-                                                                        <span>
-                                                                            <%= status[index] %>
-                                                                        </span>
+                                                                        <%=Date[index]%>
                                                                     </h6>
                                                                 </td>
-                                                                <%}%>
-                                                                    <td class="py-3 p-4"
-                                                                        style="font-size: 13px; color:#959595">
-                                                                        <h6 for="" class="">₹ 
-                                                                            <span>
-                                                                                <%=data.price%>
-                                                                            </span>
-                                                                        </h6>
-                                                                    </td>
-                                                                    <td class="py-3 p-4"
-                                                                        style="font-size: 13px; color:#959595">
-                                                                        <h6 for="" class="">
-                                                                            <%=Date[index]%>
-                                                                        </h6>
-                                                                    </td>
-                                                                    <td class="py-3 p-4"
-                                                                        style="font-size: 13px; color:#959595">
-                                                                        <% if(orderstatus[index]===true){%>
-                                                                            <form action="#" method="post">
-                                                                                <button class="btn btn-success p-2" style="font-size: 13px; border-radius: 5px;">
-                                                                                    Re-Order
-                                                                                </button>
-                                                                            </form>
+                                                                <td class="py-3 p-4"
+                                                                    style="font-size: 13px; color:#959595">
+                                                                    <% if(orderstatus[index]===true){%>
+                                                                        <form action="#" method="post">
+                                                                            <button class="btn btn-success p-2"
+                                                                                style="font-size: 13px; border-radius: 5px;">
+                                                                                Re-Order
+                                                                            </button>
+                                                                        </form>
                                                                         <%} else{%>
-                                                                            <form action="/profile/order/<%= order[index]._id%>" method="post">
-                                                                                <button class="btn btn-danger p-2" style="font-size: 13px; border-radius: 5px;">
-                                                                                     Cancel
+                                                                            <form
+                                                                                action="/profile/order/<%= order[index]._id%>"
+                                                                                method="post">
+                                                                                <button onclick="return showConfirmation()"
+                                                                                    class="btn btn-danger p-2"
+                                                                                    style="font-size: 13px; border-radius: 5px;">
+                                                                                    Cancel
                                                                                 </button>
                                                                             </form>
-                                                                        <%}%>
-                                                                    </td>
-                                                        </tr>
-                                                     <%})%>
-                                                </tbody>
+                                                                            <%}%>
+                                                                </td>
+                                                    </tr>
+                                                    <%})%>
+                                            </tbody>
                                         </table>
                                     </div>
                                 </div>
@@ -132,4 +136,15 @@
                 </div>
             </div>
     </div>
+    <script>
+        function showConfirmation() {
+            if (confirm("Press a button!") == true) {
+                text = "You pressed OK!";
+                return true; 
+            } else {
+                text = "You canceled!";
+                return false; 
+            }
+        }
+    </script>
     <%-include('../../partials/footer.ejs') %>

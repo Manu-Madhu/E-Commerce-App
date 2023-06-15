@@ -3,8 +3,8 @@ const UsersModel = require('../models/user');
 const CategoryModel = require('../models/category');
 const productModel = require('../models/productModel');
 const couponModel = require('../models/coupon');
+const orderModel =require('../models/order');
 const fs = require('fs');
-const path = require('path');
 
 
 // ADMIN CONTROLLER
@@ -278,11 +278,39 @@ const addUpdateProduct = async (req, res) => {
 const orderList = async (req, res) => {
     try {
         const admin = req.session.admin;
-        res.render('admin/orderlisting', { admin })
+        const orderList = await orderModel.find();
+        const user  = orderList.map(item => item.userId);
+        const userData = await UsersModel.find({_id:{$in:user}});
+        const ordersWithData = orderList.map(order => {
+            const user = userData.find(user => user._id.toString() === order.userId.toString());
+            return {
+                ...order.toObject(),
+                user: user
+            };
+        });
+        res.render('admin/orderlisting', { admin, orderList:ordersWithData})
 
     } catch (error) {
         console.log(error)
     }
+}
+
+
+
+const orderstatus = async (req,res)=>{
+  try{
+    const orderId = req.params.id;
+    const status =req.body.status;
+    await orderModel.findByIdAndUpdate({_id:orderId},{
+        $set:{
+            status:status
+        }
+    })
+    res.json("reache the msg")
+  }catch(error){
+     console.log("error in the orderstatus updation");
+     res.json("error in the orderstatus updation");
+  }
 }
 
 // Coupons Adding 
@@ -371,5 +399,6 @@ module.exports = {
     couponsList,
     couponsAdding,
     couponCreation,
-    couponsRemove
+    couponsRemove,
+    orderstatus
 }
