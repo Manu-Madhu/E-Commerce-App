@@ -56,7 +56,7 @@ const validation = async (req, res) => {
                     const userNumber = userData.number;
                     const number = userNumber;
                     let cartCount;
-                    let signinPage ;
+                    let signinPage;
                     // generat randome 4 digit number
                     let randome = Math.floor(Math.random() * 9000) + 1000;
 
@@ -90,10 +90,9 @@ const validation = async (req, res) => {
         } else {
             res.render('user/login', { fail: "Pease Contact Your Admin You are not Allow to Use this Account AnyMore", user: req.session.user, cartCount })
         }
-
-
     } catch (error) {
-        console.log(error)
+        console.log(error);
+        res.render('user/login', { fail: "Pease Use proper credentials", user: req.session.user })
     }
 }
 
@@ -130,7 +129,7 @@ const registerUser = async (req, res) => {
             })
             newUser.save()
                 .then(() => {
-                    res.render('user/verification', { user: req.session.user, cartCount,signinPage });
+                    res.render('user/verification', { user: req.session.user, cartCount, signinPage });
                 })
                 .catch((error) => {
                     console.log("error generating numb", error);
@@ -142,7 +141,7 @@ const registerUser = async (req, res) => {
         res.render('user/signUp', { succ: "Please Use a Uniqe Email ID", user: req.session.user, cartCount })
     }
 }
-const OTPValidationSignIn =async(req,res)=>{
+const OTPValidationSignIn = async (req, res) => {
     let cartCount;
     try {
         const num1 = req.body.num_1;
@@ -154,7 +153,7 @@ const OTPValidationSignIn =async(req,res)=>{
         await OTP.find({ number: code })
             .then((fount) => {
                 if (fount.length > 0) {
-                    res.render("successTick",{})
+                    res.render("successTick", {})
                     // IF FOUND, DELETE THE OTP CODE FROM DB
                     OTP.findOneAndDelete({ number: code })
                         .then(() => {
@@ -219,13 +218,19 @@ const successTick = (req, res) => {
 const detaildView = async (req, res) => {
     try {
         const userData = await UserModel.findOne({ email: req.session.email });
-        const cart = userData.cart.items;
-        let cartCount = cart.length;
         const id = req.params.id;
         const data = await ProductModel.findOne({ _id: id });
         const cate = data.category[0];
         const category = await ProductModel.find({ category: cate });
-        res.render('user/productView', { title: "Product View", user: req.session.user, data, category, cartCount })
+        let cart,cartCount;
+        if (userData) {
+            cart = userData.cart.items;
+            cartCount = cart.length;
+            res.render('user/productView', { title: "Product View", user: req.session.user, data, category, cartCount })
+        }else{
+            res.render('user/productView', { title: "Product View", user: req.session.user, data, category, cartCount })
+        }
+
     } catch (error) {
         console.log(error)
     }
@@ -397,12 +402,10 @@ const coupons = async (req, res) => {
     try {
         const couponCode = req.body.coupon;
         const TotalAmount = req.body.amount;
-        console.log(couponCode)
         const user = req.session.email;
         const userDetails = await UserModel.findOne({ email: user });
         const userDataId = userDetails._id;
         const couponValue = await couponModle.findOne({ couponName: couponCode });
-        console.log(couponValue)
         const date = new Date();
         const formattedDate = date.toLocaleDateString();
         const expiryDate = couponValue.expiryDate;

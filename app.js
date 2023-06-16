@@ -1,6 +1,6 @@
 const express = require("express");
-const path = require("path")
 const app = express();
+const path = require("path")
 const dotenv = require('dotenv');
 const mongoose = require('mongoose');
 const session = require('express-session');
@@ -9,7 +9,7 @@ const cookiePaser = require('cookie-parser');
 
 
 // MONGO CONNECTION
-dotenv.config({ path: './.env' });
+dotenv.config({ path: './.env' }); 
 const url = process.env.URL
 mongoose.connect(url)
 

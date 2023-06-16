@@ -6,7 +6,7 @@
                     <div class="DashBoardUl container col-md-2 p-0 m-0 bg-white d-flex pt-4 sideBar">
                         <ul class="d-flex flex-column">
                             <li class="dashOther fw-bold p-1 m-2 ps-4 ">
-                                <img src="/assets/admin/d1.png" alt="" class="img-fluid me-2">
+                                <img src="/assets/admin/d9.png" alt="" class="img-fluid me-2">
                                 <span><a class="text-decoration-none" style="color: #cdcdcd;"
                                         href="/admin/Dashboard">DashBoard</a></span>
                             </li>
@@ -50,7 +50,7 @@
                         </ul>
                     </div>
                     <div class=" container col-md-9  p-0 m-0">
-                        <div class="container p-0">
+                        <div class="container-fluid p-0 m-0">
                             <div class="conatiner saleTop bg-white d-flex align-items-center mb-3">
                                 <div class="container summary d-flex align-items-center justify-content-between p-4 "
                                     id="product">
@@ -59,45 +59,46 @@
                                 </div>
                             </div>
 
-                            <div class="container Pa_table bg-white p-2">
-                                <div class="container bg-white P_table">
-                                    <div class="container p-3 d-flex align-items-center justify-content-center">
-                                        <table class="table">
-                                            <thead id="tableHeader">
-                                                <tr>
-                                                    <th scope="col">ID</th> 
-                                                    <th scope="col">Image</th> 
-                                                    <th scope="col">Product</th>
-                                                    <th scope="col">Price</th>
-                                                    <th scope="col">Stock</th>
-                                                    <th scope="col">Category</th>
-                                                    <th scope="col">Action</th>
+                            <div class="container-fluid Pa_table bg-white p-4">
+                                <% if(product.length> 0 ){%>
+                                <div class="container-fluid bg-white P_table px-2 ">
+                                    <div class="container-fluid p-0 d-flex align-items-center justify-content-center">
+                                        <table class="w-100 tableSize">
+                                            <thead  class="cartTop" id="tableHeader" style="position:sticky; top: 0; z-index: 1;">
+                                                <tr class="cart_table">
+                                                    <th class="first p-3 px-4" scope="col"><span>ID</span></th> 
+                                                    <th class="p-3"scope="col"><span>Image</span> </th> 
+                                                    <th class="p-3"scope="col"><span>Product</span> </th>
+                                                    <th class="p-3"scope="col"><span> Price</span></th>
+                                                    <th class="p-3"scope="col"><span>Stock</span> </th>
+                                                    <th class="p-3"scope="col"><span> Category</span></th>
+                                                    <th class="third p-3 px-4" scope="col"><span>Action</span> </th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <% product.forEach((data,index)=>{ %>
-                                                    <tr>
-                                                        <th scope="row"><%= index+1 %></th>
-                                                        <th scope="row " class="t_Image">
+                                                    <tr class="mt-2">
+                                                        <th scope="col" class="px-4">#<%= index+1 %></th>
+                                                        <th scope="col " class="t_Image px-3">
                                                             <img src="../../productImages/<%= data.image[0] %>" alt="" width="50px">
                                                         </th>
-                                                        <td scope="col" class="tablefont">
-                                                            <h6><%= data.p_name%></h6>
+                                                        <td scope="col" class="tablefont px-3">
+                                                            <span class="couponListFont"><%= data.p_name%></span>
                                                         </td>
-                                                        <td scope="col">
-                                                            <span>₹<span>&nbsp;<%= data.price%></span></span>
+                                                        <td scope="col" class="px-3">
+                                                            <span class="couponListFont">₹<span>&nbsp;<%= data.price%></span></span>
                                                         </td>
-                                                        <td scope="col">
-                                                            <input type="text " class="TablePCount text-center" value="<%= data.quantity%>">
+                                                        <td scope="col" class="px-1">
+                                                            <input type="text " class="TablePCount text-center couponListFont" value="<%= data.quantity%>">
                                                         </td>
-                                                        <td scope="col">
-                                                            <span><%= data.category[0]%></span>
+                                                        <td scope="col" class="px-3">
+                                                            <span class="couponListFont"><%= data.category[0]%></span>
                                                         </td>
-                                                        <td scope="col" class="TableButton d-flex align-items-center py-5">
+                                                        <td scope="col" class="TableButton d-flex align-items-center py-5 d-flex flex-column gap-2">
                                                             <form action="/admin/p_delete/<%= data._id%>" method="post" onsubmit="return confirmDelete()">
-                                                                <button class="btn btn-danger me-3 text" type="submit">Delete</button>
-                                                              </form>
-                                                              <a href="/admin/updateProduct/<%= data._id %>" class="btn btn-warning text-white catagoryEdit" style="color:rgb(7, 7, 7)">Edit</a>
+                                                                <button class="btn btn-danger text" style="font-size: 11px;" type="submit">Delete</button>
+                                                             </form>
+                                                             <a href="/admin/updateProduct/<%= data._id %>" class="btn btn-warning text-white catagoryEdit" style="color:rgb(7, 7, 7); font-size: 11px;">Edit</a>
                                                         </td>
                                                     </tr>
                                                <%})%>
@@ -105,12 +106,31 @@
                                         </table>
                                     </div>
                                 </div>
-                                <div class="conatiner ms-5 pb-2">
+                                <div class="conatiner ms-2 pb-2">
                                     <button class="btn btn-danger addbutton">
                                         <a href="/admin/newProduct" class="text-decoration-none"
                                             style="color: white">Add New Product</a>
                                     </button>
                                 </div>
+                                <%}else{%>
+                                    <div class="d-flex flex-column align-items-center justify-content-center">
+                                        <lottie-player
+                                            src="https://assets2.lottiefiles.com/private_files/lf30_cgfdhxgx.json"
+                                            background="transparent" speed="1" style="width: 300px; height: 300px;"
+                                            loop autoplay></lottie-player>
+                                        <h5 style="font-weight: 600; color: #cdcdcd;">No Categorys Are Available Now
+                                        </h5>
+                                        <div class="conatiner my-3 pb-2">
+                                            <button class="btn btn-danger p-2" style="border-radius: 10px;
+                                            box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset;
+                                            font-size: 10px;
+                                            font-weight: 400;">
+                                                <a href="/admin/newProduct" class="text-decoration-none"
+                                                    style="color: white; font-size: 13.5px;">Add New Product</a>
+                                            </button>
+                                        </div>
+                                    </div>
+                                <%}%>
                             </div>
                         </div>
                     </div>

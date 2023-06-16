@@ -63,17 +63,31 @@
                         <h5 class="pt-2">Colors:</h5>
                         <h5 class="pt-2">Size:</h5>
                         <div class="d-flex p_Cart_Buy gap-4 pt-2">
-                            <form action="" method="get" id="WhishList">
-                                <input type="hidden" value="<%= data._id%>" id="whishlistProductId">
-                                <button type="submit" class="btn btn-warning text-white px-5 p-2" style="font-size: 13px;">
-                                    Add to Whishlist
-                                </button>
-                            </form>
-                            <form action="" method="post" id="CartForm">
-                                <input type="hidden" value="<%= data._id%>" id="cartProductId">
-                                <button type="submit" class="btn btn-danger text-white px-5 p-2"
-                                    style="font-size: 13px;" id="addtoCart">Add to Cart</button>
-                            </form>
+                            <%if(user){%>
+                                <form action="" method="get" id="WhishList">
+                                    <input type="hidden" value="<%= data._id%>" id="whishlistProductId">
+                                    <button type="submit" class="btn btn-warning text-white px-5 p-2" style="font-size: 13px;">
+                                        Add to Whishlist
+                                    </button>
+                                </form>
+                                <form action="" method="post" id="CartForm">
+                                    <input type="hidden" value="<%= data._id%>" id="cartProductId">
+                                    <button type="submit" class="btn btn-danger text-white px-5 p-2"
+                                        style="font-size: 13px;" id="addtoCart">Add to Cart</button>
+                                </form>
+                            <%}else{%>
+                                <form action="/login" method="get">
+                                    <input type="hidden" value="<%= data._id%>" id="whishlistProductId">
+                                    <button type="submit" class="btn btn-warning text-white px-5 p-2" style="font-size: 13px;">
+                                        Add to Whishlist
+                                    </button>
+                                </form>
+                                <form action="/login" method="get">
+                                    <input type="hidden" value="<%= data._id%>" id="cartProductId">
+                                    <button type="submit" class="btn btn-danger text-white px-5 p-2"
+                                        style="font-size: 13px;" id="addtoCart">Add to Cart</button>
+                                </form>
+                            <%}%>
                         </div>
                         <p class="text-success fw-bold mt-4 " id="CartSuccMsg"></p>
                         <div class="pt-3">

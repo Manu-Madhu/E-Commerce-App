@@ -9,7 +9,6 @@ const fs = require('fs');
 
 // ADMIN CONTROLLER
 
-
 // ADMIN lOGIN
 const adminLogin = (req, res) => {
     const user = req.session.user;
@@ -153,6 +152,9 @@ const updateCategory = async (req, res) => {
                 $set: {
                     categoryName: req.body.categoryName,
                     categoryDiscription: req.body.categoryDiscription,
+                    offerValue: req.body.offerValue,
+                    maxValue: req.body.maxValue,
+                    minValue: req.body.minValue
                 }
             })
         res.redirect("/admin/category")
@@ -185,13 +187,14 @@ const productAdding = async (req, res) => {
 }
 const newproductAdding = async (req, res) => {
     try {
-        const { p_name, category, price, quantity, description } = req.body;
+        const { p_name, category, price, offerPrice, quantity, description } = req.body;
         const files = req.files;
         // Create a new product object with the form data
         const product = new productModel({
             p_name,
             category,
             price,
+            offerPrice,
             quantity,
             description,
             image: files.map(file => file.filename)

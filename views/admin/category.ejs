@@ -30,12 +30,14 @@
                             <li class="dashOther fw-bold p-1 ps-4 m-2">
                                 <img src="/assets/admin/d5.png" alt="" class="img-fluid me-2">
                                 <span></span>
-                                <a href="/admin/order" class="text-decoration-none" style="color: #cdcdcd;">Order</a></span>
+                                <a href="/admin/order" class="text-decoration-none"
+                                    style="color: #cdcdcd;">Order</a></span>
                             </li>
                             <li class="dashOther fw-bold p-1 ps-4 m-2">
                                 <img src="/assets/admin/d6.png" alt="" class="img-fluid me-2">
                                 <span></span>
-                                <a href="/admin/coupons" class="text-decoration-none" style="color: #cdcdcd;">Coupons</a></span>
+                                <a href="/admin/coupons" class="text-decoration-none"
+                                    style="color: #cdcdcd;">Coupons</a></span>
                             </li>
                             <li class="dashOther fw-bold p-1 ps-4 m-2">
                                 <img src="/assets/admin/d2.png" alt="" class="img-fluid me-2">
@@ -50,77 +52,117 @@
                         </ul>
                     </div>
                     <div class=" container col-md-9  p-0 m-0">
-                        <div class="container p-0">
-                            <div class="conatiner saleTop bg-white d-flex align-items-center mb-3">
+                        <div class="container-fluid p-0 m-0">
+                            <!-- SEARCH -->
+                            <div class="container-fluid saleTop bg-white d-flex align-items-center mb-3">
                                 <div class="container summary d-flex align-items-center justify-content-between p-4 "
                                     id="product">
                                     <h6 class="p-3 ps-4">Category</h6>
                                     <input type="text" placeholder="what are you looking for?" class="text-center">
                                 </div>
                             </div>
-
-                            <div class="container Pa_table bg-white p-2">
-                                <div class="container bg-white P_table">
-                                    <div class="container p-3 ">
-                                        <table class="table">
-                                            <thead id="tableHeader">
-                                                <tr>
-                                                    <th scope="col">ID</th>
-                                                    <th scope="col">Category</th>
-                                                    <th scope="col">Discription</th>
-                                                    <th scope="col">Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <% CategoryData.forEach((category,index)=> { %>
-                                                    <tr>
-                                                        <th scope="row">
-                                                            <%= index+1 %>
-                                                        </th>
-                                                        <td scope="col">
-                                                            <span>
-                                                                <%= category.categoryName %>
-                                                            </span>
-                                                        </td>
-                                                        <td scope="col">
-                                                            <span>
-                                                                <%= category.categoryDiscription %>
-                                                            </span>
-                                                        </td>
-                                                        <td scope="col" class="TableButton d-flex align-items-center"
-                                                            onsubmit="return confirmUpdate()">
-                                                            <% if(category.isAvailable===true){%>
-                                                                <form
-                                                                    action="/admin/unlistCategory/<%= CategoryData[index]._id %>"
-                                                                    method="POST">
-                                                                    <button class="btn btn-danger m-2 text"
-                                                                        type="submit">Unlist</button>
-                                                                </form>
-                                                                <%}else if(category.isAvailable===false){%>
+                            <!-- OTHRT PART -->
+                            <div class="container-fluid Pa_table bg-white p-4">
+                                <% if(CategoryData.length> 0 ){%>
+                                    <div class="container-fluid bg-white P_table m-0 px-2" >
+                                        <div class="container-fluid  p-0 d-flex align-items-center justify-content-center"">
+                                            <table class="w-100 tableSize ">
+                                                <thead class="cartTop" style="position:sticky; top: 0; z-index: 1;">
+                                                    <tr class="cart_table">
+                                                        <th class="first p-3 px-4"><span>ID</span></th>
+                                                        <th class="p-3"><span>Category</span></th>
+                                                        <th class="p-3"><span>Discription</span></th>
+                                                        <th class="p-3"><span>Offer</span></th>
+                                                        <th class="p-3"><span>Min Value</span></th>
+                                                        <th class="p-3"><span>Max Value</span></th>
+                                                        <th class="third p-3"><span>Action</span></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <% CategoryData.forEach((category,index)=>{%>
+                                                        <tr class="mt-2">
+                                                            <td scope="col" class="px-4">
+                                                                <span class="couponListFont">
+                                                                    #<%=index+1%>
+                                                                </span>
+                                                            </td>
+                                                            <td scope="col" class="px-4">
+                                                                <span class="couponListFont">
+                                                                    <%= category.categoryName %>
+                                                                </span>
+                                                            </td>
+                                                            <td scope="col" class="px-4">
+                                                                <span class="couponListFont">
+                                                                    <%= category.categoryDiscription %>
+                                                                </span>
+                                                            </td>
+                                                            <td scope="col" class="px-4">
+                                                                <span class="couponListFont text-success fw-bold fs-5">
+                                                                    <%= category.offerValue %> %
+                                                                </span>
+                                                            </td>
+                                                            <td scope="col" class="px-4">
+                                                                <span class="couponListFont">
+                                                                    <%= category.minValue %> 
+                                                                </span>
+                                                            </td>
+                                                            <td scope="col" class="px-4">
+                                                                <span class="couponListFont">
+                                                                    <%= category.maxValue %> 
+                                                                </span>
+                                                            </td>
+                                                            <td scope="col"
+                                                                class="TableButton d-flex align-items-center"
+                                                                onsubmit="return confirmUpdate()">
+                                                                <% if(category.isAvailable===true){%>
                                                                     <form
-                                                                        action="/admin/listCategory/<%= CategoryData[index]._id %>"
+                                                                        action="/admin/unlistCategory/<%= CategoryData[index]._id %>"
                                                                         method="POST">
-                                                                        <button class="btn btn-success m-2 text"
-                                                                            type="submit">List</button>
+                                                                        <button class="btn btn-danger m-2 text"
+                                                                            type="submit">Unlist</button>
                                                                     </form>
+                                                                    <%}else if(category.isAvailable===false){%>
+                                                                        <form
+                                                                            action="/admin/listCategory/<%= CategoryData[index]._id %>"
+                                                                            method="POST">
+                                                                            <button class="btn btn-success m-2 text"
+                                                                                type="submit">List</button>
+                                                                        </form>
                                                                     <%}%>
                                                                         <a href="/admin/updateCategory/<%= category._id %>"
-                                                                            class="btn btn-warning text-white catagoryEdit"
-                                                                            style="color:rgb(7, 7, 7)">Edit</a>
-                                                        </td>
-                                                    </tr>
-                                                    <% }); %>
-                                            </tbody>
-
-                                        </table>
+                                                                             class="btn btn-warning text-white catagoryEdit"
+                                                                             style="color:rgb(7, 7, 7)">
+                                                                             Edit
+                                                                        </a>
+                                                            </td>
+                                                        </tr>
+                                                        <%});%>
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="conatiner ms-5 pb-2">
-                                    <button class="btn btn-danger addbutton">
-                                        <a href="/admin/addCategory" class="text-decoration-none"
-                                            style="color: white;">Add New Product</a>
-                                    </button>
-                                </div>
+                                    <div class="conatiner p-2 mb-3 mt-3">
+                                        <button class="btn addbutton btn-danger p-2">
+                                            <a href="/admin/addCategory" class="text-decoration-none p-3"
+                                                style="color: white;">Add New Product</a>
+                                        </button>
+                                    </div>
+                                    <%}else{%>
+                                        <div class="d-flex flex-column align-items-center justify-content-center">
+                                            <lottie-player
+                                                src="https://assets2.lottiefiles.com/private_files/lf30_cgfdhxgx.json"
+                                                background="transparent" speed="1" style="width: 300px; height: 300px;"
+                                                loop autoplay></lottie-player>
+                                            <h5 style="font-weight: 600; color: #cdcdcd;">No Categorys Are Available Now
+                                            </h5>
+                                            <div class="conatiner my-3 pb-2">
+                                                <button class="btn btn-danger p-2">
+                                                    <a href="/admin/addCategory" class="text-decoration-none"
+                                                        style="color: white; font-size: 13.5px;">Add New Category</a>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    <%}%>
                             </div>
                         </div>
                     </div>
