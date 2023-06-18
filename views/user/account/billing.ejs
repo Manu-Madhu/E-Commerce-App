@@ -197,10 +197,10 @@
                                         <h6 class="fw-bold">Grant Totall </h6>
                                     </div>
                                     <div class="col-lg-6">
-                                        <h6>: <span>₹ <%= totalPrice%></span></h6>
-                                        <h6>: <span id="discountRate">₹ 0</span></h6>
+                                        <h6>: <span >₹ <%= totalP_Price%></span></h6>
+                                        <h6>: <span >₹ <span id="discountRate"><%=discount%></span></span></h6>
                                         <h6>:<span> Free</span></h6>
-                                        <h6>: <span id="GrantTotall">₹ <%= totalPrice%></span></h6>
+                                        <h6>: <span >₹<span id="GrantTotall"><%= totalPrice%></span></span></h6>
                                         <input type="hidden" name="amount" id="amount" value="<%=totalPrice%>">
                                     </div>
                                 </div>
@@ -258,7 +258,7 @@
         const amount = document.getElementById('amount');
         couponButton.addEventListener('click',()=>{
             const inputValue = inputValueInput.value;
-            const NewAmount  = amount.value
+            const NewAmount  = amount.value;
               const requestBody = {
                 coupon:inputValue,
                 amount:NewAmount
@@ -273,23 +273,24 @@
               })
               .then(response => response.json())
               .then(data =>{
-                console.log(data)
                 const msg = data.message;
                 const coupon = data.coupon;
                 const NewTotall = amount.value-coupon.couponValue;
                 const CouponResultS = document.getElementById('CouponResultS');
                 const CouponResultF = document.getElementById('CouponResultF');
-                
+                const CurrentDi_Price =document.getElementById('discountRate');
+                const Discount_Inte = parseInt(CurrentDi_Price.innerText);
+
                 if(msg == 'Coupon is succefully Added'){
-                    DiscountRate.innerText = coupon.couponValue;
+                    DiscountRate.innerText = Discount_Inte +parseInt(coupon.couponValue);
                     GrantTotall.innerText = NewTotall;
                     amount.value = NewTotall;
                     CouponResultS.innerText = "Coupon is succefully Added";
                      setTimeout(() => {
                      CouponResultS.style.display = 'none';
                      }, 2000);
-                }else if(msg == 'Coupon Not Valid' || msg === 'Coupon Expired'){
-                    CouponResultF.innerText = "Coupon Not Valid";
+                }else if(msg == 'Coupon Not Valid' || msg === 'Please Use A Valid Coupon'){
+                    CouponResultF.innerText = "Please Use A Valid Coupon";
                     setTimeout(() => {
                      CouponResultF.style.display = 'none';
                      }, 2000);

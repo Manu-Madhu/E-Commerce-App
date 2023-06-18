@@ -3,7 +3,7 @@ const UsersModel = require('../models/user');
 const CategoryModel = require('../models/category');
 const productModel = require('../models/productModel');
 const couponModel = require('../models/coupon');
-const orderModel =require('../models/order');
+const orderModel = require('../models/order');
 const fs = require('fs');
 
 
@@ -96,6 +96,18 @@ const category = async (req, res) => {
 const categoryAdd = (req, res) => {
     res.render('admin/categoryAdd', { title: "Category", admin: req.session.admin })
 }
+const categoryOffer = async (req, res) => {
+    try {
+        const price = req.body.price;
+        const value = req.body.value;
+        const categoryDetails = await CategoryModel.findOne({ categoryName: value });
+        const offer = categoryDetails.offerValue/100;
+        const discountValue = price-(price * offer);
+        res.json(discountValue);
+    } catch (error) {
+        console.log(error);
+    }
+}
 const CategoryAdding = async (req, res) => {
     try {
         const catData = req.body;
@@ -176,6 +188,7 @@ const productView = async (req, res) => {
         res.status(500).send("Internal error");
     }
 }
+
 const productAdding = async (req, res) => {
     try {
         const category = await CategoryModel.find({ isAvailable: true });
@@ -187,14 +200,16 @@ const productAdding = async (req, res) => {
 }
 const newproductAdding = async (req, res) => {
     try {
-        const { p_name, category, price, offerPrice, quantity, description } = req.body;
+        const { p_name, category, price, c_offerPrice,productOffer,finalPrice, quantity, description } = req.body;
         const files = req.files;
         // Create a new product object with the form data
         const product = new productModel({
             p_name,
             category,
             price,
-            offerPrice,
+            c_offerPrice,
+            productOffer,
+            finalPrice,
             quantity,
             description,
             image: files.map(file => file.filename)
@@ -282,8 +297,8 @@ const orderList = async (req, res) => {
     try {
         const admin = req.session.admin;
         const orderList = await orderModel.find();
-        const user  = orderList.map(item => item.userId);
-        const userData = await UsersModel.find({_id:{$in:user}});
+        const user = orderList.map(item => item.userId);
+        const userData = await UsersModel.find({ _id: { $in: user } });
         const ordersWithData = orderList.map(order => {
             const user = userData.find(user => user._id.toString() === order.userId.toString());
             return {
@@ -291,7 +306,7 @@ const orderList = async (req, res) => {
                 user: user
             };
         });
-        res.render('admin/orderlisting', { admin, orderList:ordersWithData})
+        res.render('admin/orderlisting', { admin, orderList: ordersWithData })
 
     } catch (error) {
         console.log(error)
@@ -300,20 +315,20 @@ const orderList = async (req, res) => {
 
 
 
-const orderstatus = async (req,res)=>{
-  try{
-    const orderId = req.params.id;
-    const status =req.body.status;
-    await orderModel.findByIdAndUpdate({_id:orderId},{
-        $set:{
-            status:status
-        }
-    })
-    res.json("reache the msg")
-  }catch(error){
-     console.log("error in the orderstatus updation");
-     res.json("error in the orderstatus updation");
-  }
+const orderstatus = async (req, res) => {
+    try {
+        const orderId = req.params.id;
+        const status = req.body.status;
+        await orderModel.findByIdAndUpdate({ _id: orderId }, {
+            $set: {
+                status: status
+            }
+        })
+        res.json("reache the msg")
+    } catch (error) {
+        console.log("error in the orderstatus updation");
+        res.json("error in the orderstatus updation");
+    }
 }
 
 // Coupons Adding 
@@ -321,7 +336,7 @@ const couponsList = async (req, res) => {
     try {
         const admin = req.session.admin;
         const couponData = await couponModel.find();
-        res.render('admin/couponListing', { admin,couponData })
+        res.render('admin/couponListing', { admin, couponData })
 
     } catch (error) {
         console.log(error);
@@ -332,20 +347,20 @@ const couponsList = async (req, res) => {
 const couponsAdding = async (req, res) => {
     try {
         const admin = req.session.admin;
-        res.render('admin/coupon', { admin});
+        res.render('admin/coupon', { admin });
     } catch (error) {
         console.log("couponAddingPage Rendering Error");
         res.status(500).send("couponAddingPage Rendering Error");
     }
 }
 
-const couponsRemove =async(req,res)=>{
-    try{
+const couponsRemove = async (req, res) => {
+    try {
         const couponId = req.params.id;
         await couponModel.findByIdAndDelete(couponId)
         res.json("successfully removed");
-    }catch(error){
-       res.status(500).json("error by the server side");
+    } catch (error) {
+        res.status(500).json("error by the server side");
     }
 }
 
@@ -360,9 +375,9 @@ const couponCreation = async (req, res) => {
             minValue: data.minValue
         })
         await couponDetails.save();
-        res.render('admin/coupon',{suMessage:"Coupon Successfully Added", admin:req.session.admin});
+        res.render('admin/coupon', { suMessage: "Coupon Successfully Added", admin: req.session.admin });
     } catch (error) {
-        res.status(500).render('admin/coupon',{message:"Coupon Already Existing....", admin:req.session.admin});
+        res.status(500).render('admin/coupon', { message: "Coupon Already Existing....", admin: req.session.admin });
     }
 }
 
@@ -386,6 +401,7 @@ module.exports = {
     userView,
     adminVerification,
     category,
+    categoryOffer,
     categoryAdd,
     CategoryAdding,
     unlistCategory,

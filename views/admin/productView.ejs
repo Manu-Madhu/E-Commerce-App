@@ -70,6 +70,8 @@
                                                     <th class="p-3"scope="col"><span>Image</span> </th> 
                                                     <th class="p-3"scope="col"><span>Product</span> </th>
                                                     <th class="p-3"scope="col"><span> Price</span></th>
+                                                    <th class="p-3"scope="col"><span> offer</span></th>
+                                                    <th class="p-3"scope="col"><span> Offer Price</span></th>
                                                     <th class="p-3"scope="col"><span>Stock</span> </th>
                                                     <th class="p-3"scope="col"><span> Category</span></th>
                                                     <th class="third p-3 px-4" scope="col"><span>Action</span> </th>
@@ -87,6 +89,12 @@
                                                         </td>
                                                         <td scope="col" class="px-3">
                                                             <span class="couponListFont">₹<span>&nbsp;<%= data.price%></span></span>
+                                                        </td>
+                                                        <td scope="col" class="px-3">
+                                                            <span class="couponListFont text-success fw-bold" style="font-size: 20px;">%<span>&nbsp;<%= data.productOffer%></span></span>
+                                                        </td>
+                                                        <td scope="col" class="px-3">
+                                                            <span class="couponListFont text-success fw-bold">₹<span>&nbsp;<%= data.finalPrice%></span></span>
                                                         </td>
                                                         <td scope="col" class="px-1">
                                                             <input type="text " class="TablePCount text-center couponListFont" value="<%= data.quantity%>">

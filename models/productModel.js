@@ -9,7 +9,13 @@ const productSchema = new mongoose.Schema({
         type: String,
         require: true
     },
-    offerPrice:{
+    c_offerPrice:{
+        type:String
+    },
+    productOffer:{
+        type:String
+    },
+    finalPrice:{
         type:String
     },
     description: {

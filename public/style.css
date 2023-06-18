@@ -527,7 +527,7 @@ select:focus {
   font-weight: 500;
 }
 
-.p_addingWrapper form button {
+.productAddButton{
   width: 20%;
   height: 33px;
   border-radius: 10px;

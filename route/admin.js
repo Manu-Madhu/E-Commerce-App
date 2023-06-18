@@ -36,6 +36,7 @@ admin.post("/listCategory/:id", adminController.listCategory);
 
 admin.get("/updateCategory/:id", adminMiddleWeare.isLogOut, adminController.Categoryupdate);
 admin.post("/updateCategory", adminController.updateCategory);
+admin.post('/Category_OfferValue', adminMiddleWeare.isLogOut,adminController.categoryOffer);
 
 // product
 admin.get('/productView', adminController.productView);

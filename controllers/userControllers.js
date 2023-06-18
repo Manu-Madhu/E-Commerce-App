@@ -222,12 +222,12 @@ const detaildView = async (req, res) => {
         const data = await ProductModel.findOne({ _id: id });
         const cate = data.category[0];
         const category = await ProductModel.find({ category: cate });
-        let cart,cartCount;
+        let cart, cartCount;
         if (userData) {
             cart = userData.cart.items;
             cartCount = cart.length;
             res.render('user/productView', { title: "Product View", user: req.session.user, data, category, cartCount })
-        }else{
+        } else {
             res.render('user/productView', { title: "Product View", user: req.session.user, data, category, cartCount })
         }
 
@@ -315,15 +315,19 @@ const cartload = async (req, res) => {
         const cartCount = cartItems.length;
         const cartProductIds = cartItems.map(item => item.productId);
         const cartProducts = await ProductModel.find({ _id: { $in: cartProductIds } });
-
+        const productsPrice = cartProducts.reduce((total, item) => total + parseFloat(item.price), 0);
         const totalQuantity = cartItems.reduce((total, item) => total + item.quantity, 0);
         let totalPrice = 0;
         for (const item of cartItems) {
             const product = cartProducts.find(prod => prod._id.toString() === item.productId.toString());
-            totalPrice += item.quantity * product.price;
+            if (product) {
+                totalPrice += item.quantity * product.finalPrice;
+            } else {
+                console.log(`Product not found for item: ${item.productId}`);
+            }
         }
-
-        res.render('user/Cart', { title: "Cart", user, cartProducts, cartItems, totalQuantity, totalPrice, cartCount });
+        const discount = Math.abs(totalPrice - productsPrice);
+        res.render('user/Cart', { title: "Cart", user, cartProducts, cartItems, productsPrice, totalQuantity, totalPrice, discount, cartCount });
     } catch (error) {
         console.log(error);
         res.status(500).send("Internal error from cart side");
@@ -338,7 +342,7 @@ const cart = async (req, res) => {
         const cartItems = userData.cart.items;
         const existingCartItem = cartItems.find(item => item.productId.toString() === id);
         const cartPrtoduct = await ProductModel.findOne({ _id: id });
-        const productPrice = cartPrtoduct.price;
+        const productPrice = cartPrtoduct.finalPrice;
 
         if (existingCartItem) {
             existingCartItem.quantity += 1;
@@ -347,7 +351,7 @@ const cart = async (req, res) => {
             const newCartItem = {
                 productId: id,
                 quantity: 1,
-                price: cartPrtoduct.price
+                price: cartPrtoduct.finalPrice
             };
             userData.cart.items.push(newCartItem);
         }
@@ -365,20 +369,30 @@ const cartQuantityUpdate = async (req, res) => {
         const data = Number(req.body.quantity);
         const user = req.session.email;
         const userDetails = await UserModel.findOne({ email: user });
+
         const cartItems = userDetails.cart.items;
+        const CartProductIds = cartItems.map((items) => items.productId);
+        
         const cartItem = userDetails.cart.items.id(cartId);
         const cartQuantityPre = cartItem.quantity;
         const CartQuantity = cartItem.quantity = data;
         const product = await ProductModel.findById(cartItem.productId);
+        
         const count = CartQuantity - cartQuantityPre;
         product.quantity -= count;
-        const cartPrice = cartItem.price = product.price * data;
+        const cartPrice = cartItem.price = product.finalPrice * CartQuantity;
+        await product.save();
+        await userDetails.save();   
+        
+        const productsIdDetails = await ProductModel.find({ _id: { $in: CartProductIds } });
+        let grantTotal = product.price * CartQuantity;
         const total = cartItems.reduce((total, item) => total + item.price, 0);
 
-        await product.save();
-        await userDetails.save();
+        const discount = grantTotal - cartPrice;
 
-        res.json({ cartPrice, total });
+
+
+        res.json({ cartPrice, grantTotal, total, discount });
     } catch (error) {
         console.log(error);
         res.status(500).json({ error: 'An error occurred while updating the quantity.' });
@@ -443,10 +457,13 @@ const Checkout = async (req, res) => {
         const coupon = await couponModle.find();
         const cartProductIds = cartItems.map(item => item.productId.toString());
         const cartProducts = await ProductModel.find({ _id: { $in: cartProductIds } });
+        const totalP_Price = cartProducts.reduce((total, items) => total + parseFloat(items.price), 0);
         const address = userDetails.address;
         let totalPrice = 0;
         cartItems.map(item => totalPrice += item.price);
-        res.render('user/account/billing', { title: "Check Out", user, cartItems, cartProducts, totalPrice, address, cartCount, coupon })
+
+        const discount = Math.abs(totalP_Price - totalPrice)
+        res.render('user/account/billing', { title: "Check Out", user, cartItems, cartProducts, discount, totalP_Price, totalPrice, address, cartCount, coupon })
     } catch (error) {
         console.log(error);
     }
@@ -544,7 +561,7 @@ const orderSuccess = async (req, res) => {
             }
             foundUser.cart.items = [];
             await foundUser.save();
-            res.json("successFully cod Playsed")
+            res.json("successFully cod Completed")
         } else {
             res.status(400).send("individual payment")
         }

@@ -48,9 +48,12 @@
                             <span class="text-dark">
                                 <h2>₹ &nbsp; </h2>
                             </span>
-                            <%= data.price %> &nbsp;&nbsp; <span class="text-success">
-                                    <h2>76% off</h2>
-                                </span>
+                            <%= data.finalPrice %> &nbsp;&nbsp; 
+                                <span class="mt-2" style="text-decoration: line-through; color: #9a9a9a; font-size:20px;">₹ <%= data.price %></span> 
+                                &nbsp;
+                                <span class="text-success">
+                                <h2><%= data.productOffer %>% off</h2>
+                            </span>
                         </h2>
                         <div class="pt-2">
                             <p class="text-Description">

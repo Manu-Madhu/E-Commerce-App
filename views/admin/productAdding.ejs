@@ -13,7 +13,7 @@
                             </li>
                             <li class="dashOther fw-bold p-1 ps-4 m-2">
                                 <img src="/assets/admin/d3.png" alt="" class="img-fluid me-2">
-                                <span><a href="/admin/cate  gory" class="text-decoration-none"
+                                <span><a href="/admin/category" class="text-decoration-none"
                                         style="color: #cdcdcd;">Category</a></span>
                             </li>
                             <li class="sideBarlist fw-bold p-1 ps-4 m-2">
@@ -31,12 +31,14 @@
                             <li class="dashOther fw-bold p-1 ps-4 m-2">
                                 <img src="/assets/admin/d5.png" alt="" class="img-fluid me-2">
                                 <span></span>
-                                <a href="/admin/order" class="text-decoration-none" style="color: #cdcdcd;">Order</a></span>
+                                <a href="/admin/order" class="text-decoration-none"
+                                    style="color: #cdcdcd;">Order</a></span>
                             </li>
                             <li class="dashOther fw-bold p-1 ps-4 m-2">
                                 <img src="/assets/admin/d6.png" alt="" class="img-fluid me-2">
                                 <span></span>
-                                <a href="/admin/coupons" class="text-decoration-none" style="color: #cdcdcd;">Coupons</a></span>
+                                <a href="/admin/coupons" class="text-decoration-none"
+                                    style="color: #cdcdcd;">Coupons</a></span>
                             </li>
                             <li class="dashOther fw-bold p-1 ps-4 m-2">
                                 <img src="/assets/admin/d2.png" alt="" class="img-fluid me-2">
@@ -65,7 +67,8 @@
                                             <label for="">Category*</label>
                                             <!-- <input type="text" class="mt-1 py-2" name="category"
                                                 placeholder="Category" required> -->
-                                            <select name="category" id="" class="mt-1 py-2">
+                                            <select name="category" id="category" class="mt-1 py-2">
+                                                <option value="">Select Category</option>
                                                 <% category.forEach((data)=>{ %>
                                                     <option value="<%= data.categoryName%>">
                                                         <%= data.categoryName%>
@@ -74,28 +77,37 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="row d-flex mb-3">
-                                        <div class='col-md-6 col-12 d-flex gap-3'>
-                                            <div class="col-md-5  d-flex flex-column">
+                                    <div class="row d-flex mb-3 gap-4 p-0">
+                                        <div class='row col-md-6 col-12 p-0 d-flex align-items-center justify-content-between'>
+                                            <div class="col-md-6 col-12 p-0 ps-4 d-flex flex-column">
                                                 <label for="">Price*</label>
-                                                <input type="tel" class="mt-1 py-2" name="price" placeholder="Price"
-                                                    pattern="[0-9]+" title="Please enter numbers only" required>
+                                                <input id="price" type="tel" class="mt-1 py-2" name="price"
+                                                    placeholder="Price" pattern="[0-9]+"
+                                                    title="Please enter numbers only" required>
                                             </div>
-                                            <div class="col-md-2  d-flex flex-column">
-                                                <label for="">Price*</label>
-                                                <button class="buttonFor">Check</button>
-                                            </div>
-                                            <div class="col-md-4 d-flex flex-column">
-                                                <label for="">Offer Price*</label>
-                                                <input type="tel" class="mt-1 py-2" name="offerPrice" placeholder="Price"
-                                                    pattern="[0-9]+" title="Please enter numbers only" required>
+                                            <div class="col-md-5 col-12 d-flex flex-column p-0">
+                                                <label for="">Category Offer Price*</label>
+                                                <input id="offerPrice" type="" class="mt-1 py-2" name="c_offerPrice"
+                                                    placeholder="Offer Price" required>
                                             </div>
                                         </div>
-                                        <div class="col-md-6 d-flex flex-column">
-                                            <label for="">Quantity *</label>
-                                            <input type="number" class="mt-1 py-2" name="quantity" min="0"
-                                                pattern="[0-9]" title="Please enter nunmber" placeholder="Quantity"
-                                                required>
+                                        <div class='row col-md-6 col-12 p-0 d-flex align-items-center justify-content-between'>
+                                            <div class="col-md-4 col-12 ps-4 d-flex flex-column p-0">
+                                                <label for="">Product Offer*</label>
+                                                <input id="ProductOffer" type="" class="mt-1 py-2" name="productOffer"
+                                                    placeholder="Product Offer" required>
+                                            </div>
+                                            <div class="col-md-4 col-12 d-flex flex-column p-0">
+                                                <label for="">Final price*</label>
+                                                <input id="FinalPrice" type="" class="mt-1 py-2" name="finalPrice"
+                                                    placeholder="Final Price" required>
+                                            </div>
+                                            <div class="col-md-3 col-12 p-0 d-flex flex-column">
+                                                <label for="" >Quantity*</label>
+                                                <input type="number" class="mt-1 py-2" name="quantity" min="0"
+                                                    pattern="[0-9]" title="Please enter nunmber" placeholder="Quantity"
+                                                    required>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -105,7 +117,8 @@
                                     </div>
                                     <input type="file" class="form-control my-3 py-2" name="image" multiple>
                                     <div class="mt-3">
-                                        <button type="submit" class="btn btn-danger">Add Product</button>
+                                        <button type="submit" class="productAddButton btn btn-danger">Add
+                                            Product</button>
                                     </div>
                                 </form>
                             </div>
@@ -115,7 +128,43 @@
             </div>
     </div>
     </div>
-
-    <script src="/js/P_Image.js"></script>
+    <script>
+        const priceInput = document.getElementById('price');
+        const offerPrice = document.getElementById('offerPrice');
+        const selectedCategory = document.getElementById('category');
+        const prodctOfferInput  = document.getElementById('ProductOffer');
+        const FinalPrice  = document.getElementById('FinalPrice');
+        let value;
+        selectedCategory.addEventListener('change', function () {
+            value = selectedCategory.value;
+        });
+        priceInput.addEventListener('input', function () {
+            const price = priceInput.value;
+            fetch('/admin/Category_OfferValue', {
+                method: 'post',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    price: price,
+                    value: value
+                })
+            })
+                .then(res => res.json())
+                .then(data => {
+                    offerPrice.value = data
+                })
+                .catch(error => {
+                    console.log(error)
+                })
+        });
+        prodctOfferInput.addEventListener('input',function(){
+            const productDiscount = prodctOfferInput.value;
+            const value = offerPrice.value
+            const p_discount = productDiscount/100;
+            const finalProductPrice = value - (value*p_discount);
+            FinalPrice.value = finalProductPrice;
+        })
+    </script>
 
     <%- include('../partials/adminfooter.ejs')%>
