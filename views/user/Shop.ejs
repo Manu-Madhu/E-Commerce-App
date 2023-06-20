@@ -1,0 +1,158 @@
+<%- include("../partials/header.ejs")%>
+    <div class="container-fluid p-0 min-vh-100" style="margin-top: 8%;">
+        <%- include("../partials/navBar.ejs")%>
+            <!-- CAROUSEL -->
+            <div id="carouselExampleControlsNoTouching" class="carousel slide container-fluid mt-2"
+                data-bs-touch="false" data-bs-interval="false">
+                <div class="carousel-inner">
+                    <div class="imageOne carousel-item active d-flex align-items-center">
+                        <img src="/assets/banners/test2.jpg" class=" CarouselImage d-block p-2 " alt="...">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="/assets/banners/banner2.jpg" class="CarouselImage d-block p-2 " alt="...">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="/assets/banners/banner3.jpg" class="CarouselImage d-block p-2" alt="...">
+                    </div>
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControlsNoTouching"
+                    data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControlsNoTouching"
+                    data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+            <div class="container">
+                <!-- line -->
+                <div class="container">
+                    <hr class="line bg-dark">
+                </div>
+                <!-- content -->
+                <div class="row p-3 d-flex justify-content-between">
+                    <div
+                        class="col-lg-2 col-md-2 p-3 mt-2 container SideFilter bg-white d-flex flex-column align-items-center">
+                        <div class="filterBox d-flex justify-content-between p-3">
+                            <span style="font-weight: 550;">FILTER</span>
+                            <span style="font-weight: 550;">
+                                <a style="text-decoration: none;" href="">
+                                    Clear Filter
+                                </a>
+                            </span>
+                        </div>
+                        <!-- category  -->
+                        <div class="container filterCo p-3">
+                            <span style="font-weight: 550;">CATEGORIES</span>
+                            <div class="px-2 filterFont">
+                                <div class="pt-2">
+                                    <input type="checkbox">
+                                    <label for="">Pants</label>
+                                </div>
+                                <div class="">
+                                    <input type="checkbox">
+                                    <label for="">Saree</label>
+                                </div>
+                                <div class="">
+                                    <input type="checkbox">
+                                    <label for="">Lehankha</label>
+                                </div>
+                                <div class="">
+                                    <input type="checkbox">
+                                    <label for="">Lehankha</label>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- line -->
+                        <div class="container">
+                            <hr class="line bg-dark">
+                        </div>
+                        <!--Rate Range -->
+                        <div class="filterSlider d-flex flex-column justify-content-between p-3">
+                            <span style="font-weight: 550;">PRICE</span>
+                            <div class="pt-2" style="width: 100%;">
+                                <input type="range" style="width: 100%;">
+                            </div>
+                            <div class="pt-1 d-flex justify-content-between">
+                                <div class="Limit p-2"><span>1000</span></div>
+                                <div class="Limit p-2"><span>1000</span></div>
+                            </div>
+                        </div>
+                        <!-- line -->
+                        <div class="container">
+                            <hr class="line bg-dark">
+                        </div>
+                        <!-- Coustom Rating -->
+                        <div class="container filterCo p-3">
+                            <span style="font-weight: 550;">COUSTOMER RATINGS</span>
+                            <div class="px-2 filterFont">
+                                <div class="pt-2">
+                                    <input type="checkbox">
+                                    <label for="">4 Star Above</label>
+                                </div>
+                                <div class="">
+                                    <input type="checkbox">
+                                    <label for="">3 Star Above</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        class="col-lg-9 col-md-9 container p-0 m-0 d-flex flex-column align-items-start justify-content-start">
+                        <div class="row d-flex align-items-center justify-content-between">
+                            <div class="container bg-white ProductCard m-2 mx-4">
+                                <!-- image rendering  -->
+                                <a href="#">
+                                    <div class="cardImage mb-2 d-flex align-items-center justify-content-center">
+                                        <img src="/assets/product/4.jpg" alt="Product Image">
+                                    </div>
+                                </a>
+                                <div class="px-3">
+                                    <span class="text-dark">
+                                        product name
+                                    </span>
+                                    <div class="p_price d-flex justify-content-between">
+                                        <div class="price text-danger">₹ <text>
+                                                1400
+                                            </text> &nbsp; <span>₹ 1160</span></div>
+                                        <div class="favor" style="cursor: pointer;">
+                                            <i class="fa-regular fa-heart"></i>
+                                        </div>
+                                    </div>
+                                    <div class="rating d-flex align-items-center">
+                                        <div class="star d-flex align-items-center">
+                                            <img src="/assets/product/star.png" alt="">
+                                            <img src="/assets/product/star.png" alt="">
+                                            <img src="/assets/product/star.png" alt="">
+                                            <img src="/assets/product/star.png" alt="">
+                                            <img src="/assets/product/star.png" alt="">
+                                        </div>
+                                        <div class="value ms-2">(75)</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center justify-content-center w-100">
+                            <nav aria-label="..." class="width:100">
+                                <ul class="pagination">
+                                    <li class="page-item">
+                                        <a class="page-link" href="#" tabindex="-1">Previous</a>
+                                    </li>
+                                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                    <li class="page-item active">
+                                        <a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>
+                                    </li>
+                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                    <li class="page-item">
+                                        <a class="page-link" href="#">Next</a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+    <%- include("../partials/footer.ejs")%>

@@ -63,7 +63,6 @@
                             </div>
                             <!-- <div class="container p-0 m-0 px-1 ">
                                 <div class="billing_address bg-white p-4" >
-                                
                                 </div>
                             </div> -->
                         </div>
@@ -170,15 +169,19 @@
                                                             <span class="close">&times;</span>
                                                             <h4 class="mb-4 text-dark fw-bold ms-3">Select your Coupon</h4>
                                                             <ul  id="couponList" style="list-style: none; color: #9a9a9a;">
+                                                               <% if(coupon.length>0){%>
                                                                 <%coupon.forEach((data,index)=>{%>
-                                                                <div class="d-flex align-items-center justify-content-between mb-2">
-                                                                    <li class="text-uppercase fw-bold">#<%=index+1%></li>
-                                                                    <li class="text-uppercase fw-bold"><%=data.couponName%></li>
-                                                                    <li class=" fw-bold"><%=data.couponValue%></li>
-                                                                    <li class=" fw-bold"><%=data.expiryDate%></li>
-                                                                    <li><img src="/assets/icons/178921.png" alt="" class="img-fluid" width="25px"></li>
-                                                                </div>
-                                                                <%})%>
+                                                                    <div class="d-flex align-items-center justify-content-between mb-2">
+                                                                        <li class="text-uppercase fw-bold">#<%=index+1%></li>
+                                                                        <li class="text-uppercase fw-bold"><%=data.couponName%></li>
+                                                                        <li class=" fw-bold"><%=data.couponValue%></li>
+                                                                        <li class=" fw-bold"><%=data.expiryDate%></li>
+                                                                        <li><img src="/assets/icons/178921.png" alt="" class="img-fluid" width="25px"></li>
+                                                                    </div>
+                                                                    <%})%>
+                                                                <%}else{%>
+                                                                    <lottie-player src="https://assets1.lottiefiles.com/temp/lf20_LJK4oD.json"  background="transparent"  speed="1"  style="width: 300px; height: 300px;"  loop  autoplay></lottie-player>
+                                                                    <%}%>
                                                             </ul>
                                                         </div>
                                                     </div>
@@ -285,16 +288,19 @@
                     DiscountRate.innerText = Discount_Inte +parseInt(coupon.couponValue);
                     GrantTotall.innerText = NewTotall;
                     amount.value = NewTotall;
+                    CouponResultS.style.display = 'block';
                     CouponResultS.innerText = "Coupon is succefully Added";
                      setTimeout(() => {
                      CouponResultS.style.display = 'none';
                      }, 2000);
                 }else if(msg == 'Coupon Not Valid' || msg === 'Please Use A Valid Coupon'){
+                    CouponResultS.style.display = 'block';
                     CouponResultF.innerText = "Please Use A Valid Coupon";
                     setTimeout(() => {
                      CouponResultF.style.display = 'none';
                      }, 2000);
                 }else if(msg == 'You Already Use This Coupon'){
+                    CouponResultS.style.display = 'block';
                     CouponResultF.innerText = "You Already Use This Coupon";
                     setTimeout(() => {
                      CouponResultF.style.display = 'none';
@@ -346,7 +352,7 @@
                                     url: "/saveOrderData",
                                     success: function (response) {
                                         console.log(response)
-                                        window.location.href = 'http://localhost:5000/success';
+                                        window.location.href = 'http://localhost:5000/addCategory';
                                     }
                                 })
                             },

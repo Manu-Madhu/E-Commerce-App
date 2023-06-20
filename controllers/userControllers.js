@@ -81,7 +81,7 @@ const validation = async (req, res) => {
                 } else {
                     const cart = userData.cart.items;
                     const cartCount = cart.length;
-                    res.render("user/login", { fail: "Ckeck Your Password", user: req.session.user, cartCount })
+                    res.render("user/login", { fail: "Check Your Password", user: req.session.user, cartCount })
                 }
 
             } else {
@@ -214,6 +214,20 @@ const successTick = (req, res) => {
     res.render('user/successTick', { title: "Account", succ: "SuccessFully Create Your Account", user: req.session.user, cartCount })
 }
 
+// Shop
+const ShopView =async(req,res)=>{
+  try{
+    const product = await ProductModel.find();
+    const userDetails = await UserModel.findOne({email:req.session.email});
+    const cart = userDetails.cart.items;
+    const cartCount = cart.length;
+    res.render('user/Shop',{ title: "Shop", user: req.session.user, cartCount, product });
+  }catch(error){
+   console.log(error);
+   res.status('500'.send("Internal server Error On ShopView"))
+  }
+}
+
 // Detaild view
 const detaildView = async (req, res) => {
     try {
@@ -315,7 +329,7 @@ const cartload = async (req, res) => {
         const cartCount = cartItems.length;
         const cartProductIds = cartItems.map(item => item.productId);
         const cartProducts = await ProductModel.find({ _id: { $in: cartProductIds } });
-        const productsPrice = cartProducts.reduce((total, item) => total + parseFloat(item.price), 0);
+        const productsPrice = cartItems.reduce((total, item) => total + parseFloat(item.realPrice), 0);
         const totalQuantity = cartItems.reduce((total, item) => total + item.quantity, 0);
         let totalPrice = 0;
         for (const item of cartItems) {
@@ -351,7 +365,8 @@ const cart = async (req, res) => {
             const newCartItem = {
                 productId: id,
                 quantity: 1,
-                price: cartPrtoduct.finalPrice
+                price: cartPrtoduct.finalPrice,
+                realPrice: cartPrtoduct.price
             };
             userData.cart.items.push(newCartItem);
         }
@@ -371,28 +386,27 @@ const cartQuantityUpdate = async (req, res) => {
         const userDetails = await UserModel.findOne({ email: user });
 
         const cartItems = userDetails.cart.items;
-        const CartProductIds = cartItems.map((items) => items.productId);
+        // const CartProductIds = cartItems.map((items) => items.productId);
         
         const cartItem = userDetails.cart.items.id(cartId);
         const cartQuantityPre = cartItem.quantity;
         const CartQuantity = cartItem.quantity = data;
         const product = await ProductModel.findById(cartItem.productId);
+        const ProQuantity = +product.quantity;
         
         const count = CartQuantity - cartQuantityPre;
         product.quantity -= count;
         const cartPrice = cartItem.price = product.finalPrice * CartQuantity;
+        cartItem.realPrice = product.price * CartQuantity;
         await product.save();
         await userDetails.save();   
         
-        const productsIdDetails = await ProductModel.find({ _id: { $in: CartProductIds } });
-        let grantTotal = product.price * CartQuantity;
+        let grantTotal = cartItems.reduce((total, item)=> total +item.realPrice,0);
         const total = cartItems.reduce((total, item) => total + item.price, 0);
+        
+        const discount = grantTotal - total;        
 
-        const discount = grantTotal - cartPrice;
-
-
-
-        res.json({ cartPrice, grantTotal, total, discount });
+        res.json({ cartPrice, grantTotal, total, discount, ProQuantity });
     } catch (error) {
         console.log(error);
         res.status(500).json({ error: 'An error occurred while updating the quantity.' });
@@ -452,12 +466,14 @@ const Checkout = async (req, res) => {
         const user = req.session.user;
         const userFinder = req.session.email;
         const userDetails = await UserModel.findOne({ email: userFinder });
+        const currentUserID = userDetails._id;
         const cartItems = userDetails.cart.items;
         const cartCount = cartItems.length;
-        const coupon = await couponModle.find();
+        const coupons = await couponModle.find();
+        const coupon = coupons.filter(coupon => !coupon.userId.includes(currentUserID));
         const cartProductIds = cartItems.map(item => item.productId.toString());
         const cartProducts = await ProductModel.find({ _id: { $in: cartProductIds } });
-        const totalP_Price = cartProducts.reduce((total, items) => total + parseFloat(items.price), 0);
+        const totalP_Price = cartItems.reduce((total, items) => total + parseFloat(items.realPrice), 0);
         const address = userDetails.address;
         let totalPrice = 0;
         cartItems.map(item => totalPrice += item.price);
@@ -618,6 +634,7 @@ module.exports = {
     registerUser,
     validation,
     logOut,
+    ShopView,
     detaildView,
     Checkout,
     cartload,

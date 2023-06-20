@@ -204,13 +204,12 @@ body {
 .imageOne .text {
   position: absolute;
 }
-.whishlistCard{
-  background-color: #FFB155;
+.whishlistCard {
+  background-color: #ffb155;
   height: 47px;
   border-radius: 0px 0px 14px 14px;
   cursor: pointer;
 }
-
 
 .ProductCard {
   border-radius: 14px;
@@ -527,7 +526,7 @@ select:focus {
   font-weight: 500;
 }
 
-.productAddButton{
+.productAddButton {
   width: 20%;
   height: 33px;
   border-radius: 10px;
@@ -551,8 +550,7 @@ select:focus {
   outline: none;
 }
 
-
-.categoryDis input{
+.categoryDis input {
   height: 120px;
 }
 
@@ -923,7 +921,7 @@ input[type="number"]::-webkit-outer-spin-button {
 }
 
 .modal-content {
-  margin: 15% auto; 
+  margin: 15% auto;
   background-color: var(--primaryBgColllor);
   display: flex;
   align-items: center;
@@ -935,14 +933,14 @@ input[type="number"]::-webkit-outer-spin-button {
   max-height: 400px;
 }
 .modalWrapper {
-  background-color:white;
+  background-color: white;
   border-radius: 20px;
   padding: 10px;
   width: 95%;
   max-height: 400px;
   overflow: hidden;
 }
-.modelWrapper2{
+.modelWrapper2 {
   border-radius: 20px;
   padding: 10px;
   overflow: scroll;
@@ -950,10 +948,9 @@ input[type="number"]::-webkit-outer-spin-button {
   width: 95%;
   max-height: 400px;
 }
-.modelWrapper2 ul{
+.modelWrapper2 ul {
   cursor: pointer;
 }
-
 
 .close {
   color: #aaa;
@@ -1028,6 +1025,43 @@ input[type="number"]::-webkit-outer-spin-button {
   font-size: 13.5px;
 }
 
+/* Shop */
+.SideFilter{  
+  min-width: 300px;
+  max-height: 100vh;
+  background: #FFFFFF;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 14px;
+}
+
+.filterFont label{
+  font-size: 13.5px;
+}
+.filterBox {
+  width: 100%;
+  height: 100px;
+  background: #f4f4f4;
+  border-bottom: 1px solid #c2b5b5;
+  border-radius: 14px;
+}
+.filterCo{
+  width: 270px;
+}
+.filterSlider{
+width: 100%;
+background: #F3F1F1;
+border-bottom: 1px solid #F0F0F0;
+box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.25);
+border-radius: 14px;
+}
+
+/* slider */
+.Limit{
+  width: 100px;
+  background-color: white;
+  border: #888;
+  border-radius: 5px;
+}
 /* ----------------FOOTER---------------- */
 .footer {
   background: #373a47;

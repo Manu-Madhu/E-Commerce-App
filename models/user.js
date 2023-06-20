@@ -35,6 +35,9 @@ const userSchema = new mongoose.Schema({
                 type: Number,
                 default: 1
             },
+            realPrice: {
+                type: Number,
+            },
             price: {
                 type: Number,
                 require: true

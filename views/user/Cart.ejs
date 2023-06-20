@@ -29,24 +29,31 @@
                                                                 <img src="/productImages/<%= data.image[0]%>" alt=""
                                                                     class="img-fluid" width="70px"
                                                                     style="border-radius: 5px;">
-                                                                <h6 for="" class="fw-bold ps-3"
-                                                                    style="font-size: 13.5px;">
-                                                                    <%=data.p_name%>
-                                                                </h6>
+                                                                <div class="d-flex flex-column">
+                                                                    <h6 for="" class="fw-bold ps-3"
+                                                                        style="font-size: 13.5px;">
+                                                                        <%=data.p_name%>
+                                                                    </h6>
+                                                                    <span id="StockExceed"
+                                                                        class="text-danger fw-bold ps-3"></span>
+                                                                </div>
                                                             </a>
                                                             <span></span>
                                                         </td>
                                                         <td class="p-3">
-                                                            <input type="number" id="quantityUpdate-<%= cartItems[index]._id %>"
-                                                                class="d-flex align-items-center"
-                                                                data-item-id="<%= cartItems[index]._id %>" name="quantity"
+                                                            <input type="number"
+                                                                id="quantityUpdate-<%= cartItems[index]._id %>"
+                                                                class="d-flex align-items-center track-input"
+                                                                data-item-id="<%= cartItems[index]._id %>"
+                                                                name="quantity"
                                                                 value="<%= cartItems.find(item => item.productId.toString() === data._id.toString()).quantity %>"
                                                                 style="width: 50px; border: 2px solid #020202; border-radius: 4px;"
                                                                 onchange="updateQuantity(this,'<%= cartItems[index]._id %>')"
                                                                 min="1">
                                                         </td>
                                                         <td class="p-3">
-                                                            <h6 for="" class="fw-bold" id="cartPrice-<%= cartItems[index]._id %>">₹
+                                                            <h6 for="" class="fw-bold"
+                                                                id="cartPrice-<%= cartItems[index]._id %>">₹
                                                                 <%= ( cartItems.find(item=> item.productId.toString()
                                                                     === data._id.toString()).price) %>
                                                             </h6>
@@ -79,11 +86,11 @@
                                         </div>
                                         <div class="col-lg-6">
                                             <h6>:<span id="totalPrice1">
-                                                   ₹ <%= productsPrice %>
+                                                    ₹ <%= productsPrice %>
                                                 </span>
                                             </h6>
                                             <h6>:<span id="discountPrice">
-                                                ₹ <%= discount %></span>
+                                                    ₹ <%= discount %></span>
                                             </h6>
                                             <h5>:<span id="totalPrice2">
                                                     ₹ <%= totalPrice %>
@@ -257,22 +264,36 @@
             </div>
     </div>
     <script>
-        function updateQuantity(input,itemId) {
+        function updateQuantity(input, itemId) {
             const cartPrice = document.getElementById(`cartPrice-${itemId}`);
             const totalPrice1 = document.getElementById('totalPrice1');
             const totalPrice2 = document.getElementById('totalPrice2');
             const discount = document.getElementById('discountPrice');
-            let quantity = $(input).val();
-
+            const StockExceed = document.getElementById('StockExceed');
+            const inputElement = input;
+            let quantity = +$(input).val();
+            console.log("njan inputinta ala" + quantity)
             $.ajax({
                 url: '/cart/quantityUpdate/' + itemId,
                 method: 'POST',
                 data: { quantity: quantity },
                 success: function (response) {
+                    const totalQuantity = response.ProQuantity
+                    console.log("NJan Backend ala" + totalQuantity)
                     cartPrice.innerText = `₹ ${response.cartPrice}`;
                     totalPrice1.innerText = `₹ ${response.grantTotal}`;
                     totalPrice2.innerText = `₹ ${response.total}`;
                     discount.innerText = `₹ ${response.discount}`;
+                    if (totalQuantity < 5 && totalQuantity > 0) {
+                        StockExceed.style.display = "block";
+                        StockExceed.innerText = `Only${response.ProQuantity} left`;
+                        setTimeout(() => {
+                            StockExceed.style.display = "none";
+                        }, 1000)
+                    } else if (totalQuantity <= 0) {
+                        StockExceed.style.display = "block";
+                        StockExceed.innerText = "Out Of Stock";
+                    }
                 },
                 error: function (error) {
                     console.log('Error updating quantity:', error);

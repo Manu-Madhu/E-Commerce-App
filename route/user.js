@@ -21,6 +21,9 @@ Router.get('/',userMiddlewear.islogin,userMiddlewear.userIsBlocked, userControle
 // View Product detaild view
 Router.get('/detaildView/:id',userMiddlewear.userIsBlocked, userControler.detaildView);
 
+// Shop Page
+Router.get('/Shop',userMiddlewear.userCheking,userMiddlewear.userIsBlocked,userControler.ShopView )
+
 // profile 
 Router.get('/profile',userMiddlewear.userCheking,userMiddlewear.userIsBlocked, profileController.profile);
 Router.get('/profile/order',userMiddlewear.userCheking,userMiddlewear.userIsBlocked, profileController.order);
