@@ -5,6 +5,7 @@ const OrderModel = require('../models/order');
 const bcrypt = require('bcrypt');
 const Razorpay = require('razorpay');
 const couponModle = require('../models/coupon');
+const categoryModel = require('../models/category');
 
 // Twilio
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
@@ -215,17 +216,33 @@ const successTick = (req, res) => {
 }
 
 // Shop
-const ShopView =async(req,res)=>{
-  try{
-    const product = await ProductModel.find();
-    const userDetails = await UserModel.findOne({email:req.session.email});
-    const cart = userDetails.cart.items;
-    const cartCount = cart.length;
-    res.render('user/Shop',{ title: "Shop", user: req.session.user, cartCount, product });
-  }catch(error){
-   console.log(error);
-   res.status('500'.send("Internal server Error On ShopView"))
-  }
+const ShopView = async (req, res) => {
+    try {
+        const product = await ProductModel.find();
+        const userDetails = await UserModel.findOne({ email: req.session.email });
+        const category = await categoryModel.find();
+        const cart = userDetails.cart.items;
+        const cartCount = cart.length;
+        res.render('user/Shop', { title: "Shop", user: req.session.user, cartCount, product, category });
+    } catch (error) {
+        console.log(error);
+        res.status('500'.send("Internal server Error On ShopView"))
+    }
+}
+const productFilter = async (req, res) => {
+    try {
+        const categoryName = JSON.parse(req.body.categoryName);
+        if(categoryName.length ==0 ){
+            const product = await ProductModel.find();
+            res.json(product);
+        }else{
+            const productByCata = await ProductModel.find({category:{$in:categoryName}});
+            res.json(productByCata);
+        }         
+    } catch (error) {
+        console.log(error);
+        res.json("no data found")
+    }
 }
 
 // Detaild view
@@ -387,24 +404,24 @@ const cartQuantityUpdate = async (req, res) => {
 
         const cartItems = userDetails.cart.items;
         // const CartProductIds = cartItems.map((items) => items.productId);
-        
+
         const cartItem = userDetails.cart.items.id(cartId);
         const cartQuantityPre = cartItem.quantity;
         const CartQuantity = cartItem.quantity = data;
         const product = await ProductModel.findById(cartItem.productId);
         const ProQuantity = +product.quantity;
-        
+
         const count = CartQuantity - cartQuantityPre;
         product.quantity -= count;
         const cartPrice = cartItem.price = product.finalPrice * CartQuantity;
         cartItem.realPrice = product.price * CartQuantity;
         await product.save();
-        await userDetails.save();   
-        
-        let grantTotal = cartItems.reduce((total, item)=> total +item.realPrice,0);
+        await userDetails.save();
+
+        let grantTotal = cartItems.reduce((total, item) => total + item.realPrice, 0);
         const total = cartItems.reduce((total, item) => total + item.price, 0);
-        
-        const discount = grantTotal - total;        
+
+        const discount = grantTotal - total;
 
         res.json({ cartPrice, grantTotal, total, discount, ProQuantity });
     } catch (error) {
@@ -638,6 +655,7 @@ module.exports = {
     detaildView,
     Checkout,
     cartload,
+    productFilter,
     cart,
     cartDelete,
     addressAdding,
@@ -645,6 +663,7 @@ module.exports = {
     savingData,
     cartQuantityUpdate,
     coupons,
+    ShopUnchecked,
     WhishListLoad,
     addingWhishList,
     addingWhishListtoCart,

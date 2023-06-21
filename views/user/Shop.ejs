@@ -46,23 +46,16 @@
                         <!-- category  -->
                         <div class="container filterCo p-3">
                             <span style="font-weight: 550;">CATEGORIES</span>
-                            <div class="px-2 filterFont">
-                                <div class="pt-2">
-                                    <input type="checkbox">
-                                    <label for="">Pants</label>
-                                </div>
-                                <div class="">
-                                    <input type="checkbox">
-                                    <label for="">Saree</label>
-                                </div>
-                                <div class="">
-                                    <input type="checkbox">
-                                    <label for="">Lehankha</label>
-                                </div>
-                                <div class="">
-                                    <input type="checkbox">
-                                    <label for="">Lehankha</label>
-                                </div>
+                            <div class="px-2 filterFont" style="max-height: 150px; overflow-y: auto;">
+                                <%category.forEach((data,index)=>{%>
+                                    <div class="pt-2">
+                                        <input type="checkbox" id="category-<%= data.categoryName %>"
+                                            value="<%= index %>" class="category-checkbox">
+                                        <label for="category-<%= index %>">
+                                            <%=data.categoryName%>
+                                        </label>
+                                    </div>
+                                    <%})%>
                             </div>
                         </div>
                         <!-- line -->
@@ -100,42 +93,46 @@
                         </div>
                     </div>
                     <div
-                        class="col-lg-9 col-md-9 container p-0 m-0 d-flex flex-column align-items-start justify-content-start">
-                        <div class="row d-flex align-items-center justify-content-between">
-                            <div class="container bg-white ProductCard m-2 mx-4">
-                                <!-- image rendering  -->
-                                <a href="#">
-                                    <div class="cardImage mb-2 d-flex align-items-center justify-content-center">
-                                        <img src="/assets/product/4.jpg" alt="Product Image">
-                                    </div>
-                                </a>
-                                <div class="px-3">
-                                    <span class="text-dark">
-                                        product name
-                                    </span>
-                                    <div class="p_price d-flex justify-content-between">
-                                        <div class="price text-danger">₹ <text>
-                                                1400
-                                            </text> &nbsp; <span>₹ 1160</span></div>
-                                        <div class="favor" style="cursor: pointer;">
-                                            <i class="fa-regular fa-heart"></i>
+                        class=" col-lg-9 col-md-9 container p-0 m-0 d-flex flex-column align-items-start justify-content-start">
+                        <div id="product-container" class="row d-flex align-items-center justify-content-between">
+                            <% product.forEach((data,index)=>{%>
+                                <div class="container bg-white ProductCard m-2 mx-4"
+                                    data-category-id="<%= data.categoryId %>">
+                                    <!-- image rendering  -->
+                                    <a href="/detaildView/<%=data._id%>">
+                                        <div class="cardImage mb-2 d-flex align-items-center justify-content-center">
+                                            <img src="/productImages/<%=data.image[0]%>" alt="Product Image">
                                         </div>
-                                    </div>
-                                    <div class="rating d-flex align-items-center">
-                                        <div class="star d-flex align-items-center">
-                                            <img src="/assets/product/star.png" alt="">
-                                            <img src="/assets/product/star.png" alt="">
-                                            <img src="/assets/product/star.png" alt="">
-                                            <img src="/assets/product/star.png" alt="">
-                                            <img src="/assets/product/star.png" alt="">
+                                    </a>
+                                    <div class="px-3">
+                                        <span class="text-dark">
+                                            <%= data.p_name%>
+                                        </span>
+                                        <div class="p_price d-flex justify-content-between">
+                                            <div class="price text-danger">₹ <text>
+                                                    <%= data.finalPrice%>
+                                                </text> &nbsp; <span>₹ <%=data.price%></span></div>
+                                            <div class="favor" style="cursor: pointer;">
+                                                <i class="fa-regular fa-heart"></i>
+                                            </div>
                                         </div>
-                                        <div class="value ms-2">(75)</div>
+                                        <div class="rating d-flex align-items-center">
+                                            <div class="star d-flex align-items-center">
+                                                <img src="/assets/product/star.png" alt="">
+                                                <img src="/assets/product/star.png" alt="">
+                                                <img src="/assets/product/star.png" alt="">
+                                                <img src="/assets/product/star.png" alt="">
+                                                <img src="/assets/product/star.png" alt="">
+                                            </div>
+                                            <div class="value ms-2">(75)</div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                                <%})%>
                         </div>
-                        <div class="d-flex align-items-center justify-content-center w-100">
-                            <nav aria-label="..." class="width:100">
+                        <!-- Page Nation -->
+                        <div id="pagination-container"class="d-flex align-items-center justify-content-center w-100 mt-5">
+                            <nav aria-label="..." class="d-flex align-items-center justify-content-center">
                                 <ul class="pagination">
                                     <li class="page-item">
                                         <a class="page-link" href="#" tabindex="-1">Previous</a>
@@ -155,4 +152,66 @@
                 </div>
             </div>
     </div>
+<!-- FILTER CHECKBOX -->
+    <script>
+        const checkboxes = document.querySelectorAll('[id^="category-"]');
+        checkboxes.forEach((checkbox) => {
+            checkbox.addEventListener('change', function () {
+                const checkedCategories = [];
+                checkboxes.forEach((checkbox) => {
+                    if (checkbox.checked) {
+                        const categoryName = checkbox.id.replace('category-', '');
+                        checkedCategories.push(categoryName);
+                    }
+                })
+                $.ajax({
+                    type: 'post',
+                    url: "/productFilter",
+                    data: { categoryName: JSON.stringify(checkedCategories) },
+                    success: function (res) {
+                        const productContainer = document.getElementById('product-container');
+                        productContainer.innerHTML = '';
+
+                        res.forEach(function (data) {
+                            const item = `
+                             <div class="container bg-white ProductCard m-2 mx-4"
+                                    data-category-id=${data._id}>
+                                    <a href="/detaildView/${data._id}">
+                                        <div class="cardImage mb-2 d-flex align-items-center justify-content-center">
+                                            <img src="/productImages/${data.image[0]}" alt="Product Image">
+                                        </div>
+                                    </a>
+                                    <div class="px-3">
+                                        <span class="text-dark">
+                                            ${data.p_name}
+                                        </span>
+                                        <div class="p_price d-flex justify-content-between">
+                                            <div class="price text-danger">₹ <text>
+                                                    ${data.finalPrice}
+                                                </text> &nbsp; <span>₹ ${data.price}</span></div>
+                                            <div class="favor" style="cursor: pointer;">
+                                                <i class="fa-regular fa-heart"></i>
+                                            </div>
+                                        </div>
+                                        <div class="rating d-flex align-items-center">
+                                            <div class="star d-flex align-items-center">
+                                                <img src="/assets/product/star.png" alt="">
+                                                <img src="/assets/product/star.png" alt="">
+                                                <img src="/assets/product/star.png" alt="">
+                                                <img src="/assets/product/star.png" alt="">
+                                                <img src="/assets/product/star.png" alt="">
+                                            </div>
+                                            <div class="value ms-2">(75)</div>
+                                        </div>
+                                    </div>
+                                   
+                                </div>
+                             `
+                            productContainer.innerHTML += item
+                        });
+                    }
+                })
+            });
+        });
+    </script>
     <%- include("../partials/footer.ejs")%>

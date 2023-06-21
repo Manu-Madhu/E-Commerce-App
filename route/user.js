@@ -22,7 +22,8 @@ Router.get('/',userMiddlewear.islogin,userMiddlewear.userIsBlocked, userControle
 Router.get('/detaildView/:id',userMiddlewear.userIsBlocked, userControler.detaildView);
 
 // Shop Page
-Router.get('/Shop',userMiddlewear.userCheking,userMiddlewear.userIsBlocked,userControler.ShopView )
+Router.get('/Shop',userMiddlewear.userCheking,userMiddlewear.userIsBlocked,userControler.ShopView );
+Router.post('/productFilter',userControler.productFilter)
 
 // profile 
 Router.get('/profile',userMiddlewear.userCheking,userMiddlewear.userIsBlocked, profileController.profile);
