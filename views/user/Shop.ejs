@@ -33,8 +33,7 @@
                 </div>
                 <!-- content -->
                 <div class="row p-3 d-flex justify-content-between">
-                    <div
-                        class="col-lg-2 col-md-2 p-3 mt-2 container SideFilter bg-white d-flex flex-column align-items-center">
+                    <div class="col-lg-2 col-md-2 p-3 mt-2 container SideFilter bg-white d-flex flex-column align-items-center">
                         <div class="filterBox d-flex justify-content-between p-3">
                             <span style="font-weight: 550;">FILTER</span>
                             <span style="font-weight: 550;">
@@ -59,11 +58,11 @@
                             </div>
                         </div>
                         <!-- line -->
-                        <div class="container">
+                        <!-- <div class="container">
                             <hr class="line bg-dark">
-                        </div>
+                        </div> -->
                         <!--Rate Range -->
-                        <div class="filterSlider d-flex flex-column justify-content-between p-3">
+                        <!-- <div class="filterSlider d-flex flex-column justify-content-between p-3">
                             <span style="font-weight: 550;">PRICE</span>
                             <div class="pt-2" style="width: 100%;">
                                 <input type="range" style="width: 100%;">
@@ -72,7 +71,7 @@
                                 <div class="Limit p-2"><span>1000</span></div>
                                 <div class="Limit p-2"><span>1000</span></div>
                             </div>
-                        </div>
+                        </div> -->
                         <!-- line -->
                         <div class="container">
                             <hr class="line bg-dark">
@@ -92,9 +91,8 @@
                             </div>
                         </div>
                     </div>
-                    <div
-                        class=" col-lg-9 col-md-9 container p-0 m-0 d-flex flex-column align-items-start justify-content-start">
-                        <div id="product-container" class="row d-flex align-items-center justify-content-between">
+                    <div class=" col-lg-9 col-md-9 container p-0 m-0 d-flex flex-column align-items-start justify-content-start">
+                        <div id="product-container" class="row d-flex align-items-center justify-content-start">
                             <% product.forEach((data,index)=>{%>
                                 <div class="container bg-white ProductCard m-2 mx-4"
                                     data-category-id="<%= data.categoryId %>">
@@ -134,17 +132,27 @@
                         <div id="pagination-container"class="d-flex align-items-center justify-content-center w-100 mt-5">
                             <nav aria-label="..." class="d-flex align-items-center justify-content-center">
                                 <ul class="pagination">
-                                    <li class="page-item">
-                                        <a class="page-link" href="#" tabindex="-1">Previous</a>
-                                    </li>
-                                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                    <li class="page-item active">
-                                        <a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>
-                                    </li>
-                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                    <li class="page-item">
-                                        <a class="page-link" href="#">Next</a>
-                                    </li>
+                                    <% if (currentPage > 1) { %>
+                                        <li class="page-item text-dark">
+                                            <a class="page-link" href="/shop?page=<%= currentPage - 1 %>" tabindex="-1">Previous</a>
+                                        </li>
+                                    <% } %>
+                                    <% for (let page = 1; page <= totalPages; page++) { %>
+                                        <% if (page === currentPage) { %>
+                                            <li class="page-item active">
+                                                <a class="page-link" href="/shop?page=<%= page %>"><%= page %></a>
+                                            </li>
+                                        <% } else { %>
+                                            <li class="page-item">
+                                                <a class="page-link" href="/shop?page=<%= page %>"><%= page %></a>
+                                            </li>
+                                        <% } %>
+                                    <% } %>
+                                    <% if (currentPage < totalPages) { %>
+                                        <li class="page-item">
+                                            <a class="page-link" href="/shop?page=<%= currentPage + 1 %>">Next</a>
+                                        </li>
+                                    <% } %>
                                 </ul>
                             </nav>
                         </div>

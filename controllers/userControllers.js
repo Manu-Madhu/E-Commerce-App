@@ -212,18 +212,26 @@ const OTPValidation = async (req, res) => {
 // Success
 const successTick = (req, res) => {
     let cartCount;
-    res.render('user/successTick', { title: "Account", succ: "SuccessFully Create Your Account", user: req.session.user, cartCount })
+    res.render('user/successTick', { title: "Account", succ: "Success.....", user: req.session.user, cartCount })
 }
 
 // Shop
 const ShopView = async (req, res) => {
     try {
-        const product = await ProductModel.find();
+
+        const currentPage = parseInt(req.query.page) || 1;
+        const itemsPerPage = 12;
+        const totalProduct = await ProductModel.find();
+        const totalPages = Math.ceil(totalProduct.length / itemsPerPage);
+        const skip = (currentPage - 1) * itemsPerPage;
+        const product = await ProductModel.find().skip(skip).limit(itemsPerPage);
+
         const userDetails = await UserModel.findOne({ email: req.session.email });
         const category = await categoryModel.find();
         const cart = userDetails.cart.items;
         const cartCount = cart.length;
-        res.render('user/Shop', { title: "Shop", user: req.session.user, cartCount, product, category });
+
+        res.render('user/Shop', { title: "Shop", user: req.session.user, cartCount, product, category, totalPages, currentPage });
     } catch (error) {
         console.log(error);
         res.status('500'.send("Internal server Error On ShopView"))
@@ -232,13 +240,13 @@ const ShopView = async (req, res) => {
 const productFilter = async (req, res) => {
     try {
         const categoryName = JSON.parse(req.body.categoryName);
-        if(categoryName.length ==0 ){
+        if (categoryName.length == 0) {
             const product = await ProductModel.find();
             res.json(product);
-        }else{
-            const productByCata = await ProductModel.find({category:{$in:categoryName}});
+        } else {
+            const productByCata = await ProductModel.find({ category: { $in: categoryName } });
             res.json(productByCata);
-        }         
+        }
     } catch (error) {
         console.log(error);
         res.json("no data found")

@@ -352,7 +352,7 @@
                                     url: "/saveOrderData",
                                     success: function (response) {
                                         console.log(response)
-                                        window.location.href = 'http://localhost:5000/addCategory';
+                                        window.location.href = 'http://localhost:5000/profile/order';
                                     }
                                 })
                             },
@@ -379,8 +379,8 @@
                             // Reset the UI or perform any other necessary action
                         });
                         rzp1.open();
-                    } else if (res === 'successFully cod Playsed') {
-                        window.location.href = "/cart"
+                    } else if (res === 'successFully cod Completed') {
+                        window.location.href = "http://localhost:5000/success"
                     }
                 }
             })
