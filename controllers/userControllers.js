@@ -663,7 +663,6 @@ module.exports = {
     savingData,
     cartQuantityUpdate,
     coupons,
-    ShopUnchecked,
     WhishListLoad,
     addingWhishList,
     addingWhishListtoCart,
