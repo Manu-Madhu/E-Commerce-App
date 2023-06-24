@@ -7,7 +7,7 @@
                     <div class="DashBoardUl container col-md-2 p-0 m-0 bg-white d-flex pt-4 sideBar">
                         <ul class="d-flex flex-column">
                             <li class="dashOther fw-bold p-1 m-2 ps-4 ">
-                                <img src="/assets/admin/d1.png" alt="" class="img-fluid me-2">
+                                <img src="/assets/admin/d9.png" alt="" class="img-fluid me-2">
                                 <span><a class="text-decoration-none" style="color: #cdcdcd;"
                                         href="/admin/Dashboard">DashBoard</a></span>
                             </li>
@@ -65,21 +65,39 @@
                                             <label for="">Category*</label>
                                             <!-- <input type="text" class="mt-1 py-2" name="category"
                                                 placeholder="Category" required> -->
-                                            <select name="category" id="" class="mt-1 py-2">
+                                            <select name="category" id="category" class="mt-1 py-2">
                                                 <option value="<%= product.category[0]%>">
                                                     <%= product.category[0] %>
                                                 </option>
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="row d-flex mb-3">
-                                        <div class='col-md-6 d-flex flex-column'>
-                                            <label for="">Price*</label>
-                                            <input type="tel" class="mt-1 py-2" name="price"
-                                                value="<%= product.price %>" placeholder="price" pattern="[0-9]+"
-                                                title="Please enter numbers only" required>
+                                    <div class="row d-flex mb-3 gap-4 p-0">
+                                        <div class='row col-md-6 col-12 p-0 d-flex align-items-center justify-content-between'>
+                                            <div class="col-md-6 col-12 p-0 ps-4 d-flex flex-column">
+                                                <label for="">Price*</label>
+                                                <input id="price" type="tel" class="mt-1 py-2" name="price"
+                                                    placeholder="Price" value="<%= product.price %>" pattern="[0-9]+"
+                                                    title="Please enter numbers only" required>
+                                            </div>
+                                            <div class="col-md-5 col-12 d-flex flex-column p-0">
+                                                <label for="">Category Offer Price*</label>
+                                                <input value="<%= product.c_offerPrice %>" id="offerPrice" type="" class="mt-1 py-2" name="c_offerPrice"
+                                                    placeholder="Offer Price" required>
+                                            </div>
                                         </div>
-                                        <div class="col-md-6 d-flex flex-column">
+                                        <div class='row col-md-6 col-12 p-0 d-flex align-items-center justify-content-between'>
+                                            <div class="col-md-4 col-12 ps-4 d-flex flex-column p-0">
+                                                <label for="">Product Offer*</label>
+                                                <input id="ProductOffer" value="<%= product.productOffer %>" type="" class="mt-1 py-2" name="productOffer"
+                                                    placeholder="Product Offer" required>
+                                            </div>
+                                            <div class="col-md-4 col-12 d-flex flex-column p-0">
+                                                <label for="">Final price*</label>
+                                                <input id="FinalPrice" value="<%= product.finalPrice %>"  type="" class="mt-1 py-2" name="finalPrice"
+                                                    placeholder="Final Price" required>
+                                            </div>
+                                        <div class="col-md-3 col-12 p-0 d-flex flex-column">
                                             <label for="">Quantity *</label>
                                             <input type="number" class="mt-1 py-2" name="quantity"
                                                 value="<%= product.quantity%>" min="0" pattern="[0-9]"
@@ -106,7 +124,43 @@
             </div>
     </div>
     </div>
-
-    <script src="/js/P_Image.js"></script>
+    <script>
+        const priceInput = document.getElementById('price');
+        const offerPrice = document.getElementById('offerPrice');
+        const selectedCategory = document.getElementById('category');
+        const prodctOfferInput  = document.getElementById('ProductOffer');
+        const FinalPrice  = document.getElementById('FinalPrice');
+        const value = selectedCategory.value;
+        priceInput.addEventListener('input', function () {
+            const price = priceInput.value;
+            console.log(price)
+            fetch('/admin/Category_OfferValue', {
+                method: 'post',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    price: price,
+                    value: value
+                })
+            })
+                .then(res => res.json())
+                .then(data => {
+                    offerPrice.value = data
+                })
+                .catch(error => {
+                    console.log(error)
+                })
+        });
+        prodctOfferInput.addEventListener('input',function(){
+            const productDiscount = prodctOfferInput.value;
+            const value = offerPrice.value
+            console.log(value)
+            const p_discount = productDiscount/100;
+            const finalProductPrice = Math.floor(value - (value*p_discount));
+            console.log(finalProductPrice)
+            FinalPrice.value = finalProductPrice;
+        })
+    </script>
 
     <%- include('../partials/adminfooter.ejs')%>

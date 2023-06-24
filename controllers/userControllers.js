@@ -6,6 +6,8 @@ const bcrypt = require('bcrypt');
 const Razorpay = require('razorpay');
 const couponModle = require('../models/coupon');
 const categoryModel = require('../models/category');
+const orderModel = require('../models/order');
+
 
 // Twilio
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
@@ -27,11 +29,12 @@ const pwdEncription = (password) => {
 // HOME
 const home = async (req, res) => {
     try {
-        const data = await ProductModel.find();
+        const data = await ProductModel.find({ availability: true }).sort({ _id: -1 }).limit(8);
+        const dataNormal = await ProductModel.find({ availability: true }).limit(8);
         const userData = await UserModel.findOne({ email: req.session.email });
         let cart = userData.cart.items;
         let cartCount = cart.length;
-        res.render('user/Home', { log: "LogOut", title: "Home", user: req.session.user, data, cartCount })
+        res.render('user/Home', { log: "LogOut", title: "Home", user: req.session.user, data, dataNormal, cartCount })
     } catch (error) {
         console.log(error);
         res.status(500).send("internal error")
@@ -52,8 +55,6 @@ const validation = async (req, res) => {
             if (userData) {
                 const VPWD = await bcrypt.compare(password, userData.password);
                 if (VPWD) {
-                    req.session.user = userData.name;
-                    req.session.email = userData.email;
                     const userNumber = userData.number;
                     const number = userNumber;
                     let cartCount;
@@ -73,6 +74,8 @@ const validation = async (req, res) => {
                         })
                         newUser.save()
                             .then(() => {
+                                req.session.user = userData.name;
+                                req.session.email = userData.email;
                                 res.render('user/verification', { user: req.session.user, cartCount, signinPage });
                             })
                             .catch((error) => {
@@ -96,7 +99,6 @@ const validation = async (req, res) => {
         res.render('user/login', { fail: "Pease Use proper credentials", user: req.session.user })
     }
 }
-
 
 // REGISTRATION
 const signup = (req, res) => {
@@ -187,6 +189,9 @@ const OTPValidation = async (req, res) => {
         await OTP.find({ number: code })
             .then((fount) => {
                 if (fount.length > 0) {
+                    req.session.user.isVerified = true;
+                    req.session.email.isVerified = true;
+                    req.session.save();
                     res.redirect("/success")
                     // IF FOUND, DELETE THE OTP CODE FROM DB
                     OTP.findOneAndDelete({ number: code })
@@ -214,23 +219,55 @@ const successTick = (req, res) => {
     let cartCount;
     res.render('user/successTick', { title: "Account", succ: "Success.....", user: req.session.user, cartCount })
 }
+// Search
+const Search = async (req, res) => {
+    try {
+        const key = req.query.q;
+        const searchPattern = new RegExp(key, 'i');
+        const searchedProducts = await ProductModel.find({ p_name: searchPattern }).exec();
+        const otherProducts = await ProductModel.find({ p_name: { $not: searchPattern } }).exec();
+        const products = searchedProducts.concat(otherProducts);
+        res.json(products);
+    } catch (err) {
+        console.log(`Error while performing search: ${err}`);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+};
+const orderSearch = async (req, res) => {
+    try {
+        const key = req.query.q;
+        console.log(key)
+        const searchPattern = new RegExp(key, 'i');
+        const order = await orderModel.find();
+        console.log(order)
+        const searchedProducts = await orderModel.find({ p_name: searchPattern }).exec();
+        console.log(searchedProducts)
+        const otherProducts = await ProductModel.find({ p_name: { $not: searchPattern } }).exec();
+        const products = searchedProducts.concat(otherProducts);
+        res.json(products);
+    } catch (error) {
+        console.log(error)
+    }
+}
 
 // Shop
 const ShopView = async (req, res) => {
     try {
 
         const currentPage = parseInt(req.query.page) || 1;
-        const itemsPerPage = 12;
+        const itemsPerPage = 15;
         const totalProduct = await ProductModel.find();
         const totalPages = Math.ceil(totalProduct.length / itemsPerPage);
         const skip = (currentPage - 1) * itemsPerPage;
-        const product = await ProductModel.find().skip(skip).limit(itemsPerPage);
+        const product = await ProductModel.find({ availability: true }).skip(skip).limit(itemsPerPage);
 
         const userDetails = await UserModel.findOne({ email: req.session.email });
         const category = await categoryModel.find();
-        const cart = userDetails.cart.items;
-        const cartCount = cart.length;
-
+        let cartCount, cart;
+        if (userDetails) {
+            cart = userDetails.cart.items;
+            cartCount = cart.length;
+        }
         res.render('user/Shop', { title: "Shop", user: req.session.user, cartCount, product, category, totalPages, currentPage });
     } catch (error) {
         console.log(error);
@@ -241,7 +278,7 @@ const productFilter = async (req, res) => {
     try {
         const categoryName = JSON.parse(req.body.categoryName);
         if (categoryName.length == 0) {
-            const product = await ProductModel.find();
+            const product = await ProductModel.find({ availability: true });
             res.json(product);
         } else {
             const productByCata = await ProductModel.find({ category: { $in: categoryName } });
@@ -250,6 +287,46 @@ const productFilter = async (req, res) => {
     } catch (error) {
         console.log(error);
         res.json("no data found")
+    }
+}
+const sorting = async (req, res) => {
+    try {
+        const selectedValue = req.body.selectedValue;
+        const currentPage = parseInt(req.query.page) || 1;
+        const itemsPerPage = 15;
+        const totalProduct = await ProductModel.find();
+        const totalPages = Math.ceil(totalProduct.length / itemsPerPage);
+        const skip = (currentPage - 1) * itemsPerPage;
+        console.log(selectedValue);
+        if (selectedValue == 'latest') {
+            const product = await ProductModel.find().sort({ _id: -1 }).limit(itemsPerPage);
+            res.json(product);
+        } else if (selectedValue == "heighToLow") {
+            const product = await ProductModel.aggregate([
+                {
+                    $addFields: {
+                        finalPriceNumeric: { $toDouble: "$finalPrice" }
+                    }
+                },
+                { $sort: { finalPriceNumeric: -1 } },
+                { $limit: itemsPerPage }
+            ]);
+            res.json(product);
+        } else if (selectedValue == "lowToHigh") {
+            const product = await ProductModel.aggregate([
+                {
+                    $addFields: {
+                        finalPriceNumeric: { $toDouble: "$finalPrice" }
+                    }
+                },
+                { $sort: { finalPriceNumeric: 1 } },
+                { $limit: itemsPerPage }
+            ]);
+            res.json(product);
+        }
+    } catch (error) {
+        console.log(error);
+        res.json("Failed");
     }
 }
 
@@ -372,7 +449,6 @@ const cartload = async (req, res) => {
         res.status(500).send("Internal error from cart side");
     }
 };
-
 const cart = async (req, res) => {
     try {
         const id = req.params.id;
@@ -402,7 +478,6 @@ const cart = async (req, res) => {
         console.log('Error adding to cart:', error);
     }
 };
-
 const cartQuantityUpdate = async (req, res) => {
     try {
         const cartId = req.params.itemId;
@@ -437,7 +512,6 @@ const cartQuantityUpdate = async (req, res) => {
         res.status(500).json({ error: 'An error occurred while updating the quantity.' });
     }
 };
-
 const cartDelete = async (req, res) => {
     try {
         const id = req.params.id;
@@ -509,7 +583,6 @@ const Checkout = async (req, res) => {
         console.log(error);
     }
 }
-
 const addressAdding = async (req, res) => {
     try {
         const email = req.session.email;
@@ -556,10 +629,11 @@ const orderSuccess = async (req, res) => {
         const addressId = data.selectedAddress;
         const method = data.method;
         const amount = data.amount;
-        // Data cillecting for db Storing
+        // Data collecting for db Storing
         const productData = cartProducts.map(product => ({
             p_name: product.p_name,
-            price: product.price,
+            realPrice: product.price,
+            price: amount,
             description: product.description,
             image: product.image,
             category: product.category,
@@ -659,7 +733,9 @@ module.exports = {
     registerUser,
     validation,
     logOut,
+    Search,
     ShopView,
+    sorting,
     detaildView,
     Checkout,
     cartload,
@@ -674,5 +750,6 @@ module.exports = {
     WhishListLoad,
     addingWhishList,
     addingWhishListtoCart,
-    OTPValidationSignIn
+    OTPValidationSignIn,
+    orderSearch
 }

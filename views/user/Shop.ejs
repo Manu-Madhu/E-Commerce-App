@@ -33,7 +33,9 @@
                 </div>
                 <!-- content -->
                 <div class="row p-3 d-flex justify-content-between">
-                    <div class="col-lg-2 col-md-2 p-3 mt-2 container SideFilter bg-white d-flex flex-column align-items-center">
+                    <!-- Filter Part -->
+                    <div
+                        class="col-lg-2 col-md-2 p-3 mt-2 container SideFilter bg-white d-flex flex-column align-items-center">
                         <div class="filterBox d-flex justify-content-between p-3">
                             <span style="font-weight: 550;">FILTER</span>
                             <span style="font-weight: 550;">
@@ -43,11 +45,11 @@
                             </span>
                         </div>
                         <!-- category  -->
-                        <div class="container filterCo p-3">
+                        <div class="container filterCo p-4">
                             <span style="font-weight: 550;">CATEGORIES</span>
-                            <div class="px-2 filterFont" style="max-height: 150px; overflow-y: auto;">
+                            <div class="px-2 pt-2 filterFont" style="max-height: 150px; overflow-y: auto;">
                                 <%category.forEach((data,index)=>{%>
-                                    <div class="pt-2">
+                                    <div class="">
                                         <input type="checkbox" id="category-<%= data.categoryName %>"
                                             value="<%= index %>" class="category-checkbox">
                                         <label for="category-<%= index %>">
@@ -57,36 +59,38 @@
                                     <%})%>
                             </div>
                         </div>
-                        <!-- line -->
-                        <!-- <div class="container">
-                            <hr class="line bg-dark">
-                        </div> -->
                         <!--Rate Range -->
-                        <!-- <div class="filterSlider d-flex flex-column justify-content-between p-3">
-                            <span style="font-weight: 550;">PRICE</span>
-                            <div class="pt-2" style="width: 100%;">
-                                <input type="range" style="width: 100%;">
-                            </div>
-                            <div class="pt-1 d-flex justify-content-between">
-                                <div class="Limit p-2"><span>1000</span></div>
-                                <div class="Limit p-2"><span>1000</span></div>
-                            </div>
-                        </div> -->
                         <!-- line -->
                         <div class="container">
                             <hr class="line bg-dark">
                         </div>
-                        <!-- Coustom Rating -->
-                        <div class="container filterCo p-3">
-                            <span style="font-weight: 550;">COUSTOMER RATINGS</span>
+                        <!-- Sorting -->
+                        <div class="container filterCo px-4">
+                            <span style="font-weight: 550;">CATEGORIES</span>
+                            <div class="px-2 pt-2 filterFont">
+                                <select id="sortSelect" style="width: 100%; height: 40px;font-size: 13.5px;">
+                                    <option value="latest">Select</option>
+                                    <option value="latest">Latest Arrival</option>
+                                    <option value="heighToLow">Heigher To Lower</option>
+                                    <option value="lowToHigh">Lower To Hegher</option>
+                                </select>
+                            </div>
+                        </div>
+                        <!-- line -->
+                        <div class="container">
+                            <hr class="line bg-dark">
+                        </div>
+                        <!-- Rating -->
+                        <div class="container filterCo px-4">
+                            <span style="font-weight: 550;">PRICE SORTING</span>
                             <div class="px-2 filterFont">
-                                <div class="pt-2">
+                                <div class="">
                                     <input type="checkbox">
                                     <label for="">4 Star Above</label>
                                 </div>
                                 <div class="">
                                     <input type="checkbox">
-                                    <label for="">3 Star Above</label>
+                                    <label for="">3 Start Above</label>
                                 </div>
                             </div>
                         </div>
@@ -126,31 +130,40 @@
                                         </div>
                                     </div>
                                 </div>
-                                <%})%>
+                            <%})%>
                         </div>
                         <!-- Page Nation -->
-                        <div id="pagination-container"class="d-flex align-items-center justify-content-center w-100 mt-5">
+                        <div id="pagination-container"
+                            class="d-flex align-items-center justify-content-center w-100 mt-5">
                             <nav aria-label="..." class="d-flex align-items-center justify-content-center">
                                 <ul class="pagination">
-                                    <% if (currentPage > 1) { %>
+                                    <% if (currentPage> 1) { %>
                                         <li class="page-item text-dark">
-                                            <a class="page-link" href="/shop?page=<%= currentPage - 1 %>" tabindex="-1">Previous</a>
+                                            <a class="page-link" href="/shop?page=<%= currentPage - 1 %>" tabindex="-1">
+                                                Previous
+                                            </a>
                                         </li>
-                                    <% } %>
-                                    <% for (let page = 1; page <= totalPages; page++) { %>
-                                        <% if (page === currentPage) { %>
-                                            <li class="page-item active">
-                                                <a class="page-link" href="/shop?page=<%= page %>"><%= page %></a>
-                                            </li>
-                                        <% } else { %>
-                                            <li class="page-item">
-                                                <a class="page-link" href="/shop?page=<%= page %>"><%= page %></a>
-                                            </li>
                                         <% } %>
-                                    <% } %>
-                                    <% if (currentPage < totalPages) { %>
+                                            <% for (let page=1; page <=totalPages; page++) { %>
+                                                <% if (page===currentPage) { %>
+                                                    <li class="page-item active">
+                                                        <a class="page-link" href="/shop?page=<%= page %>">
+                                                            <%= page %>
+                                                        </a>
+                                                    </li>
+                                                <% } else { %>
+                                                    <li class="page-item">
+                                                       <a class="page-link" href="/shop?page=<%= page %>">
+                                                            <%= page %>
+                                                       </a>
+                                                    </li>
+                                                <% } %>
+                                            <% } %>
+                                      <% if (currentPage < totalPages) { %>
                                         <li class="page-item">
-                                            <a class="page-link" href="/shop?page=<%= currentPage + 1 %>">Next</a>
+                                         <a class="page-link" href="/shop?page=<%= currentPage + 1 %>">
+                                            Next
+                                         </a>
                                         </li>
                                     <% } %>
                                 </ul>
@@ -160,7 +173,7 @@
                 </div>
             </div>
     </div>
-<!-- FILTER CHECKBOX -->
+    <!-- FILTER CHECKBOX -->
     <script>
         const checkboxes = document.querySelectorAll('[id^="category-"]');
         checkboxes.forEach((checkbox) => {
@@ -179,7 +192,6 @@
                     success: function (res) {
                         const productContainer = document.getElementById('product-container');
                         productContainer.innerHTML = '';
-
                         res.forEach(function (data) {
                             const item = `
                              <div class="container bg-white ProductCard m-2 mx-4"
@@ -217,9 +229,101 @@
                              `
                             productContainer.innerHTML += item
                         });
+                    },
+                    error: (error) => {
+                        console.log("error while u filter in serverSide" + error);
                     }
                 })
             });
         });
+    </script>
+    <!-- SORTING ALGORITHAM -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const selectedElement = document.getElementById('sortSelect');
+
+            selectedElement.addEventListener("change", () => {
+                const selectedValue = selectedElement.value;
+                if (selectedValue === "latest") {
+                    $.ajax({
+                        type: 'post',
+                        url: "/shopSort",
+                        data: { selectedValue: selectedValue },
+                        success: (data) => {
+                            UIupdate(data);
+                        },
+                        error: (error) => {
+                            console.log(`error while u try to sort the product ${error}`);
+                        }
+                    })
+                } else if (selectedValue === "heighToLow") {
+                    $.ajax({
+                        type: 'post',
+                        url: "/shopSort",
+                        data: { selectedValue: selectedValue },
+                        success: (data) => {
+                            UIupdate(data);
+                        },
+                        error: (error) => {
+                            console.log(`error while u try to sort the product ${error}`);
+                        }
+                    })
+                } else if (selectedValue === "lowToHigh") {
+                    $.ajax({
+                        type: 'post',
+                        url: "/shopSort",
+                        data: { selectedValue: selectedValue },
+                        success: (data) => {
+                            UIupdate(data);
+                        },
+                        error: (error) => {
+                            console.log(`error while u try to sort the product ${error}`);
+                        }
+                    })
+                }
+            })
+        });
+        function UIupdate(data) {
+            const productContainer = document.getElementById('product-container');
+            productContainer.innerHTML = '';
+
+            data.forEach(function (data) {
+                const item = `
+                             <div class="container bg-white ProductCard m-2 mx-4"
+                                    data-category-id=${data._id}>
+                                    <a href="/detaildView/${data._id}">
+                                        <div class="cardImage mb-2 d-flex align-items-center justify-content-center">
+                                            <img src="/productImages/${data.image[0]}" alt="Product Image">
+                                        </div>
+                                    </a>
+                                    <div class="px-3">
+                                        <span class="text-dark">
+                                            ${data.p_name}
+                                        </span>
+                                        <div class="p_price d-flex justify-content-between">
+                                            <div class="price text-danger">₹ <text>
+                                                    ${data.finalPrice}
+                                                </text> &nbsp; <span>₹ ${data.price}</span></div>
+                                            <div class="favor" style="cursor: pointer;">
+                                                <i class="fa-regular fa-heart"></i>
+                                            </div>
+                                        </div>
+                                        <div class="rating d-flex align-items-center">
+                                            <div class="star d-flex align-items-center">
+                                                <img src="/assets/product/star.png" alt="">
+                                                <img src="/assets/product/star.png" alt="">
+                                                <img src="/assets/product/star.png" alt="">
+                                                <img src="/assets/product/star.png" alt="">
+                                                <img src="/assets/product/star.png" alt="">
+                                            </div>
+                                            <div class="value ms-2">(75)</div>
+                                        </div>
+                                    </div>
+                                   
+                                </div>
+                             `
+               productContainer.innerHTML += item
+            });
+        }
     </script>
     <%- include("../partials/footer.ejs")%>

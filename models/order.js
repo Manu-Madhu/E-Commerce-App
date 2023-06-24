@@ -16,6 +16,10 @@ const orderSchema = new mongoose.Schema({
          type: String,
          require: true
      },
+     realPrice:{
+        type: String,
+        require: true
+     },
      price: {
          type: String,
          require: true

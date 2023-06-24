@@ -355,8 +355,8 @@ body {
 }
 
 .price {
-  font-weight: 900;
-  font-size: 20px;
+  font-weight: 600;
+  font-size: 18px;
 }
 
 .actual-price {
@@ -1238,6 +1238,9 @@ border-radius: 14px;
   border: #888;
   border-radius: 5px;
 }
+
+
+/*  OrderView */
 /* ----------------FOOTER---------------- */
 .footer {
   background: #373a47;

@@ -1,15 +1,17 @@
 const userModel = require('../models/user');
 const ProductModel = require('../models/productModel');
 
+
 const islogin = async (req, res, next) => {
     try {
         if (req.session.user) {
             next()
         } else {
             const user = req.session.user;
-            const data = await ProductModel.find()
+            const data = await ProductModel.find();
+            const dataNormal = await ProductModel.find({ availability: true }).limit(8);
             let cartCount;
-            res.render('user/home', { title: 'Home', user, data,cartCount });
+            res.render('user/home', { title: 'Home', user, data,cartCount,dataNormal });
         }
     } catch (err) {
         console.log(err)

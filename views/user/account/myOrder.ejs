@@ -25,111 +25,195 @@
                         </div>
                     </div>
                     <div class="container col-lg-9 col-md-9 col-12 py-3 p-0 m-0">
-                        <div class="container-fluid bg-white profile_Right p-4">
-                            <div class="p-3">
-                                <h5 class=" fw-bold">My Orders</h5>
+                        <div class="container-fluid bg-white profile_Right">
+                            <div class="container summary d-flex align-items-center justify-content-between pt-3"
+                                id="product">
+                                <h6 class="p-3 ps-4">My Order</h6>
+                                <input type="text" placeholder="what are you looking for?" class="text-center"
+                                    id="myOrder">
                             </div>
                             <div class="container  p-2 m-0 mb-2">
-                                <div class="Cart_list">
-                                    <div class="px-2">
-                                        <table style="width:100%;">
-                                            <thead class="cartTop" style="position:sticky; top: 0; z-index: 1;">
-                                                <tr class="cart_table">
-                                                    <th class="first p-3 px-4"><span>Product</span></th>
-                                                    <th class="p-3"><span>Status</span></th>
-                                                    <th class="p-3"><span>Price</span></th>
-                                                    <th class="p-3"><span>Expected Date</span></th>
-                                                    <th class="third p-3"><span>Cancel Order</span></th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <% newProduct.forEach((data,index)=>{%>
-                                                    <tr>
-                                                        <td class=" py-3 d-flex align-items-center">
-                                                            <% if(orderstatus[index]===true){%>
+                                <%if(newProduct.length>0){%>
+                                    <div class="Cart_list">
+                                        <div class="px-2">
+                                            <table style="width:100%;">
+                                                <thead class="cartTop" style="position:sticky; top: 0; z-index: 1;">
+                                                    <tr class="cart_table">
+                                                        <th class="first p-3 px-4"><span>Product</span></th>
+                                                        <th class="p-3"><span>Status</span></th>
+                                                        <th class="p-3"><span>Price</span></th>
+                                                        <th class="p-3"><span>Expected Date</span></th>
+                                                        <th class="third p-3"><span>Cancel Order</span></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <% newProduct.forEach((data,index)=>{%>
+                                                        <tr>
+                                                            <td class=" py-3 d-flex align-items-center">
                                                                 <a href=""
                                                                     class="container d-flex align-items-center text-decoration-none text-dark">
-                                                                    <div style="position: relative;">
-                                                                        <h3 class="text-white bg-danger "
-                                                                            style="position: absolute; font-size: 13px; padding: 7.5px; border-radius: 7px;">
-                                                                            Order Cancelled</h3>
-                                                                        <img src="/productImages/<%=data.image[0]%>"
-                                                                            alt="" class="img-fluid" width="100px"
-                                                                            style="border-radius: 5px;">
-                                                                    </div>
+                                                                    <img src="/productImages/<%=data.image[0]%>" alt=""
+                                                                        class="img-fluid" width="80px"
+                                                                        style="border-radius: 5px;">
                                                                     <h6 for="" class="ps-3" style=" color:#959595">
                                                                         <span>
                                                                             <%=data.p_name%>
                                                                         </span>
                                                                     </h6>
                                                                 </a>
-                                                        <td class="py-3 p-4" style="font-size: 13px; color:#959595">
-                                                            <h6 for="" class=""><span>Order Cancelled</span></h6>
-                                                        </td>
-                                                        <%} else{%>
-                                                            <a href=""
-                                                                class="container d-flex align-items-center text-decoration-none text-dark">
-                                                                <img src="/productImages/<%=data.image[0]%>" alt=""
-                                                                    class="img-fluid" width="100px"
-                                                                    style="border-radius: 5px;">
-
-                                                                <h6 for="" class="ps-3" style=" color:#959595">
-                                                                    <span>
-                                                                        <%=data.p_name%>
-                                                                    </span>
-                                                                </h6>
-                                                            </a>
-                                                            <span></span>
+                                                                <span></span>
                                                             </td>
                                                             <td class="py-3 p-4" style="font-size: 13px; color:#959595">
                                                                 <h6 for="" class="">
+                                                                    <span></span>
+                                                                    <%= status[index] %></span>
+                                                                </h6>
+                                                            </td>
+                                                            <td class="py-3 p-4" style="font-size: 13px; color:#959595">
+                                                                <h6 for="" class="">₹
                                                                     <span>
-                                                                        <%= status[index] %>
+                                                                        <%=data.price%>
                                                                     </span>
                                                                 </h6>
                                                             </td>
-                                                            <%}%>
-                                                                <td class="py-3 p-4"
-                                                                    style="font-size: 13px; color:#959595">
-                                                                    <h6 for="" class="">₹
+                                                            <td class="py-3 p-4" style="font-size: 13px; color:#959595">
+                                                                <h6 for="" class="">
+                                                                    <%=Date[index]%>
+                                                                </h6>
+                                                            </td>
+                                                            <td class="py-3 p-4" style="font-size: 13px; color:#959595">
+                                                                <form action="/profile/order/<%= order[index]._id %> "
+                                                                    method="post">
+                                                                    <button onclick="return showConfirmation()"
+                                                                        class="btn btn-danger p-2"
+                                                                        style="font-size: 13px; border-radius: 5px;">
+                                                                        Cancel
+                                                                    </button>
+                                                                </form>
+                                                            </td>
+                                                        </tr>
+                                                        <%})%>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <%}else{%>
+                                        <div class="d-flex align-items-center justify-content-center">
+                                            <lottie-player
+                                                src="https://assets10.lottiefiles.com/packages/lf20_3VDN1k.json"
+                                                background="transparent" speed="5"
+                                                style="width: 300px; height: 300px; opacity: 80%;" loop autoplay>
+                                            </lottie-player>
+                                        </div>
+                                        <%}%>
+                            </div>
+                        </div>
+                        <div class="container-fluid bg-white profile_Right p-4 mt-4">
+                            <div class="p-3">
+                                <h5 class=" fw-bold">My History</h5>
+                            </div>
+                            <div class="container  p-2 m-0 mb-2">
+                                <%if(orderHist.length>0){%>
+                                    <div class="Cart_list">
+                                        <div class="px-2">
+                                            <table style="width:100%;">
+                                                <thead class="cartTop" style="position:sticky; top: 0; z-index: 1;">
+                                                    <tr class="cart_table">
+                                                        <th class="first p-3 px-4"><span>Product</span></th>
+                                                        <th class="p-3"><span>Status</span></th>
+                                                        <th class="p-3"><span>Price</span></th>
+                                                        <th class="third p-3"><span>Return Availability</span></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <% orderProduct.forEach((data,index)=>{%>
+                                                        <tr>
+                                                            <td class=" py-3 d-flex align-items-center">
+                                                                <% if(orderHistStatus[index]===true){%>
+                                                                    <a href="/profile/orderView?id=<%=orderHist[index]._id%>"
+                                                                        class="order-cancel-link container d-flex align-items-center text-decoration-none text-dark"
+                                                                        data-order-id="<%= orderHistStatus[index]._id %>">
+                                                                        <div class=" p-0" style="position: relative;">
+                                                                            <h3 class="text-white bg-danger p-1"
+                                                                                style="position: absolute; font-size: 7px;  border-radius: 4px;">
+                                                                                Order Cancelled
+                                                                            </h3>
+                                                                            <img src="/productImages/<%=data.image[0]%>"
+                                                                                alt="" class="img-fluid" width="60px"
+                                                                                style="border-radius: 5px;">
+                                                                        </div>
+                                                                        <h6 class="ps-3" style=" color:#959595">
+                                                                            <span>
+                                                                                <%=data.p_name%>
+                                                                            </span>
+                                                                        </h6>
+                                                                    </a>
+                                                            <td class="py-3 p-4" style="font-size: 13px; color:#959595">
+                                                                <h6 for="" class=""><span>Order Cancelled</span></h6>
+                                                            </td>
+                                                            <%} else{%>
+                                                                <a href="/profile/orderView?id=<%=orderHist[index]._id%>"
+                                                                    class="order-cancel-link container d-flex align-items-center text-decoration-none text-dark">
+                                                                    <img src="/productImages/<%=data.image[0]%>" alt=""
+                                                                        class="img-fluid" width="60px"
+                                                                        style="border-radius: 5px;">
+                                                                    <h6 for="" class="ps-3" style=" color:#959595">
                                                                         <span>
-                                                                            <%=data.price%>
+                                                                            <%=data.p_name%>
                                                                         </span>
                                                                     </h6>
+                                                                </a>
+                                                                <span></span>
                                                                 </td>
                                                                 <td class="py-3 p-4"
                                                                     style="font-size: 13px; color:#959595">
                                                                     <h6 for="" class="">
-                                                                        <%=Date[index]%>
+                                                                        <span>
+                                                                            <%= orderHista[index] %>
+                                                                        </span>
                                                                     </h6>
                                                                 </td>
-                                                                <td class="py-3 p-4"
-                                                                    style="font-size: 13px; color:#959595">
-                                                                    <% if(orderstatus[index]===true){%>
-                                                                        <form action="#" method="post">
-                                                                            <button class="btn btn-success p-2"
-                                                                                style="font-size: 13px; border-radius: 5px;">
-                                                                                Re-Order
+                                                                <%}%>
+                                                                    <td class="py-3 p-4"
+                                                                        style="font-size: 13px; color:#959595">
+                                                                        <h6 for="" class="">₹
+                                                                            <span>
+                                                                                <%=data.price%>
+                                                                            </span>
+                                                                        </h6>
+                                                                    </td>
+                                                                    <%if(orderHistStatus[index]===false){%>
+                                                                        <td class="py-3 p-4"
+                                                                            style="font-size: 13px; color:#959595">
+                                                                            <h6 for="" class=""></h6>
+                                                                            <button class="btn btn-success"
+                                                                                style="font-size: 13px;">Return
                                                                             </button>
-                                                                        </form>
-                                                                        <%} else{%>
-                                                                            <form
-                                                                                action="/profile/order/<%= order[index]._id%>"
-                                                                                method="post">
-                                                                                <button onclick="return showConfirmation()"
-                                                                                    class="btn btn-danger p-2"
-                                                                                    style="font-size: 13px; border-radius: 5px;">
-                                                                                    Cancel
-                                                                                </button>
-                                                                            </form>
+                                                                        </td>
+                                                                        <%}else{%>
+                                                                            <td class="py-3 p-4"
+                                                                                style="font-size: 13px; color:#959595">
+                                                                                <h6 for="" class=""></h6>
+                                                                                <button class="btn btn-danger"
+                                                                                    style="font-size: 13px;">No
+                                                                                    Return</button>
+                                                                            </td>
                                                                             <%}%>
-                                                                </td>
-                                                    </tr>
-                                                    <%})%>
-                                            </tbody>
-                                        </table>
+                                                        </tr>
+                                                        <%})%>
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
-                                </div>
+                                    <%}else{%>
+                                        <div class="d-flex align-items-center justify-content-center">
+                                            <lottie-player
+                                                src="https://assets10.lottiefiles.com/packages/lf20_3VDN1k.json"
+                                                background="transparent" speed="5"
+                                                style="width: 300px; height: 300px; opacity: 80%;" loop autoplay>
+                                            </lottie-player>
+                                        </div>
+                                        <%}%>
                             </div>
                         </div>
                     </div>
@@ -140,11 +224,86 @@
         function showConfirmation() {
             if (confirm("Press a button!") == true) {
                 text = "You pressed OK!";
-                return true; 
+                return true;
             } else {
                 text = "You canceled!";
-                return false; 
+                return false;
             }
         }
     </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const orderSearch = document.getElementById('myOrder');
+            console.log(orderSearch)
+            const placeholder = orderSearch.placeholder;
+            orderSearch.addEventListener('keypress', (event) => {
+                if (event.key === 'Enter') {
+                    const searchQuery = orderSearch.value;
+                    console.log(searchQuery)
+                    $.ajax({
+                        type: 'get',
+                        url: '/orderSearch',
+                        data: { q: searchQuery },
+                        success: (data) => {
+                            console.log(data)
+                            if (data.length > 0) {
+                                UIupdate(data)
+                            } else {
+                                orderSearch.placeholder = "No Product Found";
+                            }
+                        },
+                        error: (error) => {
+                            console.log(`Error while performing search: ${error}`);
+                        }
+                    });
+                }
+            });
+        })
+
+        function UIupdate(data) {
+            const productContainer = document.getElementById('product-container');
+            productContainer.innerHTML = '';
+
+            data.forEach(function (data) {
+                const item = `
+                             <div class="container bg-white ProductCard m-2 mx-4"
+                                    data-category-id=${data._id}>
+                                    <a href="/detaildView/${data._id}">
+                                        <div class="cardImage mb-2 d-flex align-items-center justify-content-center">
+                                            <img src="/productImages/${data.image[0]}" alt="Product Image">
+                                        </div>
+                                    </a>
+                                    <div class="px-3">
+                                        <span class="text-dark">
+                                            ${data.p_name}
+                                        </span>
+                                        <div class="p_price d-flex justify-content-between">
+                                            <div class="price text-danger">₹ <text>
+                                                    ${data.finalPrice}
+                                                </text> &nbsp; <span>₹ ${data.price}</span></div>
+                                            <div class="favor" style="cursor: pointer;">
+                                                <i class="fa-regular fa-heart"></i>
+                                            </div>
+                                        </div>
+                                        <div class="rating d-flex align-items-center">
+                                            <div class="star d-flex align-items-center">
+                                                <img src="/assets/product/star.png" alt="">
+                                                <img src="/assets/product/star.png" alt="">
+                                                <img src="/assets/product/star.png" alt="">
+                                                <img src="/assets/product/star.png" alt="">
+                                                <img src="/assets/product/star.png" alt="">
+                                            </div>
+                                            <div class="value ms-2">(75)</div>
+                                        </div>
+                                    </div>
+                                   
+                                </div>
+                             `
+                productContainer.innerHTML += item
+            });
+        }
+
+    </script>
+
+
     <%-include('../../partials/footer.ejs') %>

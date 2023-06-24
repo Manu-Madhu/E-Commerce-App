@@ -4,7 +4,7 @@ const CategoryModel = require('../models/category');
 const productModel = require('../models/productModel');
 const couponModel = require('../models/coupon');
 const orderModel = require('../models/order');
-const fs = require('fs');
+const fs = require('fs');;
 
 
 // ADMIN CONTROLLER
@@ -37,8 +37,41 @@ const adminVerification = async (req, res) => {
 }
 
 // Dashboard
-const dashboard = (req, res) => {
-    res.render('admin/dashboard', { title: "Dashboard", admin: req.session.admin })
+const dashboard = async (req, res) => {
+    try {
+        const userData = await UsersModel.find()
+        const order = await orderModel.find();
+        const orderDeliverd = order.filter((data) => data.status === "Deliverd");
+        const totalAmount = orderDeliverd.reduce((total, product) => total + parseInt(product.payment.amount), 0);
+        const totalSales = orderDeliverd.length;
+        const totalUser = userData.length;
+        const totalOrder = order.length;
+        const orderCanceled = order.filter((data) => data.status === "Canceled");
+        const canceled = orderCanceled.length;
+        const orderStatus = {};
+        // Retrieve all unique status values from the database
+        const uniqueStatusValues = [...new Set(order.map((data) => data.status))];
+        // Initialize the orderStatus object with the status values
+        uniqueStatusValues.forEach((status) => {
+            orderStatus[status] = 0;
+        });
+        // Count the occurrences of each status
+        order.forEach((data) => {
+            orderStatus[data.status]++;
+        });
+        res.render('admin/dashboard', {
+            title: "Dashboard",
+            admin: req.session.admin,
+            totalSales,
+            totalAmount,
+            totalUser,
+            canceled,
+            totalOrder,
+            orderStatus: JSON.stringify(orderStatus)
+        })
+    } catch (error) {
+        console.log(error)
+    }
 }
 
 // Users
@@ -101,8 +134,8 @@ const categoryOffer = async (req, res) => {
         const price = req.body.price;
         const value = req.body.value;
         const categoryDetails = await CategoryModel.findOne({ categoryName: value });
-        const offer = categoryDetails.offerValue/100;
-        const discountValue = price-(price * offer);
+        const offer = categoryDetails.offerValue / 100;
+        const discountValue = Math.floor(price - (price * offer));
         res.json(discountValue);
     } catch (error) {
         console.log(error);
@@ -182,13 +215,13 @@ const updateCategory = async (req, res) => {
 const productView = async (req, res) => {
     try {
         const product = await productModel.find();
+        console.log(product)
         res.render('admin/productView', { title: "Product", admin: req.session.admin, product })
     } catch (error) {
         console.log(error);
         res.status(500).send("Internal error");
     }
 }
-
 const productAdding = async (req, res) => {
     try {
         const category = await CategoryModel.find({ isAvailable: true });
@@ -200,7 +233,7 @@ const productAdding = async (req, res) => {
 }
 const newproductAdding = async (req, res) => {
     try {
-        const { p_name, category, price, c_offerPrice,productOffer,finalPrice, quantity, description } = req.body;
+        const { p_name, category, price, c_offerPrice, productOffer, finalPrice, quantity, description } = req.body;
         const files = req.files;
         // Create a new product object with the form data
         const product = new productModel({
@@ -224,23 +257,36 @@ const newproductAdding = async (req, res) => {
         res.redirect('/admin/newProduct'); // Redirect to an appropriate error page or display an error message
     }
 }
-const p_deleting = async (req, res) => {
-
+const p_unlist = async (req, res) => {
     try {
         const id = req.params.id;
         // Retrieve existing product data
         const existingProduct = await productModel.findById(id);
-        const existingImages = existingProduct.image;
+        // const existingImages = existingProduct.image;
 
         // Delete previous images from fs
-        existingImages.forEach((filename) => {
-            fs.unlink(`productImages/${filename}`, (err) => {
-                if (err) {
-                    console.log(err);
-                }
-            });
-        });
-        await productModel.findByIdAndDelete({ _id: id })
+        // existingImages.forEach((filename) => {
+        //     fs.unlink(`productImages/${filename}`, (err) => {
+        //         if (err) {
+        //             console.log(err);
+        //         }
+        //     });
+        // });
+        console.log(existingProduct)
+        await productModel.findByIdAndUpdate({ _id: id },{$set:{availability:false}})
+        res.redirect('/admin/productView');
+    } catch (error) {
+        console.log(error);
+        res.status(500).send("internal error");
+    }
+}
+const p_list = async (req, res) => {
+    try {
+        const id = req.params.id;
+        // Retrieve existing product data
+        const existingProduct = await productModel.findById(id);
+        console.log(existingProduct+"from list")
+        await productModel.findByIdAndUpdate({ _id: id },{$set:{availability:true}})
         res.redirect('/admin/productView');
     } catch (error) {
         console.log(error);
@@ -260,6 +306,7 @@ const productUpdating = async (req, res) => {
 const addUpdateProduct = async (req, res) => {
     try {
         const id = req.body.id;
+        console.log(req.body);
         // Retrieve existing product data
         const existingProduct = await productModel.findById(id);
         const existingImages = existingProduct.image;
@@ -275,7 +322,10 @@ const addUpdateProduct = async (req, res) => {
         const updatedData = {
             p_name: req.body.p_name,
             price: req.body.price,
+            c_offerPrice:req.body.c_offerPrice,
+            productOffer:req.body.productOffer,
             description: req.body.description,
+            finalPrice: req.body.finalPrice,
             category: req.body.category,
             quantity: req.body.quantity,
         }
@@ -292,7 +342,6 @@ const addUpdateProduct = async (req, res) => {
 }
 
 // Order LIsting 
-
 const orderList = async (req, res) => {
     try {
         const admin = req.session.admin;
@@ -312,9 +361,6 @@ const orderList = async (req, res) => {
         console.log(error)
     }
 }
-
-
-
 const orderstatus = async (req, res) => {
     try {
         const orderId = req.params.id;
@@ -343,7 +389,6 @@ const couponsList = async (req, res) => {
         res.status(500).send("couponRendering Error");
     }
 }
-
 const couponsAdding = async (req, res) => {
     try {
         const admin = req.session.admin;
@@ -353,7 +398,6 @@ const couponsAdding = async (req, res) => {
         res.status(500).send("couponAddingPage Rendering Error");
     }
 }
-
 const couponsRemove = async (req, res) => {
     try {
         const couponId = req.params.id;
@@ -363,7 +407,6 @@ const couponsRemove = async (req, res) => {
         res.status(500).json("error by the server side");
     }
 }
-
 const couponCreation = async (req, res) => {
     try {
         const data = req.body;
@@ -409,7 +452,8 @@ module.exports = {
     Categoryupdate,
     updateCategory,
     newproductAdding,
-    p_deleting,
+    p_unlist,
+    p_list,
     addUpdateProduct,
     userBlocking,
     userUnBlocking,

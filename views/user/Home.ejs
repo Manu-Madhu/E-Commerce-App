@@ -11,7 +11,7 @@
                             <h4 style="font-size:50px; color: #4a4949;" class="tone display-5">Are you ready to</h4>
                             <h1 style="font-size: 60px;" class=" mb-3">Run with Trend</h1>
                             <span class=" mb-2">Luxury meets ultimate sitting comfort</span>
-                            <button style="font-size: 14px;" class="btn btn-danger w-25 p-3 mt-3">Discover</button>
+                            <button id="bannerDirect" style="font-size: 14px;" class="btn btn-danger w-25 p-3 mt-3">Discover</button>
                         </div>
                         <img src="/assets/banners/banner.png" class=" CarouselImage d-block p-2 " alt="...">
                     </div>
@@ -106,7 +106,7 @@
                     <button class="pre-btn"><img class="pre-btn-img" src="/assets/icons/arrow.png" alt=""></button>
                     <button class="nxt-btn"><img class="pre-btn-img" src="/assets/icons/arrow.png" alt=""></button>
                     <div class="product-container w-100">
-                        <% data.forEach((data,index)=>{ %>
+                        <% dataNormal.forEach((data,index)=>{ %>
                             <div class="product-card">
                                 <div class="product-image">
                                     <span class="discount-tag"><%= data.productOffer %>% off</span>
@@ -170,9 +170,7 @@
                 </div>
             </div>
     </div>
-    <script>
-        fetch(URL)
-    </script>
+
     <script>
         const productContainers = [...document.querySelectorAll('.product-container')];
         const nxtBtn = [...document.querySelectorAll('.nxt-btn')];
@@ -189,6 +187,12 @@
             preBtn[i].addEventListener('click', () => {
                 item.scrollLeft -= containerWidth;
             })
+        })
+    </script>
+    <script>
+        const bannerClick = document.getElementById('bannerDirect');
+        bannerClick.addEventListener('click',()=>{
+             window.location.href = 'http://localhost:5000/Shop'
         })
     </script>
     <%- include("../partials/footer.ejs")%>

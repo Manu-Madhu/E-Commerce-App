@@ -13,20 +13,23 @@
                         <a class="nav-link active" aria-current="page" href="/">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">About</a>
+                        <a class="nav-link" href="http://localhost:5000/Shop">Shop</a>
                     </li>
                     <%if(user){%>
                         <li class="nav-item">
                             <a class="nav-link" href="/logout">logOut</a>
                         </li>
-                    <%}else{%>
-                        <li class="nav-item"></li>
-                           <a class="nav-link" href="/login">login</a>
+                     <%}else{%>
+                         <li class="nav-item"></li>
+                            <a class="nav-link" href="/login">login</a>
                         </li>
                     <%}%>
                 </ul>
-                <form class="Nav_icon d-flex gap-4 justify-content-cneter align-items-center">
-                    <input class="search p-3" type="search" placeholder="What you looking for?" aria-label="Search">
+                <div class="Nav_icon d-flex gap-4 justify-content-cneter align-items-center">
+                    <div style="position: relative;">
+                        <input class="search p-3" type="search" placeholder="What you looking for?" aria-label="Search"
+                            id="searchInput">
+                    </div>
                     <% if(user) {%>
                         <a href="/WhishList" class="link-dark text-center" style="position: relative;">
                             <i class="fa-regular fa-heart"></i>
@@ -39,27 +42,56 @@
                                     style="border-radius: 50%; position: absolute; top: -5px; right: -10px; width: 18px; height: 18px;font-size: 9px;">
                                     <%=locals.cartCount%>
                                 </span>
-                            <%}else{%>
-                                <span id="cartItemCount"
-                                    class="badge badge-pill bg-danger d-flex justify-content-center align-items-center p-1"
-                                    style="border-radius: 50%; position: absolute; top: -5px; right: -10px; width: 18px; height: 18px;font-size: 9px;">
-                                    0   
-                                </span>
-                            <%}%>
+                                <%}else{%>
+                                    <span id="cartItemCount"
+                                        class="badge badge-pill bg-danger d-flex justify-content-center align-items-center p-1"
+                                        style="border-radius: 50%; position: absolute; top: -5px; right: -10px; width: 18px; height: 18px;font-size: 9px;">
+                                        0
+                                    </span>
+                                    <%}%>
                         </a>
-                   <%}else{%>
-                            <i class="fa-regular fa-heart"></i>
-                            <i class="fa-solid fa-cart-shopping "></i>
+                    <%}else{%>
+                        <i class="fa-regular fa-heart"></i>
+                        <i class="fa-solid fa-cart-shopping "></i>
                     <%}%>
                     <div class="d-flex flex-column align-items-center">
                         <div class="iconP ">
-                             <a href="/profile"><i class="fa-regular fa-user text-dark"></i></a>
+                            <a href="/profile"><i class="fa-regular fa-user text-dark"></i></a>
                         </div>
-                        <span class="text-danger fw-bold ">
+                         <span class="text-danger fw-bold ">
                             <%= locals.user?user:"" %>
                         </span>
                     </div>
-                </form>
+                    </form>
+                </div>
             </div>
-        </div>
     </nav>
+    <!-- Search input -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const searchInput = document.getElementById('searchInput');
+            const placeholder = searchInput.placeholder;
+            searchInput.addEventListener('keypress', (event) => {
+                if (event.key === 'Enter') {
+                    const searchQuery = searchInput.value;
+                    $.ajax({
+                        type: 'get',
+                        url: '/search',
+                        data: { q: searchQuery },
+                        success: (data) => {
+                            console.log(data)
+                            if (data.length > 0) {
+                                UIupdate(data)
+                            } else {
+                                searchInput.placeholder = "No Product Found";
+                            }
+                        },
+                        error: (error) => {
+                            console.log(`Error while performing search: ${error}`);
+                        }
+                    });
+                }
+            });
+        });
+
+    </script>

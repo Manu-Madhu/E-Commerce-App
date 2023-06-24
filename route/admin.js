@@ -42,7 +42,8 @@ admin.post('/Category_OfferValue', adminMiddleWeare.isLogOut,adminController.cat
 admin.get('/productView', adminController.productView);
 admin.get('/newProduct', adminMiddleWeare.isLogOut,adminController.productAdding);
 admin.post('/p_adding', upload.array("image"), adminController.newproductAdding);
-admin.post("/p_delete/:id", adminController.p_deleting)
+admin.post("/p_unlist/:id", adminController.p_unlist);
+admin.post("/p_list/:id", adminController.p_list);
 
 admin.get('/updateProduct/:id', adminController.productUpdating);
 admin.post('/addUpdatedProducts', upload.array("image"), adminController.addUpdateProduct);

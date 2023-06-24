@@ -162,7 +162,7 @@
             const productDiscount = prodctOfferInput.value;
             const value = offerPrice.value
             const p_discount = productDiscount/100;
-            const finalProductPrice = value - (value*p_discount);
+            const finalProductPrice = Math.floor(value - (value*p_discount));
             FinalPrice.value = finalProductPrice;
         })
     </script>

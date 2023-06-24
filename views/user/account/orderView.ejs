@@ -1,0 +1,271 @@
+<%- include('../../partials/header.ejs') %>
+  <div class="container-fluid p-0 min-vh-100" style="margin-top: 6%;">
+    <%-include('../../partials/navbar.ejs') %>
+      <div class="container ">
+        <div class="row p-4 mb-4">
+          <div class="container col-lg-3 col-md-3 col-12 p-3 m-0">
+            <div class="container bg-white profile_left p-5">
+              <div class="mb-4 d-flex flex-column">
+                <h6>Manage My Account</h6>
+                <a href="/profile" class="text-decoration-none">My Profile</a>
+              </div>
+              <div class="mb-4 d-flex flex-column">
+                <h6>My Orders</h6>
+                <a href="/profile/order" class="text-decoration-none text-danger">My Orders</a>
+                <a href="" class="text-decoration-none">My Return</a>
+              </div>
+              <div class="mb-4 d-flex flex-column">
+                <h6>My WishList</h6>
+                <a href="" class="text-decoration-none">My WishList</a>
+              </div>
+              <div class="mb-4 d-flex flex-column">
+                <h6>My Address</h6>
+                <a href="/profile/address" class="text-decoration-none ">My Address</a>
+              </div>
+            </div>
+          </div>
+          <div class="container col-lg-9 col-md-9 col-12 py-3 p-0 m-0">
+            <div class="container-fluid">
+
+              <!-- Section: Heading -->
+              <section class="mb-4">
+
+                <div class="card" style="border-radius: 14px;">
+                  <div class="card-body d-flex justify-content-between">
+                    <h4 id="orderId" class="h4-responsive mt-3">Invoice #<%=order._id%>
+                    </h4>
+                    <h4 class="h4-responsive mt-3">Order Status: <span id="orderStatus">
+                        <%=order.status%>
+                      </span> </h4>
+                    <div class="mt-2">
+                      <a href="#" id="printButton" class="btn btn-danger"><i class="fas fa-print left"></i> Print</a>
+                    </div>
+                  </div>
+                </div>
+
+              </section>
+              <!-- Section: Heading -->
+
+              <!-- Section: Invoice details -->
+              <section class="mb-4">
+
+                <div class="card" style="border-radius: 14px;">
+                  <div class="card-body">
+
+                    <!-- Grid row -->
+                    <div class="row">
+
+                      <!-- Grid column -->
+                      <div class="col-md-6 text-left">
+
+                        <p><small>From:</small></p>
+                        <p><strong>Asthra Fashion World</strong></p>
+                        <p>Neyyattinkara, gramam,</p>
+                        <p> Thiruvananthapuram, PIN 695121</p>
+                        <p><strong>Invoice date:</strong> November 18, 2016</p>
+
+                      </div>
+                      <!-- Grid column -->
+
+                      <!-- Grid column -->
+                      <div class="col-md-6 text-right">
+
+                        <!-- <h4 class="h4-responsive"><small>Invoice No.</small><br /><strong><span class="blue-text">#124190</span></strong></h4> -->
+
+                        <p><small>To:</small></p>
+                        <p id="houseName"><strong id="name">
+                            <%=address.name%>
+                          </strong>, <%=address.houseName%>
+                        </p>
+                        <p id="street">
+                          <%=address.street%>, <p class="city">
+                              <%=address.city%>
+                            </p>
+                        </p>
+                        <p id="state">
+                          <%=address.state%>, <p id="postalCode"> pin : <%=address.postalCode%>
+                            </p>
+                        </p>
+                        <p id="phone">
+                          <%=address.phone%>
+                        </p>
+
+                      </div>
+                      <!-- Grid column -->
+                    </div>
+                    <!-- Grid row -->
+                  </div>
+                </div>
+
+              </section>
+              <!-- Section: Invoice details -->
+
+              <!-- Section: Invoice table -->
+              <section class="mb-5">
+                <div class="card" style="border-radius: 14px;">
+                  <div class="card-body">
+                    <div class="table-responsive">
+                      <table class="table">
+                        <thead>
+                          <tr>
+                            <th>Item list</th>
+                            <th>Payment Method</th>
+                            <th>Unit Price</th>
+                            <th>Discount</th>
+                            <th>Total price</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <%orderProduct.forEach((data,index)=>{%>
+                            <tr>
+                              <td id="productName">
+                                <%=data.p_name%>
+                              </td>
+                              <td id="method">
+                                <%=order.payment.method%>
+                              </td>
+                              <td id="realPrice">₹ <%=data.realPrice%>
+                              </td>
+                              <td id="discount">₹ <%=discount%>
+                              </td>
+                              <td id="lastAmount">₹ <%=order.payment.amount%>
+                              </td>
+                            </tr>
+                            <%})%>
+                        </tbody>
+                      </table>
+                    </div>
+                    <ul class="list-unstyled text-right">
+                      <li><strong>Sub Total:</strong><span class="float-right ml-3">₹</span></li>
+                      <li><strong>Discount:</strong><span class="float-right ml-3">₹<%=discount%></span></li>
+                      <li><strong>TOTAL:</strong><span class="float-right ml-3">₹</span></li>
+                    </ul>
+                  </div>
+                </div>
+              </section>
+              <!-- Section: Invoice table -->
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+  <!-- <script>
+
+    const printButton = document.getElementById('printButton');
+    const orderId = document.getElementById('orderId').innerText;
+    const orderStatus = document.getElementById('orderStatus').innerText;
+    const method = document.getElementById('method').innerText;
+    const productName = document.getElementById('productName').innerText;
+    const realPrice = document.getElementById('realPrice').innerText;
+    const discount = document.getElementById('discount').innerText;
+    const lastAmount = document.getElementById('lastAmount').innerText;
+    const name = document.getElementById('name').innerText;
+    const houseName = document.getElementById('houseName').innerText;
+    const street = document.getElementById('street').innerText;
+    const city = document.getElementById('city').innerText;
+    const state = document.getElementById('state').innerText;
+    const postalCode = document.getElementById('postalCode').innerText;
+    const phone = document.getElementById('phone').innerText;
+    const data = {
+      order: {
+        _id: orderId,
+        status: orderStatus,
+        payment: {
+          method: method,
+          amount: lastAmount,
+        },
+      },
+      address: {
+        name: name,
+        houseName: houseName,
+        street: street,
+        city: city,
+        state: state,
+        postalCode:postalCode,
+        phone: phone,
+      },
+      orderProduct: [
+        { p_name: productName, realPrice: realPrice },
+      ],
+      discount: discount,
+    };
+    
+    console.log(data)
+    // Add a click event listener to the print button
+    printButton.addEventListener('click', (event) => {
+      event.preventDefault();
+      fetch('/invoice', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ data }),
+      })
+        .then((response) => {
+          if (response.ok) {
+            return response.json();
+          } else {
+            throw new Error('Error: ' + response.status);
+          }
+        })
+        .then((data) => {
+          console.log(data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    });
+  </script> -->
+  <script>
+    const printButton = document.getElementById('printButton');
+    const orderId = document.getElementById('orderId').innerText;
+    const orderStatus = document.getElementById('orderStatus').innerText;
+    const method = document.querySelector('.method').innerText;
+    const productName = document.querySelector('.productName').innerText;
+    const realPrice = document.querySelector('.realPrice').innerText;
+    const discount = document.querySelector('.discount').innerText;
+    const lastAmount = document.querySelector('.lastAmount').innerText;
+
+    const data = {
+      order: {
+        _id: orderId,
+        status: orderStatus,
+        payment: {
+          method: method,
+          amount: lastAmount,
+        },
+      },
+      orderProduct: [
+        { p_name: productName, realPrice: realPrice },
+      ],
+      discount: discount,
+    };
+    document.addEventListener('DOMContentLoaded', function () {
+      // Add a click event listener to the print button
+      printButton.addEventListener('click', (event) => {
+        event.preventDefault();
+        fetch('/invoice', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ data }),
+        })
+          .then((response) => {
+            if (response.ok) {
+              return response.json();
+            } else {
+              throw new Error('Error: ' + response.status);
+            }
+          })
+          .then((data) => {
+            console.log(data);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      });
+    });
+
+  </script>
+  <%-include('../../partials/footer.ejs') %>

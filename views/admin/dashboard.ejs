@@ -7,41 +7,48 @@
                         <ul class="d-flex flex-column">
                             <li class="sideBarlist border p-1 m-2 ps-4 ">
                                 <img src="/assets/admin/d1.png" alt="" class="img-fluid me-2">
-                                <span><a class="text-decoration-none" style="color: white;" href="/admin/Dashboard">DashBoard</a></span>
+                                <span><a class="text-decoration-none" style="color: white;"
+                                        href="/admin/Dashboard">DashBoard</a></span>
                             </li>
                             <li class="dashOther fw-bold p-1 ps-4 m-2">
                                 <img src="/assets/admin/d3.png" alt="" class="img-fluid me-2">
-                                <span><a href="/admin/category"  class="text-decoration-none" style="color: #cdcdcd;">Category</a></span>
+                                <span><a href="/admin/category" class="text-decoration-none"
+                                        style="color: #cdcdcd;">Category</a></span>
                             </li>
                             <li class="dashOther fw-bold p-1 ps-4 m-2">
                                 <img src="/assets/admin/d2.png" alt="" class="img-fluid me-2">
                                 <span></span>
-                                <a href="/admin/productView"  class="text-decoration-none" style="color: #cdcdcd;">Product</a></span>
+                                <a href="/admin/productView" class="text-decoration-none"
+                                    style="color: #cdcdcd;">Product</a></span>
                             </li>
                             <li class="dashOther fw-bold p-1 ps-4 m-2">
                                 <img src="/assets/admin/d4.png" alt="" class="img-fluid me-2">
                                 <span></span>
-                                <a href="/admin/coustomers"  class="text-decoration-none" style="color: #cdcdcd;">Coustomer</a></span>
+                                <a href="/admin/coustomers" class="text-decoration-none"
+                                    style="color: #cdcdcd;">Coustomer</a></span>
                             </li>
                             <li class="dashOther fw-bold p-1 ps-4 m-2">
                                 <img src="/assets/admin/d5.png" alt="" class="img-fluid me-2">
                                 <span></span>
-                                <a href="/admin/order"  class="text-decoration-none" style="color: #cdcdcd;">Order</a></span>
+                                <a href="/admin/order" class="text-decoration-none"
+                                    style="color: #cdcdcd;">Order</a></span>
                             </li>
                             <li class="dashOther fw-bold p-1 ps-4 m-2">
                                 <img src="/assets/admin/d6.png" alt="" class="img-fluid me-2">
                                 <span></span>
-                                <a href="/admin/coupons"  class="text-decoration-none" style="color: #cdcdcd;">Coupons</a></span>
+                                <a href="/admin/coupons" class="text-decoration-none"
+                                    style="color: #cdcdcd;">Coupons</a></span>
                             </li>
                             <li class="dashOther fw-bold p-1 ps-4 m-2">
                                 <img src="/assets/admin/d2.png" alt="" class="img-fluid me-2">
                                 <span></span>
-                                <a href="#"  class="text-decoration-none" style="color: #cdcdcd;">Banner</a></span>
+                                <a href="#" class="text-decoration-none" style="color: #cdcdcd;">Banner</a></span>
                             </li>
                             <li class="dashOther fw-bold p-1 ps-4 m-2">
                                 <img src="/assets/admin/d6.png" alt="" class="img-fluid me-2">
                                 <span></span>
-                                <a href="admin/logOut"  class="text-decoration-none" style="color: #cdcdcd;">Logout</a></span>
+                                <a href="admin/logOut" class="text-decoration-none"
+                                    style="color: #cdcdcd;">Logout</a></span>
                             </li>
                         </ul>
                     </div>
@@ -59,51 +66,58 @@
                                 </div>
                                 <div class="row p-4">
                                     <div
-                                        class="container SaleBox-one d-flex flex-column align-items-start justify-content-center col-md-3 p-3 ps-5">
+                                        class="container SaleBox-one d-flex flex-column align-items-center justify-content-center col-md-3 p-3 ">
                                         <img src="/assets/admin/DsC1.png" alt="" class="img-fluid mb-3">
-                                        <h2>₹ 1k</h2>
-                                        <h6>Total Sales</h6>
+                                        <h2>₹ <%=totalAmount%>
+                                        </h2>
+                                        <h6>Total Revenue</h6>
                                     </div>
                                     <div id="two"
-                                        class="container SaleBox-one d-flex flex-column align-items-start justify-content-center col-md-3 p-3 ps-5">
+                                        class="container SaleBox-one d-flex flex-column align-items-center justify-content-center col-md-3 p-3">
                                         <img src="/assets/admin/DsC2.png" alt="" class="img-fluid mb-3">
-                                        <h2>25</h2>
-                                        <h6>Total Sales</h6>
+                                        <h2>
+                                            <%=totalOrder%>
+                                        </h2>
+                                        <h6>Total Order</h6>
                                     </div>
                                     <div id="three"
-                                        class="container SaleBox-one d-flex flex-column align-items-start justify-content-center col-md-3 p-3 ps-5">
+                                        class="container SaleBox-one d-flex flex-column align-items-center justify-content-center col-md-3 p-3">
                                         <img src="/assets/admin/DsC3.png" alt="" class="img-fluid mb-3">
-                                        <h2>15</h2>
-                                        <h6>Total Sales</h6>
+                                        <h2>
+                                            <%=totalSales%>
+                                        </h2>
+                                        <h6>Sales Count</h6>
                                     </div>
                                     <div id="four"
-                                        class="container SaleBox-one d-flex flex-column align-items-start justify-content-center col-md-3 p-3 ps-5">
+                                        class="container SaleBox-one d-flex flex-column align-items-center justify-content-center col-md-3 p-3">
                                         <img src="/assets/admin/DsC4.png" alt="" class="img-fluid mb-3">
-                                        <h2>10</h2>
-                                        <h6>Total Sales</h6>
+                                        <h2>
+                                            <%=totalUser%>
+                                        </h2>
+                                        <h6>Total User</h6>
                                     </div>
                                     <div id="fifth"
-                                        class="container SaleBox-one d-flex flex-column align-items-start justify-content-center col-md-3 p-3 ps-5">
+                                        class="container SaleBox-one d-flex flex-column align-items-center justify-content-center col-md-3 p-3">
                                         <img src="/assets/admin/DsC1.png" alt="" class="img-fluid mb-3">
-                                        <h2>10</h2>
-                                        <h6>Total Sales</h6>
+                                        <h2>
+                                            <%=canceled%>
+                                        </h2>
+                                        <h6>Order Canceled </h6>
                                     </div>
                                 </div>
                             </div>
                             <div class="conatiner graphSummary bg-white">
                                 <div class="container summary p-3 d-flex gap-3">
-                                    <h6 class="mt-3 ps-4">Sales Summary</h6>
-                                    <select name="cars" id="cars" class="btnYear fw-bold mt-3">
-                                        <option value="volvo">2023</option>
-                                        <option value="saab">2022</option>
-                                        <option value="opel">2021</option>
-                                        <option value="audi">2020</option>
+                                    <h6 class="mt-3 ps-4">Order Summary</h6>
+                                    <select name="cars" id="yearFilter" class="btnYear fw-bold mt-3">
+                                        <option value="all">All</option>
                                     </select>
                                 </div>
 
                                 <div class="container graph">
                                     <div class="chart p-3">
-                                        <canvas id="lineChart" width="400" height="100"></canvas>
+                                        <canvas id="barChart" width="400" height="100"></canvas>
+                                        <input type="hidden" id="orderStatus" value="<%=orderStatus%>">
                                     </div>
                                 </div>
                             </div>
@@ -115,6 +129,72 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="/js/chart.js"></script>
-
+    <!-- <script>
+        const ctx = document.getElementById('barChart');
+        const status = JSON.parse(document.getElementById('orderStatus').value);
+        const labels = Object.keys(status);
+        const data = Object.values(status);
+        console.log(data);
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    // label: '# of Votes',
+                    data: data,
+                    borderColor: 'rgba(219, 68, 68, 1)',
+                    tension: 0.1
+                }]
+            },
+            options: {
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script> -->
+    <script>
+      const ctx = document.getElementById('barChart');
+      const status = JSON.parse(document.getElementById('orderStatus').value);
+      let labels = Object.keys(status);
+      let data = Object.values(status);
+      console.log(status);
+    
+      function updateChart(labels, data) {
+    
+        chart = new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: labels,
+            datasets: [{
+              // label: '# of Votes',
+              data: data,
+              borderColor: 'rgba(219, 68, 68, 1)',
+              tension: 0.1
+            }]
+          },
+          options: {
+            plugins: {
+              legend: {
+                display: false
+              }
+            },
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            }
+          }
+        });
+      }
+      updateChart(labels, data);
+    </script>
+    
     <%- include('../partials/adminfooter.ejs')%>
