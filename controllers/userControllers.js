@@ -59,6 +59,10 @@ const validation = async (req, res) => {
                     const number = userNumber;
                     let cartCount;
                     let signinPage;
+                    req.session.data = {
+                        userName : userData.name,
+                        userEmail : userData.email
+                    }
                     // generat randome 4 digit number
                     let randome = Math.floor(Math.random() * 9000) + 1000;
 
@@ -74,8 +78,6 @@ const validation = async (req, res) => {
                         })
                         newUser.save()
                             .then(() => {
-                                req.session.user = userData.name;
-                                req.session.email = userData.email;
                                 res.render('user/verification', { user: req.session.user, cartCount, signinPage });
                             })
                             .catch((error) => {
@@ -185,13 +187,12 @@ const OTPValidation = async (req, res) => {
         const num3 = req.body.num_3;
         const num4 = req.body.num_4;
         const code = parseInt(num1 + num2 + num3 + num4)
-
+        const {userName,userEmail} = req.session.data;
         await OTP.find({ number: code })
             .then((fount) => {
                 if (fount.length > 0) {
-                    req.session.user.isVerified = true;
-                    req.session.email.isVerified = true;
-                    req.session.save();
+                    req.session.user = userName;
+                    req.session.email = userEmail;
                     res.redirect("/success")
                     // IF FOUND, DELETE THE OTP CODE FROM DB
                     OTP.findOneAndDelete({ number: code })

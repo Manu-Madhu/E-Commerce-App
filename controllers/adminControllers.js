@@ -434,7 +434,6 @@ const adminLogout = async (req, res) => {
     }
 }
 
-
 module.exports = {
     adminLogin,
     dashboard,

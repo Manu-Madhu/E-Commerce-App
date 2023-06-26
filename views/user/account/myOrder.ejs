@@ -48,7 +48,8 @@
                                                 </thead>
                                                 <tbody>
                                                     <% newProduct.forEach((data,index)=>{%>
-                                                        <tr>
+                                                        <tr class="border">
+                                                            <div>
                                                             <td class=" py-3 d-flex align-items-center">
                                                                 <a href=""
                                                                     class="container d-flex align-items-center text-decoration-none text-dark">
@@ -57,7 +58,7 @@
                                                                         style="border-radius: 5px;">
                                                                     <h6 for="" class="ps-3" style=" color:#959595">
                                                                         <span>
-                                                                            <%=data.p_name%>
+                                                                            
                                                                         </span>
                                                                     </h6>
                                                                 </a>
@@ -66,23 +67,23 @@
                                                             <td class="py-3 p-4" style="font-size: 13px; color:#959595">
                                                                 <h6 for="" class="">
                                                                     <span></span>
-                                                                    <%= status[index] %></span>
+                                                                    </span>
                                                                 </h6>
                                                             </td>
                                                             <td class="py-3 p-4" style="font-size: 13px; color:#959595">
                                                                 <h6 for="" class="">₹
                                                                     <span>
-                                                                        <%=data.price%>
+                                                                        
                                                                     </span>
                                                                 </h6>
                                                             </td>
                                                             <td class="py-3 p-4" style="font-size: 13px; color:#959595">
                                                                 <h6 for="" class="">
-                                                                    <%=Date[index]%>
+                                                                   
                                                                 </h6>
                                                             </td>
                                                             <td class="py-3 p-4" style="font-size: 13px; color:#959595">
-                                                                <form action="/profile/order/<%= order[index]._id %> "
+                                                                <form action=""
                                                                     method="post">
                                                                     <button onclick="return showConfirmation()"
                                                                         class="btn btn-danger p-2"
@@ -105,7 +106,7 @@
                                                 style="width: 300px; height: 300px; opacity: 80%;" loop autoplay>
                                             </lottie-player>
                                         </div>
-                                        <%}%>
+                                    <%}%>
                             </div>
                         </div>
                         <div class="container-fluid bg-white profile_Right p-4 mt-4">
