@@ -5,7 +5,7 @@ const Router = express.Router();
 const userMiddlewear = require('../middleWeare/user');
 const userControler = require('../controllers/userControllers');
 const profileController =require('../controllers/profileController');
-const user = require('../models/user');
+
 Router.get('/login',userMiddlewear.isLogOut, userControler.login);
 Router.post('/login', userControler.validation);
 
@@ -35,6 +35,7 @@ Router.post('/shopSort',userControler.sorting);
 Router.get('/profile',userMiddlewear.userCheking,userMiddlewear.userIsBlocked, profileController.profile);
 Router.get('/profile/order',userMiddlewear.userCheking,userMiddlewear.userIsBlocked, profileController.order);
 Router.get('/profile/orderView',userMiddlewear.userCheking,userMiddlewear.userIsBlocked, profileController.orderView);
+Router.post('/profile/orderStatus/:id',userMiddlewear.userCheking,userMiddlewear.userIsBlocked, profileController.orderStatus);
 Router.get('/profile/address',userMiddlewear.userCheking,userMiddlewear.userIsBlocked,profileController.profileAddress);
 Router.post('/profile/order/:id',userMiddlewear.userCheking,userMiddlewear.userIsBlocked, profileController.orderCancel);
 Router.post('/profile/address/editAddress',userMiddlewear.userCheking,userMiddlewear.userIsBlocked,profileController.editAddress);

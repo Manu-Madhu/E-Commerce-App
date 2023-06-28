@@ -60,8 +60,8 @@ const validation = async (req, res) => {
                     let cartCount;
                     let signinPage;
                     req.session.data = {
-                        userName : userData.name,
-                        userEmail : userData.email
+                        userName: userData.name,
+                        userEmail: userData.email
                     }
                     // generat randome 4 digit number
                     let randome = Math.floor(Math.random() * 9000) + 1000;
@@ -187,7 +187,7 @@ const OTPValidation = async (req, res) => {
         const num3 = req.body.num_3;
         const num4 = req.body.num_4;
         const code = parseInt(num1 + num2 + num3 + num4)
-        const {userName,userEmail} = req.session.data;
+        const { userName, userEmail } = req.session.data;
         await OTP.find({ number: code })
             .then((fount) => {
                 if (fount.length > 0) {
@@ -579,7 +579,18 @@ const Checkout = async (req, res) => {
         cartItems.map(item => totalPrice += item.price);
 
         const discount = Math.abs(totalP_Price - totalPrice)
-        res.render('user/account/billing', { title: "Check Out", user, cartItems, cartProducts, discount, totalP_Price, totalPrice, address, cartCount, coupon })
+        res.render('user/account/billing', {
+            title: "Check Out", 
+            user,
+            cartItems,
+            cartProducts,
+            discount,
+            totalP_Price,
+            totalPrice,
+            address,
+            cartCount,
+            coupon
+        })
     } catch (error) {
         console.log(error);
     }
@@ -630,6 +641,7 @@ const orderSuccess = async (req, res) => {
         const addressId = data.selectedAddress;
         const method = data.method;
         const amount = data.amount;
+        console.log(amount)
         // Data collecting for db Storing
         const productData = cartProducts.map(product => ({
             p_name: product.p_name,
@@ -651,6 +663,8 @@ const orderSuccess = async (req, res) => {
                 amount: amount
             },
             status: "Processing",
+            proCartDetail:cartProducts,
+            cartProduct:cartItems,
             createdAt: currentDate,
             expectedDelivery: deliveryDate
         });

@@ -1,6 +1,5 @@
 const userModel = require('../models/user');
 const orderModel = require('../models/order');
-const productModel = require('../models/productModel');
 const bcrypt = require('bcrypt');
 const easyinvoice = require('easyinvoice');
 
@@ -132,7 +131,7 @@ const order = async (req, res) => {
         const cart = userDetails.cart.items;
         const cartCount = cart.length;
         const userid = userDetails._id;
-        const order = await orderModel.find({ userId: userid, orderCancleRequest: false, status: { $ne: 'Deliverd' } });
+        const order = await orderModel.find({ userId: userid, orderCancleRequest: false, status: { $ne: 'Deliverd' } }).sort({ _id: -1 });
         const orderHist = await orderModel.find({
             userId: userid,
             $or: [
@@ -153,13 +152,13 @@ const order = async (req, res) => {
         const Date = order.map(data => data.expectedDelivery.toLocaleDateString());
 
         res.render('user/account/myOrder', {
+            title: "OrderPage",
             user,
             newProduct,
             status,
             Date,
             order,
             orderstatus,
-            title: "OrderPage",
             cartCount,
             orderHist,
             orderProduct,
@@ -177,106 +176,134 @@ const orderView = async (req, res) => {
         const cart = userDetails.cart.items;
         const cartCount = cart.length;
         const orderId = req.query.id;
-        const order = await orderModel.findById(orderId);
-        let address;
-        if (order && order.address) {
-          const addressId = order.address.toString();
-          address = userDetails.address.find((addr) => addr._id.toString() === addressId);
-        }
-        const orderProducts = order.products;
-        const orderProduct = orderProducts.flat();
-        const finalprice = order.payment.amount;
-        const realprice = orderProduct.reduce((total, product) => total + product.realPrice, 0);
-        const discount = Math.abs(realprice - finalprice);
+        const order =await orderModel.find({ _id: orderId });;
+        const orderProducts = order.map(items => items.proCartDetail).flat();
+        const cartProducts = order.map(items => items.cartProduct).flat();
+        for (let i = 0; i < orderProducts.length; i++) {
+            const orderProductId = orderProducts[i]._id;
+            const matchingCartProduct = cartProducts.find(cartProduct => cartProduct.productId.toString() === orderProductId.toString());
 
-        res.render("user/account/orderView", { user, title: "Product view", cartCount,order,address,orderProduct,discount })
+            if (matchingCartProduct) {
+                orderProducts[i].cartProduct = matchingCartProduct;
+            }
+        }
+        const address = userDetails.address.find(items=>items._id.toString()== order.map(items=>items.address).toString());
+        const subTotal = cartProducts.reduce((totals,items)=>totals+items.realPrice,0);
+        const [orderCanceld] = order.map(item=>item.orderCancleRequest);
+        const orderStatus = order.map(item=>item.status);
+        res.render("user/account/orderStatus", { title: "Product view", user, cartCount, order, orderProducts, subTotal, address, orderCanceld, orderStatus})
     } catch (error) {
-        console.log(error);
-        res.status(500).send({ error: "An error occurred" });
+        console.log(error)
     }
 };
+const orderStatus = async (req, res) => {
+    try {
+        const user = req.session.user;
+        const userDetails = await userModel.findOne({ email: req.session.email });
+        const cart = userDetails.cart.items;
+        const cartCount = cart.length;
+        const orderId = req.params.id;
+        const order = await orderModel.find({ _id: orderId });
+        const orderProducts = order.map(items => items.proCartDetail).flat();
+        const cartProducts = order.map(items => items.cartProduct).flat();
+        for (let i = 0; i < orderProducts.length; i++) {
+            const orderProductId = orderProducts[i]._id;
+            const matchingCartProduct = cartProducts.find(cartProduct => cartProduct.productId.toString() === orderProductId.toString());
 
+            if (matchingCartProduct) {
+                orderProducts[i].cartProduct = matchingCartProduct;
+            }
+        }
+        const address = userDetails.address.find(items=>items._id.toString()== order.map(items=>items.address).toString());
+        const subTotal = cartProducts.reduce((totals,items)=>totals+items.realPrice,0);
+        const [orderCanceld] = order.map(item=>item.orderCancleRequest);
+        const orderStatus = order.map(item=>item.status);
+        res.render("user/account/orderStatus", { title: "Product view", user, cartCount, order, orderProducts, subTotal, address, orderCanceld, orderStatus})
+    } catch (error) {
+        console.log(error)
+    }
+}
 const pdf = async (req, res) => {
     try {
         const da = req.body
         console.log(da)
-      // Extract the necessary data from your request or database
-      const data = {
-        order: {
-          _id: '123456',
-          status: 'Pending',
-          payment: {
-            method: 'Credit Card',
-            amount: 100,
-          },
-        },
-        address: {
-          name: 'John Doe',
-          houseName: '123 Main St',
-          street: 'City',
-          city: 'State',
-          state: 'Country',
-          postalCode: '12345',
-          phone: '123-456-7890',
-        },
-        orderProduct: [
-          { p_name: 'Product 1', realPrice: 50 },
-          { p_name: 'Product 2', realPrice: 25 },
-          { p_name: 'Product 3', realPrice: 30 },
-        ],
-        discount: 10,
-      };
-  
-      // Create the invoice options using the data
-      const invoiceOptions = {
-        documentTitle: 'Invoice',
-        currency: 'USD',
-        taxNotation: 'GST',
-        marginTop: 25,
-        marginRight: 25,
-        marginLeft: 25,
-        marginBottom: 25,
-        logo: 'https://example.com/logo.png', // Replace with your logo URL
-        sender: {
-          company: 'Asthra Fashion World',
-          address: 'Neyyattinkara, gramam, Thiruvananthapuram, PIN 695121',
-          email: 'info@example.com',
-          phone: '+1 123-456-7890',
-        },
-        client: {
-          company: 'Client Company',
-          address: `${data.address.name}, ${data.address.houseName}, ${data.address.street}, ${data.address.city}, ${data.address.state}, PIN: ${data.address.postalCode}`,
-          email: 'client@example.com',
-          phone: data.address.phone,
-        },
-        invoiceNumber: `#${data.order._id}`,
-        invoiceDate: new Date().toDateString(),
-        products: data.orderProduct.map((product) => ({
-          description: product.p_name,
-          quantity: 1,
-          price: product.realPrice,
-        })),
-        bottomNotice: `Discount: $${data.discount}`,
-        // Calculate the subtotal and total amounts based on your data
-        subtotal: 105,
-        total: 95,
-      };
-  
-      // Generate the invoice as a PDF buffer
-      const invoiceBuffer = await easyinvoice.createInvoice(invoiceOptions);
-  
-      // Set response headers for downloading the PDF
-      res.setHeader('Content-Type', 'application/pdf');
-      res.setHeader('Content-Disposition', 'attachment; filename=invoice.pdf');
-  
-      // Send the invoice PDF buffer as the response
-      res.send(invoiceBuffer);
+        // Extract the necessary data from your request or database
+        const data = {
+            order: {
+                _id: '123456',
+                status: 'Pending',
+                payment: {
+                    method: 'Credit Card',
+                    amount: 100,
+                },
+            },
+            address: {
+                name: 'John Doe',
+                houseName: '123 Main St',
+                street: 'City',
+                city: 'State',
+                state: 'Country',
+                postalCode: '12345',
+                phone: '123-456-7890',
+            },
+            orderProduct: [
+                { p_name: 'Product 1', realPrice: 50 },
+                { p_name: 'Product 2', realPrice: 25 },
+                { p_name: 'Product 3', realPrice: 30 },
+            ],
+            discount: 10,
+        };
+
+        // Create the invoice options using the data
+        const invoiceOptions = {
+            documentTitle: 'Invoice',
+            currency: 'USD',
+            taxNotation: 'GST',
+            marginTop: 25,
+            marginRight: 25,
+            marginLeft: 25,
+            marginBottom: 25,
+            logo: 'https://example.com/logo.png', // Replace with your logo URL
+            sender: {
+                company: 'Asthra Fashion World',
+                address: 'Neyyattinkara, gramam, Thiruvananthapuram, PIN 695121',
+                email: 'info@example.com',
+                phone: '+1 123-456-7890',
+            },
+            client: {
+                company: 'Client Company',
+                address: `${data.address.name}, ${data.address.houseName}, ${data.address.street}, ${data.address.city}, ${data.address.state}, PIN: ${data.address.postalCode}`,
+                email: 'client@example.com',
+                phone: data.address.phone,
+            },
+            invoiceNumber: `#${data.order._id}`,
+            invoiceDate: new Date().toDateString(),
+            products: data.orderProduct.map((product) => ({
+                description: product.p_name,
+                quantity: 1,
+                price: product.realPrice,
+            })),
+            bottomNotice: `Discount: $${data.discount}`,
+            // Calculate the subtotal and total amounts based on your data
+            subtotal: 105,
+            total: 95,
+        };
+
+        // Generate the invoice as a PDF buffer
+        const invoiceBuffer = await easyinvoice.createInvoice(invoiceOptions);
+
+        // Set response headers for downloading the PDF
+        res.setHeader('Content-Type', 'application/pdf');
+        res.setHeader('Content-Disposition', 'attachment; filename=invoice.pdf');
+
+        // Send the invoice PDF buffer as the response
+        res.send(invoiceBuffer);
     } catch (error) {
-      console.log(error);
-      res.status(500).send('Internal Server Error');
+        console.log(error);
+        res.status(500).send('Internal Server Error');
     }
-  };
-  
+};
+
 const orderCancel = async (req, res) => {
     try {
         const id = req.params.id;
@@ -302,5 +329,6 @@ module.exports = {
     order,
     orderCancel,
     orderView,
-    pdf
+    pdf,
+    orderStatus
 };

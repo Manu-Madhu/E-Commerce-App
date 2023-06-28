@@ -1,0 +1,178 @@
+<%- include('../../partials/header.ejs') %>
+    <div class="container-fluid p-0 min-vh-100" style="margin-top: 6%;">
+        <%-include('../../partials/navbar.ejs') %>
+            <div class="container ">
+                <div class="row p-4 mb-4">
+                    <div class="container col-lg-3 col-md-3 col-12 p-3 m-0">
+                        <div class="container bg-white profile_left p-5">
+                            <div class="mb-4 d-flex flex-column">
+                                <h6>Manage My Account</h6>
+                                <a href="/profile" class="text-decoration-none">My Profile</a>
+                            </div>
+                            <div class="mb-4 d-flex flex-column">
+                                <h6>My Orders</h6>
+                                <a href="/profile/order" class="text-decoration-none text-danger">My Orders</a>
+                                <a href="" class="text-decoration-none">My Return</a>
+                            </div>
+                            <div class="mb-4 d-flex flex-column">
+                                <h6>My WishList</h6>
+                                <a href="" class="text-decoration-none">My WishList</a>
+                            </div>
+                            <div class="mb-4 d-flex flex-column">
+                                <h6>My Address</h6>
+                                <a href="/profile/address" class="text-decoration-none ">My Address</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container col-lg-9 col-md-9 col-12 py-3 p-0 m-0">
+                        <div class="container-fluid bg-white profile_Right">
+                            <div class="container-fluid">
+
+                                <div class="container pt-4">
+                                    <!-- Title -->
+                                    <div class="d-flex justify-content-between align-items-center py-3">
+                                        <h3 class="h5 mb-0"><span class="text-danger">Order ID</span> : <span style="font-size: 14px; color: #959595;">#<%=order.map(item=>item._id)%></span></h3>
+                                    </div>
+                                    <!-- Main content -->
+                                    <div class="row">
+                                        <div class="col-lg-8">
+                                            <!-- Details -->
+                                            <div class="mb-4 profile_info ">
+                                                <div class="card-body">
+                                                    <div class="mt-3 d-flex justify-content-between">
+                                                        <div class="mx-2">
+                                                            <span class="me-3 fw-bold" style="font-size: 13px;color: #959595;"><span>Order Date :</span> <%=order.map(item=>item.createdAt.toLocaleDateString())%></span>
+                                                            <span class="me-3 fw-bold" style="font-size: 13px;color: #959595;"><span>Delivery Date :</span> <%=order.map(item=>item.expectedDelivery.toLocaleDateString())%></span>
+                                                            <%if(orderCanceld === false){%>
+                                                                <%if(orderStatus == "Deliverd"){%>
+                                                                    <span class="badge rounded-pill bg-success"><%=order.map(item=>item.status)%></span>
+                                                                <%}else{%>
+                                                                    <span class="badge rounded-pill bg-info"><%=order.map(item=>item.status)%></span>
+                                                                <%}%>
+                                                            <%}else if(orderCanceld === true){%>
+                                                                <%if(orderStatus == "Canceled"){%>
+                                                                    <span class="badge rounded-pill bg-warning"><%=order.map(item=>item.status)%></span>
+                                                                <%}else{%>
+                                                                    <span class="badge rounded-pill bg-warning">Requesting</span>
+                                                                <%}%>
+                                                            <%}%>
+                                                        </div>
+                                                        <div >
+                                                            <span class="badge rounded-pill bg-danger ">
+                                                                <!-- <i class="bi bi-download"></i>  -->
+                                                                <a class="text-decoration-none text-white" href=""><span class="text">Invoice</span></a>
+                                                            </span>
+                                                            <div class="dropdown">
+                                                                <button class="btn btn-link p-0 text-muted"
+                                                                    type="button" data-bs-toggle="dropdown">
+                                                                    <i class="bi bi-three-dots-vertical"></i>
+                                                                </button>
+                                                                <ul class="dropdown-menu dropdown-menu-end">
+                                                                    <li><a class="dropdown-item" href="#"><i
+                                                                                class="bi bi-pencil"></i> Edit</a></li>
+                                                                    <li><a class="dropdown-item" href="#"><i
+                                                                                class="bi bi-printer"></i> Print</a>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <table class="table table-borderless">
+                                                        <tbody >
+                                                            <%orderProducts.forEach((data,index)=>{%>
+                                                            <tr>
+                                                                <td>
+                                                                    <div class="d-flex mb-2">
+                                                                        <div class="flex-shrink-0" ">
+                                                                            <img src="../../../productImages/<%=data.image[0]%>"
+                                                                                alt="" width="35" class="img-fluid"  >
+                                                                        </div>
+                                                                        <div class="flex-lg-grow-1 ms-3">
+                                                                            <h6 class="small mb-0"  style="font-size: 14px;">
+                                                                                <a href="#"class="text-reset text-decoration-none">
+                                                                                    <%=data.p_name%>
+                                                                                </a>
+                                                                            </h6>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                                <td  style="font-size: 13px;"><%=data.cartProduct.quantity%></td>
+                                                                <td class="text-end fw-bold"  style="font-size: 14px;">₹ <%=data.cartProduct.price%></td>
+                                                                
+                                                            </tr>
+                                                            <%})%>
+                                                        </tbody>
+                                                            <tfoot class=" pt-2" style="border-radius: 10px;">
+                                                                <tr>
+                                                                    <td colspan="2" class="fw-bold" style="color: #959595;">Subtotal</td>
+                                                                    <td class="text-end"style="color: #959595;">₹ <%=subTotal%></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td colspan="2" class="fw-bold" style="color: #959595;">Shipping</td>
+                                                                    <td class="text-end text-success fw-bold" style="color: green;">Free</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td colspan="2" class="fw-bold" style="color: #959595;">Payment Method</td>
+                                                                    <td class="text-end fw-bold" style="color: #959595;"><%=order.map(items=>items.payment.method)%></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td colspan="2" class="fw-bold" style="color: #959595;">Discount</td>
+                                                                    <td class="text-danger text-end" style="opacity: 80%;">₹<%=subTotal-order.map(items=>items.payment.amount)%> </td>
+                                                                </tr>
+                                                                <tr class="fw-bold">
+                                                                    <td colspan="2">TOTAL</td>
+                                                                    <td class="text-end">₹ <%=order.map(items=>items.payment.amount)%></td>
+                                                                </tr>
+                                                            </tfoot>   
+                                                    </table>
+                                                </div>
+                                            </div>
+                                         
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <div class="profile_info mb-4">
+                                                <!-- Shipping information -->
+                                                <div class="card-body ">
+                                                    <h6 class="fw-bold pt-3">Shipping Information</h6>
+                                                    <span class="fw-bold" style="font-size: 14px; opacity: 70%;">Payment Method : <span class="badge bg-success rounded-pill"><%=order.map(items=>items.payment.method)%></span></span>
+                                                    <hr>
+                                                    <h6 class="fw-bold ">Address</h6>
+                                                    <address style="font-size: 14px; opacity: 70%;">
+                                                        <label class="fw-bold" style="font-size: 14px; opacity: 70%;"><%=address.name%></label><br>
+                                                        <%=address.houseName%>, <%=address.street%><br>
+                                                        <%=address.city%>, <%=address.state%><br>
+                                                        Ph : <%=address.phone%><br>
+                                                        Pin : <%=address.postalCode%>
+                                                    </address>
+                                                </div>
+                                            </div>
+
+                                            <div>
+                                               <%if(orderCanceld === false){%>
+                                                    <%if(orderStatus == "Deliverd"){%>
+                                                        <form action="/Shop" method="get">
+                                                            <button class="btn btn-success" style="width: 100%; border-radius: 10px;font-size: 13px;">Order Again</button>
+                                                         </form>
+                                                    <%}else{%>
+                                                    <form action="/profile/order/<%=order.map(item=>item._id)%>" method="post">
+                                                        <button class="btn btn-danger" style="width: 100%; border-radius: 10px;font-size: 13px;">Cancel Order</button>
+                                                     </form>
+                                                    <%}%>
+                                               <%}else{%>
+                                                <form action="/Shop" method="get">
+                                                    <button class="btn btn-success" style="width: 100%; border-radius: 10px;font-size: 13px;">Order Again</button>
+                                                 </form>
+                                                <%}%>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+    <script>
+    </script>
+    <%-include('../../partials/footer.ejs') %>
