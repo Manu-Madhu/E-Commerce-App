@@ -32,8 +32,8 @@ const home = async (req, res) => {
         const data = await ProductModel.find({ availability: true }).sort({ _id: -1 }).limit(8);
         const dataNormal = await ProductModel.find({ availability: true }).limit(8);
         const userData = await UserModel.findOne({ email: req.session.email });
-        let cart = userData.cart.items;
-        let cartCount = cart.length;
+        const cart = userData.cart.items;
+        const cartCount = cart.length;
         res.render('user/Home', { log: "LogOut", title: "Home", user: req.session.user, data, dataNormal, cartCount })
     } catch (error) {
         console.log(error);
@@ -338,7 +338,7 @@ const detaildView = async (req, res) => {
         const id = req.params.id;
         const data = await ProductModel.findOne({ _id: id });
         const cate = data.category[0];
-        const category = await ProductModel.find({ category: cate });
+        const category = await ProductModel.find({ category: cate }).sort({_id:-1}).limit(4);
         let cart, cartCount;
         if (userData) {
             cart = userData.cart.items;

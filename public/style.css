@@ -88,7 +88,7 @@ body {
   background: transparent;
   border: none;
   border-bottom: 1px solid #8e8e8e;
-  width: 90%;
+  width: 100%;
 }
 
 .credntials input:focus {
@@ -112,7 +112,7 @@ body {
 /* $-----------SIGHN UP----------------$ */
 .CardSignup {
   display: flex;
-  width: 60%;
+  width: 80%;
   justify-content: center;
   align-items: center;
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
@@ -136,7 +136,9 @@ body {
   width: 90%;
   height: 44px;
 }
-
+.left form{
+  width: 100%;
+}
 /* --------OTP------------- */
 .CardOTP {
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
@@ -210,17 +212,28 @@ body {
   border-radius: 0px 0px 14px 14px;
   cursor: pointer;
 }
-
+/* product text managing */
 .ProductCard {
   border-radius: 14px;
   width: 280px;
   height: 420px;
   position: relative;
   box-shadow: 2px 2px 4px 0px #00000040;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.product-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .ProductCard span {
   font-size: 14px;
   font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .cardImage img {
