@@ -137,7 +137,7 @@ const order = async (req, res) => {
             $or: [
                 { orderCancleRequest: true },
                 { status: 'Deliverd' }
-            ]
+            ],orderReturnRequest:false
         }).sort({ _id: -1 });
         const orderProducts = orderHist.map(data => data.products);
         const orderProduct = orderProducts.flat();
@@ -150,7 +150,7 @@ const order = async (req, res) => {
         const status = order.map(data => data.status);
         const orderstatus = order.map(data => data.orderCancleRequest);
         const Date = order.map(data => data.expectedDelivery.toLocaleDateString());
-
+        console.log(orderHist);
         res.render('user/account/myOrder', {
             title: "OrderPage",
             user,
@@ -176,7 +176,7 @@ const orderView = async (req, res) => {
         const cart = userDetails.cart.items;
         const cartCount = cart.length;
         const orderId = req.query.id;
-        const order =await orderModel.find({ _id: orderId });;
+        const order = await orderModel.find({ _id: orderId });;
         const orderProducts = order.map(items => items.proCartDetail).flat();
         const cartProducts = order.map(items => items.cartProduct).flat();
         for (let i = 0; i < orderProducts.length; i++) {
@@ -187,11 +187,11 @@ const orderView = async (req, res) => {
                 orderProducts[i].cartProduct = matchingCartProduct;
             }
         }
-        const address = userDetails.address.find(items=>items._id.toString()== order.map(items=>items.address).toString());
-        const subTotal = cartProducts.reduce((totals,items)=>totals+items.realPrice,0);
-        const [orderCanceld] = order.map(item=>item.orderCancleRequest);
-        const orderStatus = order.map(item=>item.status);
-        res.render("user/account/orderStatus", { title: "Product view", user, cartCount, order, orderProducts, subTotal, address, orderCanceld, orderStatus})
+        const address = userDetails.address.find(items => items._id.toString() == order.map(items => items.address).toString());
+        const subTotal = cartProducts.reduce((totals, items) => totals + items.realPrice, 0);
+        const [orderCanceld] = order.map(item => item.orderCancleRequest);
+        const orderStatus = order.map(item => item.status);
+        res.render("user/account/orderStatus", { title: "Product view", user, cartCount, order, orderProducts, subTotal, address, orderCanceld, orderStatus })
     } catch (error) {
         console.log(error)
     }
@@ -214,11 +214,11 @@ const orderStatus = async (req, res) => {
                 orderProducts[i].cartProduct = matchingCartProduct;
             }
         }
-        const address = userDetails.address.find(items=>items._id.toString()== order.map(items=>items.address).toString());
-        const subTotal = cartProducts.reduce((totals,items)=>totals+items.realPrice,0);
-        const [orderCanceld] = order.map(item=>item.orderCancleRequest);
-        const orderStatus = order.map(item=>item.status);
-        res.render("user/account/orderStatus", { title: "Product view", user, cartCount, order, orderProducts, subTotal, address, orderCanceld, orderStatus})
+        const address = userDetails.address.find(items => items._id.toString() == order.map(items => items.address).toString());
+        const subTotal = cartProducts.reduce((totals, items) => totals + items.realPrice, 0);
+        const [orderCanceld] = order.map(item => item.orderCancleRequest);
+        const orderStatus = order.map(item => item.status);
+        res.render("user/account/orderStatus", { title: "Product view", user, cartCount, order, orderProducts, subTotal, address, orderCanceld, orderStatus })
     } catch (error) {
         console.log(error)
     }
@@ -303,11 +303,24 @@ const pdf = async (req, res) => {
         res.status(500).send('Internal Server Error');
     }
 };
+const orderReturn = async (req,res) => {
+    try {
+      const id = req.params.id;
+      await orderModel.findByIdAndUpdate({ _id: id },
+        {
+            $set: {
+                orderReturnRequest: true
+            }
+        });
 
+    res.redirect('/profile/order');
+    } catch (error) {
+        console.log(error)
+    }
+}
 const orderCancel = async (req, res) => {
     try {
         const id = req.params.id;
-        console.log(id)
         await orderModel.findByIdAndUpdate({ _id: id },
             {
                 $set: {
@@ -330,5 +343,6 @@ module.exports = {
     orderCancel,
     orderView,
     pdf,
-    orderStatus
+    orderStatus,
+    orderReturn
 };

@@ -12,7 +12,7 @@
                             <div class="mb-4 d-flex flex-column">
                                 <h6>My Orders</h6>
                                 <a href="/profile/order" class="text-decoration-none text-danger">My Orders</a>
-                                <a href="" class="text-decoration-none">My Return</a>
+                                <a href="#" class="text-decoration-none">My Return</a>
                             </div>
                             <div class="mb-4 d-flex flex-column">
                                 <h6>My WishList</h6>
@@ -31,7 +31,7 @@
                                 <div class="container pt-4">
                                     <!-- Title -->
                                     <div class="d-flex justify-content-between align-items-center py-3">
-                                        <h3 class="h5 mb-0"><span class="text-danger">Order ID</span> : <span style="font-size: 14px; color: #959595;">#<%=order.map(item=>item._id)%></span></h3>
+                                        <h3 class="h5 mb-0"><span class="text-danger">ORDER ID</span> : <span style="font-size: 14px; color: #959595;">#<%=order.map(item=>item._id)%></span></h3>
                                     </div>
                                     <!-- Main content -->
                                     <div class="row">
@@ -46,19 +46,21 @@
                                                             <%if(orderCanceld === false){%>
                                                                 <%if(orderStatus == "Deliverd"){%>
                                                                     <span class="badge rounded-pill bg-success"><%=order.map(item=>item.status)%></span>
+                                                                <%}else if(orderStatus == "Processing"){%>
+                                                                    <span class="badge rounded-pill bg-warning"><%=order.map(item=>item.status)%></span>
                                                                 <%}else{%>
                                                                     <span class="badge rounded-pill bg-info"><%=order.map(item=>item.status)%></span>
                                                                 <%}%>
                                                             <%}else if(orderCanceld === true){%>
                                                                 <%if(orderStatus == "Canceled"){%>
-                                                                    <span class="badge rounded-pill bg-warning"><%=order.map(item=>item.status)%></span>
+                                                                    <span class="badge rounded-pill bg-danger"><%=order.map(item=>item.status)%></span>
                                                                 <%}else{%>
                                                                     <span class="badge rounded-pill bg-warning">Requesting</span>
                                                                 <%}%>
                                                             <%}%>
                                                         </div>
                                                         <div >
-                                                            <span class="badge rounded-pill bg-danger ">
+                                                            <span class="badge rounded-pill bg-primary ">
                                                                 <!-- <i class="bi bi-download"></i>  -->
                                                                 <a class="text-decoration-none text-white" href=""><span class="text">Invoice</span></a>
                                                             </span>

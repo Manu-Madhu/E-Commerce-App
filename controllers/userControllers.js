@@ -364,6 +364,7 @@ const WhishListLoad = async (req, res) => {
         let cartCount = cart.length;
         const productId = productData.map(items => items.productId);
         const productDetails = await ProductModel.find({ _id: { $in: productId } });
+        console.log(productDetails)
         res.render('user/whishList', { user, productDetails, cartCount })
     } catch (error) {
         console.log(error)

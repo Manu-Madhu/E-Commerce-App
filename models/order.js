@@ -19,6 +19,10 @@ const orderSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
+    orderReturnRequest: {
+        type: Boolean,
+        default: false
+    },
     products: [{
         p_name: {
             type: String,

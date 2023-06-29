@@ -17,11 +17,8 @@
                                             <div class="cardImage mb-2 p-1 d-flex align-items-center justify-content-center"
                                                 style="position: relative;">
                                                 <img src="/productImages/<%= data.image[0] %>" alt="Product Image">
-                                                <div
-                                                    style="position: absolute; top: 7px; right: 5px; border-radius: 50%; width:30px; height: 30px;">
-                                                    <img src="/assets/icons/delete.png" alt=""
-                                                        class="img-fluid bg-white p-2"
-                                                        style="width:30px; height: 30px;">
+                                                <div style="position: absolute; top: 7px; right: 5px; border-radius: 50%; width:30px; height: 30px;">
+                                                    <img src="/assets/icons/delete.png" alt=""  class="img-fluid bg-white p-2" style="width:30px; height: 30px;">
                                                 </div>
                                             </div>
                                         </a>
@@ -32,8 +29,8 @@
                                                 </span>
                                                 <div class="p_price d-flex justify-content-between">
                                                     <div class="price text-danger col-10">
-                                                        <%= data.price %><text>
-                                                            </text> &nbsp; <span>₹1500</span>
+                                                        <%= data.finalPrice %><text>
+                                                            </text> &nbsp; <span>₹ <%= data.price %></span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -45,7 +42,7 @@
                                     </div>
                                     <div class="whishlistCard mt-1 d-flex align-items-center justify-content-center">
                                         <img src="/assets/icons/shoping.png" alt="" class="img-fluid" style="width: 25px;">
-                                        <a href="#" class="text-decoration-none text-white addToCart"
+                                        <a href="/cart/<%= data._id %>" class="text-decoration-none text-white addToCart"
                                             data-productid="<%= data._id %>">
                                             <span class="text-white ps-2">Add to cart</span>
                                         </a>

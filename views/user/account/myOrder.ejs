@@ -12,7 +12,7 @@
                             <div class="mb-4 d-flex flex-column">
                                 <h6>My Orders</h6>
                                 <a href="/profile/order" class="text-decoration-none text-danger">My Orders</a>
-                                <a href="" class="text-decoration-none">My Return</a>
+                                <a href="#" class="text-decoration-none">My Return</a>
                             </div>
                             <div class="mb-4 d-flex flex-column">
                                 <h6>My WishList</h6>
@@ -41,8 +41,8 @@
                                                     <tr class="cart_table">
                                                         <th class="first p-3 px-4"><span>ID</span></th>
                                                         <th class="p-3"><span>Product</span></th>
-                                                        <th class="p-3"><span>Quantity</span></th>
                                                         <th class="p-3"><span>Status</span></th>
+                                                        <th class="p-3"><span>Quantity</span></th>
                                                         <th class="p-3"><span>Price</span></th>
                                                         <th class="p-3"><span>Expected Date</span></th>
                                                         <th class="third p-3"><span>Order</span></th>
@@ -60,15 +60,20 @@
                                                                 <img src="/productImages/<%= data.products[0].image[0] %>"
                                                                     alt="" width="60px">
                                                             </th>
+                                                            <td scope="col" class="px-3">
+                                                                <%if(data.status == "Processing"){%>
+                                                                <span class=" badge rounded-pill bg-warning">
+                                                                    <%= data.status%>
+                                                                </span>
+                                                                <%}else{%>
+                                                                    <span class=" badge rounded-pill bg-info">
+                                                                        <%= data.status%>
+                                                                    </span>
+                                                                <%}%>
+                                                            </td>
                                                             <td scope="col" class="tablefont px-3">
                                                                 <span class="couponListFont" style="color:#959595">
                                                                     <%= data.products.length%>
-                                                                </span>
-                                                            </td>
-                                                            </th>
-                                                            <td scope="col" class="tablefont px-3">
-                                                                <span class="couponListFont" style="color:#959595">
-                                                                    <%= data.status%>
                                                                 </span>
                                                             </td>
                                                             <td scope="col" class="px-3">
@@ -110,7 +115,7 @@
                         </div>
                         <div class="container-fluid bg-white profile_Right p-4 mt-4">
                             <div class="p-3">
-                                <h5 class=" fw-bold">My History</h5>
+                                <h5 class=" fw-bold">Order History</h5>
                             </div>
                             <div class="container  p-2 m-0 mb-2">
                                 <%if(orderHist.length>0){%>
@@ -138,10 +143,10 @@
                                                                     <a href="/profile/orderView?id=<%=data._id%>"
                                                                         class="order-cancel-link container d-flex align-items-center text-decoration-none text-dark"
                                                                         data-order-id="<%= orderHistStatus[index]._id %>">
-                                                                        <div class=" p-0" style="position: relative;">
-                                                                            <h3 class="text-white bg-danger p-1"
-                                                                                style="position: absolute; font-size: 7px;  border-radius: 4px;">
-                                                                                Order Cancelled
+                                                                        <div class="p-0" style="position: relative;">
+                                                                            <h3 class="text-white bg-danger p-1 "
+                                                                                style="position: absolute; font-size: 7.4px;  border-radius: 4px;">
+                                                                                Order Canceled
                                                                             </h3>
                                                                             <img src="/productImages/<%=data.products[0].image[0]%>"
                                                                                 alt="" class="img-fluid" width="60px"
@@ -149,7 +154,7 @@
                                                                         </div>
                                                                     </a>
                                                             <td class="py-3 p-4" style="font-size: 13px; color:#959595">
-                                                                <h6 for="" class=""><span>Order Cancelled</span></h6>
+                                                                <h6 for="" ><span class="badge rounded-pill bg-danger">Order Canceled</span></h6>
                                                             </td>
                                                             <%} else{%>
                                                                 <a href="/profile/orderView?id=<%=data._id%>" class="order-cancel-link container d-flex align-items-center text-decoration-none text-dark">
@@ -160,9 +165,15 @@
                                                                 </td>
                                                                 <td class="py-3 p-4" style="font-size: 13px; color:#959595">
                                                                     <h6 for="" class="">
-                                                                        <span>
+                                                                        <%if(data.status == "Deliverd"){%>
+                                                                        <span class="badge rounded-pill bg-success">
                                                                             <%= data.status %>
                                                                         </span>
+                                                                        <%}else{%>
+                                                                            <span class="badge rounded-pill bg-danger">
+                                                                                <%= data.status %>
+                                                                            </span>
+                                                                        <%}%>
                                                                     </h6>
                                                                 </td>
                                                             <%}%>
@@ -183,10 +194,11 @@
                                                             <%if(data.orderCancleRequest===false){%>
                                                                 <td class="py-3 p-4"style="font-size: 13px; color:#959595">
                                                                     <h6 for="" class=""></h6>
-                                                                    <button class="btn btn-success"
-                                                                        style="font-size: 13px;">
-                                                                        Return
-                                                                    </button>
+                                                                    <form action="/profile/orderReturn/<%=data._id%>" method="post">
+                                                                        <button class="btn btn-success" style="font-size: 13px;">
+                                                                            Return
+                                                                        </button>
+                                                                    </form>
                                                                 </td>
                                                             <%}else{%>
                                                                 <td class="py-3 p-4"style="font-size: 13px; color:#959595">
