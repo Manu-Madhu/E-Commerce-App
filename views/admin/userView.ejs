@@ -6,7 +6,7 @@
                     <div class="DashBoardUl container col-md-2 p-0 m-0 bg-white d-flex pt-4 sideBar">
                         <ul class="d-flex flex-column">
                             <li class="dashOther fw-bold p-1 m-2 ps-4 ">
-                                <img src="/assets/admin/d1.png" alt="" class="img-fluid me-2">
+                                <img src="/assets/admin/d9.png" alt="" class="img-fluid me-2">
                                 <span><a class="text-decoration-none" style="color: #cdcdcd;"
                                         href="/admin/Dashboard">DashBoard</a></span>
                             </li>
@@ -51,53 +51,50 @@
                     </div>
                     <div class=" container col-md-9  p-0 m-0">
                         <div class="container p-0">
-                            <div class="conatiner saleTop bg-white d-flex align-items-center mb-3">
+                            <div class="container saleTop bg-white d-flex align-items-center mb-3">
                                 <div class="container summary d-flex align-items-center justify-content-between p-4 "
                                     id="product">
                                     <h6 class="p-3 ps-4">Coustomers</h6>
                                     <input type="text" placeholder="User Name, Email, Phone" class="text-center">
                                 </div>
                             </div>
-
-                            <div class="container Pa_table bg-white p-2">
-                                <div class="container bg-white P_table">
-                                    <div class="container p-3 ">
-                                        <table class="table">
-                                            <thead id="tableHeader">
-                                                <tr>
-                                                    <th scope="col">ID</th>
-                                                    <th scope="col">Name</th>
-                                                    <th scope="col">Email</th>
+                            <div class="container-fluid Pa_table bg-white p-4">
+                                <% if(userData.length> 0 ){%>
+                                <div class="container-fluid bg-white P_table px-2 ">
+                                    <div class="container-fluid p-0 d-flex align-items-center justify-content-center">
+                                        <table class="w-100 tableSize">
+                                            <thead class="cartTop" id="tableHeader" style="position:sticky; top: 0; z-index: 1;">
+                                                <tr class="cart_table">
+                                                    <th class="first p-3 px-4" scope="col">ID</th>
+                                                    <th class="p-3" scope="col">Name</th>
+                                                    <th class="p-3" scope="col">Email</th>
                                                     <!-- <th scope="col">Address</th> -->
-                                                    <th scope="col">Phone</th>
-                                                    <th scope="col">Action</th>
+                                                    <th class="p-3" scope="col">Phone</th>
+                                                    <th class="third p-3" scope="col">Action</th>
                                                 </tr>
                                             </thead>
-                                            <tbody>
+                                            <tbody >
                                                 <% userData.forEach((data, index)=>{ %>
-                                                    <tr>
-                                                        <th scope="row">
+                                                    <tr class="mt-2">
+                                                        <th scope="row"  class=" px-4">
                                                             <%= index +1%>
                                                         </th>
-                                                        <td scope="col" class="tablefont">
+                                                        <td scope="col" class="tablefont px-3">
                                                             <h6>
                                                                 <%= data.name%>
                                                             </h6>
                                                         </td>
-                                                        <td scope="col">
+                                                        <td scope="col"class="px-3">
                                                             <span>
                                                                 <%= data.email%>
                                                             </span>
                                                         </td>
-                                                        <!-- <td scope="col">
-                                                            <span><%= data.email%></span>
-                                                        </td> -->
-                                                        <td scope="col">
+                                                        <td scope="col" class="px-3">
                                                             <span>
                                                                 <%= data.number%>
                                                             </span>
                                                         </td>
-                                                        <td scope="col" class="TableButton">
+                                                        <td scope="col" class="TableButton align-items-center py-3 d-flex flex-column gap-2">
                                                             <% if(data.isBlocked===false) { %>
                                                                 <form action="/admin/userBlocking/<%= data._id %>"
                                                                     method="post" onclick="confirmDelete()">
@@ -118,6 +115,16 @@
                                         </table>
                                     </div>
                                 </div>
+                                <%}else{%>
+                                    <div class="d-flex flex-column align-items-center justify-content-center">
+                                        <lottie-player
+                                            src="https://assets2.lottiefiles.com/private_files/lf30_cgfdhxgx.json"
+                                            background="transparent" speed="1" style="width: 300px; height: 300px;"
+                                            loop autoplay></lottie-player>
+                                        <h5 style="font-weight: 600; color: #cdcdcd;">No Categorys Are Available Now
+                                        </h5>
+                                    </div>
+                                <%}%>
                             </div>
                         </div>
                     </div>

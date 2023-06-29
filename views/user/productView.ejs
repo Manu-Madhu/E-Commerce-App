@@ -185,8 +185,12 @@
            url: '/WhishList/<%= data._id%>',
            type:'post',
            success:function (res){
-            console.log(res)
-            whishlistSuccMsg.innerText = "Product Successfully Added"
+            if(res == "Already Existe"){
+                whishlistSuccMsg.innerText = "Product Already Existe In The WhishList"
+            }else{
+                whishlistSuccMsg.innerText = "Product Successfully Added"
+            }
+            
            }
         })
         })

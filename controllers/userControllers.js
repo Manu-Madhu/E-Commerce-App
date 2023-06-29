@@ -349,7 +349,7 @@ const detaildView = async (req, res) => {
         }
 
     } catch (error) {
-        console.log(error)
+        console.log("detaild page error"+ error)
     }
 }
 
@@ -361,7 +361,7 @@ const WhishListLoad = async (req, res) => {
         const userDetails = await UserModel.findOne({ email: email });
         const productData = userDetails.wishlist;
         const cart = userDetails.cart.items;
-        let cartCount = cart.length;
+        const cartCount = cart.length;
         const productId = productData.map(items => items.productId);
         const productDetails = await ProductModel.find({ _id: { $in: productId } });
         res.render('user/whishList', { user, productDetails, cartCount })
@@ -374,23 +374,21 @@ const addingWhishList = async (req, res) => {
         const productId = req.params.id;
         const user = req.session.email;
         const userDetails = await UserModel.findOne({ email: user });
-        const productExist = userDetails.wishlist.map(items => items.productId.toString() === productId)
-        console.log(productExist)
+        const productExist = userDetails.wishlist.map(items => items.productId.toString() === productId);
+
 
         if (productExist.includes(true)) {
-            console.log("Already Existe")
-            return res.json("Already Existe")
+            return res.json("Already Existe");
         } else {
             const WhishList = {
                 productId: productId
             }
             userDetails.wishlist.push(WhishList);
-            await userDetails.save()
-            console.log(productId)
+            await userDetails.save();
             return res.json('server got this....');
         }
     } catch (error) {
-        console.log(error)
+        console.log(error);
     }
 }
 const addingWhishListtoCart = async (req, res) => {
@@ -441,6 +439,7 @@ const cartload = async (req, res) => {
         const userEmail = req.session.email;
         const user = req.session.user;
         const userData = await UserModel.findOne({ email: userEmail });
+        const similerProducts =  await ProductModel.find({ availability: true }).sort({p_name:-1}).limit(4);
         const cartItems = userData.cart.items;
         const cartCount = cartItems.length;
         const cartProductIds = cartItems.map(item => item.productId);
@@ -456,8 +455,9 @@ const cartload = async (req, res) => {
                 console.log(`Product not found for item: ${item.productId}`);
             }
         }
+        console.log(similerProducts)
         const discount = Math.abs(totalPrice - productsPrice);
-        res.render('user/Cart', { title: "Cart", user, cartProducts, cartItems, productsPrice, totalQuantity, totalPrice, discount, cartCount });
+        res.render('user/Cart', { title: "Cart", user, cartProducts, cartItems, productsPrice, totalQuantity, totalPrice, discount, cartCount, similerProducts});
     } catch (error) {
         console.log(error);
         res.status(500).send("Internal error from cart side");

@@ -306,7 +306,11 @@ body {
 .discount-tag {
   position: absolute;
   background: rgba(219, 68, 68, 1), rgba(223, 76, 76, 1);
-  background: linear-gradient(101deg, #DB4444 0%, rgba(223.12, 75.68, 75.68, 0.84) 100%);
+  background: linear-gradient(
+    101deg,
+    #db4444 0%,
+    rgba(223.12, 75.68, 75.68, 0.84) 100%
+  );
   padding: 5px;
   border-radius: 5px;
   color: #ffffff;
@@ -397,7 +401,6 @@ body {
 .pre-btn:hover img,
 .nxt-btn:hover img {
   opacity: 1;
-  
 }
 
 .collection-container {
@@ -432,7 +435,6 @@ body {
   grid-column: span 2;
   margin-bottom: 10px;
 }
-
 
 /* -----ADMIN--------- */
 
@@ -518,15 +520,10 @@ body {
   width: 20px;
   cursor: pointer;
 }
-.dashOther:hover {
-  width: 180px;
-  height: 40px;
-  background: #ffe2e6;
-  /* box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25); */
+.dashOther a:hover {
   border-radius: 10px;
   font-size: 16px;
   font-weight: 600;
-  color: rgb(255, 255, 255);
   cursor: pointer;
 }
 .dashOther {
@@ -1152,7 +1149,7 @@ input[type="number"]::-webkit-outer-spin-button {
   overflow-x: hidden;
 }
 .Cart_list::-webkit-scrollbar {
-  width: 0.0em; /* Adjust the width as needed */
+  width: 0em; /* Adjust the width as needed */
 }
 
 .Cart_list::-webkit-scrollbar-track {
@@ -1162,7 +1159,6 @@ input[type="number"]::-webkit-outer-spin-button {
 .Cart_list::-webkit-scrollbar-thumb {
   background-color: #888; /* Adjust the color as needed */
 }
-
 
 .Cart_table_wapper {
   border-radius: 14px;
@@ -1194,19 +1190,28 @@ input[type="number"]::-webkit-outer-spin-button {
 }
 
 .cart_Bill {
-  background-image: url("../public/assets/product/2.jpg");
   width: 100%;
   height: 100%;
   left: 557px;
   top: 3px;
-  background: #ffffff;
+  background-image: url("/assets/bg/cartbg.jpg");
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
   border-radius: 14px;
+}
+.billing_Totall {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid #dcdcdc;
+  backdrop-filter: blur(11px);
+  border-radius: 8px;
+  box-shadow: 0 20px 50px rgb(40, 113, 85, 0.4);
 }
 .billing_Totall h6 {
   font-size: 15px;
   padding-top: 5px;
-  color: #959595;
+  color: #000000;
 }
 
 /* CouponList */
@@ -1215,15 +1220,15 @@ input[type="number"]::-webkit-outer-spin-button {
 }
 
 /* Shop */
-.SideFilter{  
+.SideFilter {
   min-width: 300px;
   max-height: 100vh;
-  background: #FFFFFF;
+  background: #ffffff;
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
   border-radius: 14px;
 }
 
-.filterFont label{
+.filterFont label {
   font-size: 13.5px;
 }
 .filterBox {
@@ -1233,19 +1238,19 @@ input[type="number"]::-webkit-outer-spin-button {
   border-bottom: 1px solid #c2b5b5;
   border-radius: 14px;
 }
-.filterCo{
+.filterCo {
   width: 270px;
 }
-.filterSlider{
-width: 100%;
-background: #F3F1F1;
-border-bottom: 1px solid #F0F0F0;
-box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.25);
-border-radius: 14px;
+.filterSlider {
+  width: 100%;
+  background: #f3f1f1;
+  border-bottom: 1px solid #f0f0f0;
+  box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 14px;
 }
 
 /* slider */
-.Limit{
+.Limit {
   width: 100px;
   background-color: white;
   border: #888;
@@ -1253,13 +1258,13 @@ border-radius: 14px;
 }
 
 /*  OrderView */
-.subTotal tfoot{
+.subTotal tfoot {
   background-color: white;
-  border-radius: 14px ;
+  border-radius: 14px;
 }
 
-.flex-shrink-0 img{
-    border-radius: 5px;
+.flex-shrink-0 img {
+  border-radius: 5px;
 }
 /* ----------------FOOTER---------------- */
 .footer {

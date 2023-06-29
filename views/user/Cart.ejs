@@ -41,6 +41,7 @@
                                                             <span></span>
                                                         </td>
                                                         <td class="p-3">
+                                                            <div class="input-container">
                                                             <input type="number"
                                                                 id="quantityUpdate-<%= cartItems[index]._id %>"
                                                                 class="d-flex align-items-center track-input"
@@ -49,7 +50,8 @@
                                                                 value="<%= cartItems.find(item => item.productId.toString() === data._id.toString()).quantity %>"
                                                                 style="width: 50px; border: 2px solid #020202; border-radius: 4px;"
                                                                 onchange="updateQuantity(this,'<%= cartItems[index]._id %>')"
-                                                                min="1">
+                                                                min="1" >
+                                                            </div>
                                                         </td>
                                                         <td class="p-3">
                                                             <h6 for="" class="fw-bold"
@@ -127,25 +129,26 @@
                                 <!--Accessory Container -->
                                 <div class="row d-flex align-items-center ">
                                     <div class="p-2 px-4 py-4">
-                                        <h4 class="fw-bold">Related Adds</h4>
+                                        <h4 class="fw-bold">Other Products</h4>
                                     </div>
                                     <div class="row col-lg-12 p-3">
+                                        <%similerProducts.forEach((data,index)=>{%>
                                         <div class="container bg-white ProductCard mt-2">
                                             <!-- image rendering  -->
-                                            <a href="#">
+                                            <a href="/detaildView/<%=data._id%>">
                                                 <div
                                                     class="cardImage mb-2 d-flex align-items-center justify-content-center">
-                                                    <img src="/assets/product/4.jpg" alt="Product Image">
+                                                    <img src="/productImages/<%=data.image[1]%>" alt="Product Image">
                                                 </div>
                                             </a>
                                             <div class="px-3">
                                                 <span class="text-dark">
-                                                    product name
+                                                    <%=data.p_name%>
                                                 </span>
                                                 <div class="p_price d-flex justify-content-between">
                                                     <div class="price text-danger">₹ <text>
-                                                            1400
-                                                        </text> &nbsp; <span>₹ 1160</span></div>
+                                                        <%=data.finalPrice%>
+                                                        </text> &nbsp; <span>₹ <%=data.price%></span></div>
                                                     <div class="favor" style="cursor: pointer;">
                                                         <i class="fa-regular fa-heart"></i>
                                                     </div>
@@ -161,103 +164,8 @@
                                                     <div class="value ms-2">(75)</div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="container bg-white ProductCard mt-2">
-                                            <!-- image rendering  -->
-                                            <a href="#">
-                                                <div
-                                                    class="cardImage mb-2 d-flex align-items-center justify-content-center">
-                                                    <img src="/assets/product/4.jpg" alt="Product Image">
-                                                </div>
-                                            </a>
-                                            <div class="px-3">
-                                                <span class="text-dark">
-                                                    product name
-                                                </span>
-                                                <div class="p_price d-flex justify-content-between">
-                                                    <div class="price text-danger">₹ <text>
-                                                            1400
-                                                        </text> &nbsp; <span>₹ 1160</span></div>
-                                                    <div class="favor" style="cursor: pointer;">
-                                                        <i class="fa-regular fa-heart"></i>
-                                                    </div>
-                                                </div>
-                                                <div class="rating d-flex align-items-center">
-                                                    <div class="star d-flex align-items-center">
-                                                        <img src="/assets/product/star.png" alt="">
-                                                        <img src="/assets/product/star.png" alt="">
-                                                        <img src="/assets/product/star.png" alt="">
-                                                        <img src="/assets/product/star.png" alt="">
-                                                        <img src="/assets/product/star.png" alt="">
-                                                    </div>
-                                                    <div class="value ms-2">(75)</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="container bg-white ProductCard mt-2">
-                                            <!-- image rendering  -->
-                                            <a href="#">
-                                                <div
-                                                    class="cardImage mb-2 d-flex align-items-center justify-content-center">
-                                                    <img src="/assets/product/4.jpg" alt="Product Image">
-                                                </div>
-                                            </a>
-                                            <div class="px-3">
-                                                <span class="text-dark">
-                                                    product name
-                                                </span>
-                                                <div class="p_price d-flex justify-content-between">
-                                                    <div class="price text-danger">₹ <text>
-                                                            1400
-                                                        </text> &nbsp; <span>₹ 1160</span></div>
-                                                    <div class="favor" style="cursor: pointer;">
-                                                        <i class="fa-regular fa-heart"></i>
-                                                    </div>
-                                                </div>
-                                                <div class="rating d-flex align-items-center">
-                                                    <div class="star d-flex align-items-center">
-                                                        <img src="/assets/product/star.png" alt="">
-                                                        <img src="/assets/product/star.png" alt="">
-                                                        <img src="/assets/product/star.png" alt="">
-                                                        <img src="/assets/product/star.png" alt="">
-                                                        <img src="/assets/product/star.png" alt="">
-                                                    </div>
-                                                    <div class="value ms-2">(75)</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="container bg-white ProductCard mt-2">
-                                            <!-- image rendering  -->
-                                            <a href="#">
-                                                <div
-                                                    class="cardImage mb-2 d-flex align-items-center justify-content-center">
-                                                    <img src="/assets/product/4.jpg" alt="Product Image">
-                                                </div>
-                                            </a>
-                                            <div class="px-3">
-                                                <span class="text-dark">
-                                                    product name
-                                                </span>
-                                                <div class="p_price d-flex justify-content-between">
-                                                    <div class="price text-danger">₹ <text>
-                                                            1400
-                                                        </text> &nbsp; <span>₹ 1160</span></div>
-                                                    <div class="favor" style="cursor: pointer;">
-                                                        <i class="fa-regular fa-heart"></i>
-                                                    </div>
-                                                </div>
-                                                <div class="rating d-flex align-items-center">
-                                                    <div class="star d-flex align-items-center">
-                                                        <img src="/assets/product/star.png" alt="">
-                                                        <img src="/assets/product/star.png" alt="">
-                                                        <img src="/assets/product/star.png" alt="">
-                                                        <img src="/assets/product/star.png" alt="">
-                                                        <img src="/assets/product/star.png" alt="">
-                                                    </div>
-                                                    <div class="value ms-2">(75)</div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        </div>  
+                                        <%})%>
                                     </div>
                                 </div>
                 </div>

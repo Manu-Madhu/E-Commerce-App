@@ -6,7 +6,7 @@
                     <div class="DashBoardUl container col-md-2 p-0 m-0 bg-white d-flex pt-4 sideBar">
                         <ul class="d-flex flex-column">
                             <li class="dashOther fw-bold p-1 m-2 ps-4 ">
-                                <img src="/assets/admin/d1.png" alt="" class="img-fluid me-2">
+                                <img src="/assets/admin/d9.png" alt="" class="img-fluid me-2">
                                 <span><a class="text-decoration-none" style="color: #cdcdcd;"
                                         href="/admin/Dashboard">DashBoard</a></span>
                             </li>
@@ -59,73 +59,87 @@
                                     <input type="text" placeholder="User Name, Email, Phone" class="text-center">
                                 </div>
                             </div>
-                            <div class="container Pa_table bg-white p-2">
-                                <div class="container bg-white P_table">
-                                    <div class="container p-3 ">
-                                        <table class="table" >
-                                            <thead id="tableHeader" style="position: sticky; top: 0;">
-                                                <tr>
-                                                    <th scope="col">Id</th>
-                                                    <th scope="col">Product</th>
-                                                    <th scope="col">User</th>
-                                                    <th scope="col">Payment</th>
-                                                    <!-- <th scope="col">Address</th> -->
-                                                    <th scope="col">Phone</th>
-                                                    <th scope="col">Status</th>
-                                                    <th scope="col">ProductStatus</th>
-                                                    <th scope="col">Expected Date</th>
+                            <div class="container-fluid Pa_table bg-white p-4">
+                                <div class="container-fluid bg-white P_table px-2 ">
+                                    <div class="container-fluid p-0 d-flex align-items-center justify-content-center">
+                                        <table class="w-100 tableSize" >
+                                            <thead class="cartTop" id="tableHeader" style="position:sticky; top: 0; z-index: 1;">
+                                                <tr class="cart_table">
+                                                    <th class="first p-3 px-4" scope="col">Id</th>
+                                                    <th class="p-3" scope="col">Product</th>
+                                                    <th class="p-3" scope="col">User</th>
+                                                    <th class="p-3" scope="col">Payment</th>
+                                                    <th class="p-3" scope="col">Phone</th>
+                                                    <th class="p-3" scope="col">Cancel Status</th>
+                                                    <!-- <th class="p-3" scope="col">ProductStatus</th> -->
+                                                    <th class="third p-3 px-4" scope="col">Status</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <% orderList.forEach((data,index)=>{%>
-                                                    <tr>
-                                                        <th scope="row">
+                                                    <tr  class="mt-5">
+                                                        <th scope="col" class="px-4">
                                                              <span>#<%=index+1%></span>
                                                         </th>
-                                                        <td scope="col" class="tablefont">
+                                                        <td scope="col " class="t_Image px-3">
                                                             <h6>
                                                                 <% if (data.products.length > 0 && data.products[0].image.length > 0) { %>
-                                                                    <img src="../../productImages/<%= data.products[0].image[0] %>" alt="" class="img-fluid" width="100px" style="border-radius: 5px;">
+                                                                    <img src="../../productImages/<%= data.products[0].image[0] %>" alt="" class="img-fluid" width="60" style="border-radius: 5px;">
                                                                 <% } else { %>
                                                                     No Image
                                                                 <% } %>
                                                             </h6>
                                                         </td>
-                                                        <td scope="col">
+                                                        <td scope="col" class="tablefont px-3">
                                                             <span>
                                                                <%= data.user.name %>
                                                             </span>
                                                         </td>
-                                                        <td scope="col">
-                                                            <span>
-                                                                <%= data.payment.method%>
-                                                            </span>
+                                                        <td scope="col" class="px-3">
+                                                            <%if(data.payment.method === "COD"){%>
+                                                                <span class="badge rounded-pill bg-info">
+                                                                    <%= data.payment.method%>
+                                                                </span>
+                                                                <%}else{%>
+                                                                    <span class="badge rounded-pill bg-success">
+                                                                        <%= data.payment.method%>
+                                                                    </span>
+                                                                <%}%>
                                                         </td>
-                                                        <td scope="col">
+                                                        <td scope="col" class="px-3">
                                                             <span>
                                                                 <%= data.user.number %>
                                                             </span>
                                                         </td>
-                                                        <td scope="col">
-                                                            <span>
+                                                        <td scope="col" class="px-3">
+                                                            <%if(data.orderCancleRequest === false){%>
+                                                            <span class="badge rounded-pill bg-success">
                                                                 <%= data.orderCancleRequest %>
                                                             </span>
+                                                            <%}else{%>
+                                                                <span class="badge rounded-pill bg-danger">
+                                                                    <%= data.orderCancleRequest %>
+                                                                </span>
+                                                            <%}%>
                                                         </td>
-                                                        <td scope="col" class="TableButton d-flex flex-column">
-                                                            <select name="status" id="status_<%= data._id %>"
-                                                                onchange="updateOrderStatus('<%= data._id %>')">
-                                                                <option value="Processing" <% if (data.status === "Processing") { %>selected<% } %>>Processing</option>
-                                                                <option value="Shipped" <% if (data.status === "Shipped") { %>selected<% } %>>Shipped</option>
-                                                                <option value="Out For Delivery" <% if (data.status === "Out For Delivery") { %>selected<% } %>>Out For Delivery</option>
-                                                                <option value="Deliverd" <% if (data.status === "Deliverd") { %>selected<% } %>>Deliverd</option>
-                                                                <option value="Canceled" <% if (data.status === "Canceled") { %>selected<% } %>>Canceled</option>
-                                                            </select>
-                                                            <span class="text text-success fw-bold" id="msg"></span>
-                                                        </td>
-                                                        <td scope="col">
-                                                            <span>
-                                                                <%= new Date(data.expectedDelivery).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) %>
+                                                        <td scope="col" class="TableButton align-items-center py-5 d-flex flex-column gap-2">
+                                                            <%if(data.status === "Canceled"){%>
+                                                                <span class="badge rounded-pill bg-danger"> 
+                                                                    <%= data.status%>
+                                                                </span>
+                                                            <%}else if(data.status === "Deliverd"){%>
+                                                                <span class="badge rounded-pill bg-success"> 
+                                                                    <%= data.status%>
+                                                                </span>
+                                                            <%}else if(data.status === "Shipped"){%>
+                                                                <span class="badge rounded-pill bg-info"> 
+                                                                    <%= data.status%>
+                                                                </span>
+                                                            <%}else{%>
+                                                            <span class="badge rounded-pill bg-warning"> 
+                                                                <%= data.status%>
                                                             </span>
+                                                            <%}%>
                                                         </td>
                                                     </tr>
                                                     <%})%>

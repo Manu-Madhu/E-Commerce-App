@@ -4,7 +4,7 @@ const Router = express.Router();
 // Routers
 const userMiddlewear = require('../middleWeare/user');
 const userControler = require('../controllers/userControllers');
-const profileController = require('../controllers/profileController');
+const profileController = require('../controllers/profileControllers');
 
 Router.get('/login', userMiddlewear.isLogOut, userControler.login);
 Router.post('/login', userControler.validation);

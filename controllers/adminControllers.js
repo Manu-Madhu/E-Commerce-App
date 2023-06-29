@@ -115,7 +115,6 @@ const userUnBlocking = async (req, res) => {
     }
 }
 
-
 // Category
 const category = async (req, res) => {
     try {
@@ -144,7 +143,6 @@ const categoryOffer = async (req, res) => {
 const CategoryAdding = async (req, res) => {
     try {
         const catData = req.body;
-        // Saving Data to teh DataBAse
         await CategoryModel.create(catData);
 
         res.render('admin/categoryAdd', { Succ: "Successfully Added....", admin: req.session.admin, title: "Category" })
@@ -210,12 +208,10 @@ const updateCategory = async (req, res) => {
     }
 }
 
-
 // product
 const productView = async (req, res) => {
     try {
         const product = await productModel.find();
-        console.log(product)
         res.render('admin/productView', { title: "Product", admin: req.session.admin, product })
     } catch (error) {
         console.log(error);
@@ -263,7 +259,6 @@ const p_unlist = async (req, res) => {
         // Retrieve existing product data
         const existingProduct = await productModel.findById(id);
         // const existingImages = existingProduct.image;
-
         // Delete previous images from fs
         // existingImages.forEach((filename) => {
         //     fs.unlink(`productImages/${filename}`, (err) => {
@@ -272,7 +267,6 @@ const p_unlist = async (req, res) => {
         //         }
         //     });
         // });
-        console.log(existingProduct)
         await productModel.findByIdAndUpdate({ _id: id },{$set:{availability:false}})
         res.redirect('/admin/productView');
     } catch (error) {
@@ -285,7 +279,6 @@ const p_list = async (req, res) => {
         const id = req.params.id;
         // Retrieve existing product data
         const existingProduct = await productModel.findById(id);
-        console.log(existingProduct+"from list")
         await productModel.findByIdAndUpdate({ _id: id },{$set:{availability:true}})
         res.redirect('/admin/productView');
     } catch (error) {
@@ -306,7 +299,6 @@ const productUpdating = async (req, res) => {
 const addUpdateProduct = async (req, res) => {
     try {
         const id = req.body.id;
-        console.log(req.body);
         // Retrieve existing product data
         const existingProduct = await productModel.findById(id);
         const existingImages = existingProduct.image;
@@ -355,8 +347,8 @@ const orderList = async (req, res) => {
                 user: user
             };
         });
+        console.log(ordersWithData);
         res.render('admin/orderlisting', { admin, orderList: ordersWithData })
-
     } catch (error) {
         console.log(error)
     }
