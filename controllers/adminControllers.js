@@ -347,8 +347,9 @@ const orderList = async (req, res) => {
                 user: user
             };
         });
-        console.log(ordersWithData);
-        res.render('admin/orderlisting', { admin, orderList: ordersWithData })
+        const ordersWithDataSorted = ordersWithData.sort((a, b) =>  b.createdAt-a.createdAt);
+        console.log(ordersWithDataSorted)
+        res.render('admin/orderlisting', { admin, orderList: ordersWithDataSorted })
     } catch (error) {
         console.log(error)
     }
@@ -362,10 +363,36 @@ const orderstatus = async (req, res) => {
                 status: status
             }
         })
-        res.json("reache the msg")
+        res.json(status);
     } catch (error) {
         console.log("error in the orderstatus updation");
         res.json("error in the orderstatus updation");
+    }
+}
+const orderDetails = async(req,res)=>{
+    try{
+        const admin = req.session.admin;
+        const userId = req.body.userId;
+        const orderId = req.body.orderId;
+        const userDetails = await UsersModel.findOne({ _id: userId});
+        const order = await orderModel.find({ _id: orderId });
+        const orderProducts = order.map(items => items.proCartDetail).flat();
+        const cartProducts = order.map(items => items.cartProduct).flat();
+        for (let i = 0; i < orderProducts.length; i++) {
+            const orderProductId = orderProducts[i]._id;
+            const matchingCartProduct = cartProducts.find(cartProduct => cartProduct.productId.toString() === orderProductId.toString());
+
+            if (matchingCartProduct) {
+                orderProducts[i].cartProduct = matchingCartProduct;
+            }
+        }
+        const address = userDetails.address.find(items => items._id.toString() == order.map(items => items.address).toString());
+        const subTotal = cartProducts.reduce((totals, items) => totals + items.realPrice, 0);
+        const [orderCanceld] = order.map(item => item.orderCancleRequest);
+        const orderStatus = order.map(item => item.status);
+        res.render("admin/orderDetails", { admin,order, orderProducts, subTotal, address, orderCanceld, orderStatus, userDetails });
+    }catch(error){
+      console.log(error+"orderdetailing error")
     }
 }
 
@@ -450,6 +477,7 @@ module.exports = {
     userUnBlocking,
     adminLogout,
     orderList,
+    orderDetails,
     couponsList,
     couponsAdding,
     couponCreation,

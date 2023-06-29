@@ -1,0 +1,245 @@
+<%- include('../partials/header.ejs')%>
+    <div class="container-fluid p-0 min-vh-100 " style="margin-top: 7%;">
+        <%- include('../partials/adminnav.ejs')%>
+            <div class="container f-flex align-items-center justify-content-center">
+                <div class="row p-4 gap-3 d-flex justify-content-center">
+                    <div class="DashBoardUl container col-md-2 p-0 m-0 bg-white d-flex pt-4 sideBar">
+                        <ul class="d-flex flex-column">
+                            <li class="dashOther fw-bold p-1 m-2 ps-4 ">
+                                <img src="/assets/admin/d9.png" alt="" class="img-fluid me-2">
+                                <span><a class="text-decoration-none" style="color: #cdcdcd;"
+                                        href="/admin/Dashboard">DashBoard</a></span>
+                            </li>
+                            <li class="dashOther fw-bold p-1 ps-4 m-2">
+                                <img src="/assets/admin/d3.png" alt="" class="img-fluid me-2">
+                                <span><a href="/admin/catagory" class="text-decoration-none"
+                                        style="color: #cdcdcd;">Category</a></span>
+                            </li>
+                            <li class="dashOther fw-bold p-1 ps-4 m-2">
+                                <img src="/assets/admin/d2.png" alt="" class="img-fluid me-2">
+                                <span></span>
+                                <a href="/admin/productView" class="text-decoration-none"
+                                    style="color: #cdcdcd;">Product</a></span>
+                            </li>
+                            <li class="dashOther fw-bold p-1 ps-4 m-2">
+                                <img src="/assets/admin/d4.png" alt="" class="img-fluid me-2">
+                                <span></span>
+                                <a href="/admin/coustomers" class="text-decoration-none"
+                                    style="color:  #cdcdcd;">Coustomer</a></span>
+                            </li>
+                            <li class="sideBarlist   p-1 ps-4 m-2">
+                                <img src="/assets/admin/d5.png" alt="" class="img-fluid me-2">
+                                <span></span>
+                                <a href="/admin/order" class="text-decoration-none"
+                                    style="color: white;">Order</a></span>
+                            </li>
+                            <li class="dashOther fw-bold p-1 ps-4 m-2">
+                                <img src="/assets/admin/d6.png" alt="" class="img-fluid me-2">
+                                <span></span>
+                                <a href="/admin/coupons" class="text-decoration-none" style="color: #cdcdcd;">Coupons</a></span>
+                            </li>
+                            <li class="dashOther fw-bold p-1 ps-4 m-2">
+                                <img src="/assets/admin/d2.png" alt="" class="img-fluid me-2">
+                                <span></span>
+                                <a href="#" class="text-decoration-none" style="color: #cdcdcd;">Banner</a></span>
+                            </li>
+                            <li class="dashOther fw-bold p-1 ps-4 m-2">
+                                <img src="/assets/admin/d6.png" alt="" class="img-fluid me-2">
+                                <span></span>
+                                <a href="" class="text-decoration-none" style="color: #cdcdcd;">Logout</a></span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="container col-lg-9 col-md-9 col-12 p-0 m-0">
+                        <div class="container-fluid bg-white profile_Right pb-4">
+                            <div class="container-fluid">
+                                <div class="container pt-3">
+                                    <!-- Title -->
+                                    <div class="d-flex justify-content-between align-items-center py-3">
+                                        <h3 class="h5 mb-0"><span class="fw-bold">ORDER ID</span> : <span style="font-size: 14px; color: #959595;">#<%=order.map(item=>item._id)%></span></h3>
+                                    </div>
+                                    <!-- Main content -->
+                                    <div class="row">
+                                        <div class="col-lg-8">
+                                            <!-- Details -->
+                                            <div class="mb-4 profile_info" style="box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);">
+                                                <div class="card-body">
+                                                    <div class="mt-2 d-flex justify-content-between">
+                                                        <div class="mx-2 mb-3" >
+                                                            <span class="me-3 fw-bold" style="font-size: 13px;color: #959595;">
+                                                                <span>Order Date :</span> <%=order.map(item=>item.createdAt.toLocaleDateString())%>
+                                                            </span>
+                                                            <span class="me-3 fw-bold" style="font-size: 13px;color: #959595;">
+                                                                <span>Delivery Date :</span> <%=order.map(item=>item.expectedDelivery.toLocaleDateString())%>
+                                                            </span>
+                                                            <span id="dataNew">
+                                                            <% if (orderCanceld === false) { %>
+                                                                <% if (orderStatus == 'Deliverd') { %>
+                                                                    <span class="badge rounded-pill bg-success"><%=order.map(item=>item.status)%></span>
+                                                                <% } else if (orderStatus == 'Processing') { %>
+                                                                    <span class="badge rounded-pill bg-warning"><%=order.map(item=>item.status)%></span>
+                                                                <% } else if (orderStatus == 'Return Accepted') { %>
+                                                                    <span class="badge rounded-pill bg-success"><%=order.map(item=>item.status)%></span>
+                                                                <% } else { %>
+                                                                    <span class="badge rounded-pill bg-info"><%=order.map(item=>item.status)%></span>
+                                                                <% } %>
+                                                            <% } else if (orderCanceld === true) { %>
+                                                                <% if (orderStatus == 'Canceled') { %>
+                                                                    <span class="badge rounded-pill bg-danger"><%=order.map(item=>item.status)%></span>
+                                                                <% } else { %>
+                                                                    <span class="badge rounded-pill bg-warning">Order Cancel Requested</span>
+                                                                <% } %>
+                                                            <% } %>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                    <table class="table table-borderless mb-4">
+                                                        <tbody >
+                                                            <%orderProducts.forEach((data,index)=>{%>
+                                                            <tr>
+                                                                <td>
+                                                                    <div class="d-flex mb-2">
+                                                                        <div class="flex-shrink-0" ">
+                                                                            <img src="../../../productImages/<%=data.image[0]%>"
+                                                                                alt="" width="35" class="img-fluid"  >
+                                                                        </div>
+                                                                        <div class="flex-lg-grow-1 ms-3">
+                                                                            <h6 class="small mb-0"  style="font-size: 14px;">
+                                                                                <a href="#"class="text-reset text-decoration-none">
+                                                                                    <%=data.p_name%>
+                                                                                </a>
+                                                                            </h6>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                                <td  style="font-size: 13px;"><%=data.cartProduct.quantity%></td>
+                                                                <td class="text-end fw-bold"  style="font-size: 14px;">₹ <%=data.cartProduct.price%></td>
+                                                                
+                                                            </tr>
+                                                            <%})%>
+                                                        </tbody>
+                                                            <tfoot class="mt-3" style="border-radius: 10px;">
+                                                                <tr>
+                                                                    <td colspan="2" class="fw-bold" style="color: #959595;">Subtotal</td>
+                                                                    <td class="text-end"style="color: #959595;">₹ <%=subTotal%></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td colspan="2" class="fw-bold" style="color: #959595;">Shipping</td>
+                                                                    <td class="text-end text-success fw-bold" style="color: green;">Free</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td colspan="2" class="fw-bold" style="color: #959595;">Payment Method</td>
+                                                                    <td class="text-end fw-bold" style="color: #959595;"><%=order.map(items=>items.payment.method)%></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td colspan="2" class="fw-bold" style="color: #959595;">Discount</td>
+                                                                    <td class="text-danger text-end" style="opacity: 80%;">₹<%=subTotal-order.map(items=>items.payment.amount)%> </td>
+                                                                </tr>
+                                                                <tr class="fw-bold">
+                                                                    <td colspan="2">TOTAL</td>
+                                                                    <td class="text-end">₹ <%=order.map(items=>items.payment.amount)%></td>
+                                                                </tr>
+                                                            </tfoot>   
+                                                    </table>
+                                                </div>
+                                            </div>
+                                         
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <div class="profile_info mb-3">
+                                                <!-- Shipping information -->
+                                                <div class="card-body">
+                                                    <h6 class="fw-bold ">Status Updation</h6>
+                                                    <div class="width-100 my-3">
+                                                        <select name="status" id="status_<%= order.map(item=>item._id)%>" onchange="updateOrderStatus('<%= order.map(item=>item._id) %>')"style="width: 100%; background-color: white;">
+                                                            <option value="<%= order.map(item=>item.status)%>"><%= order.map(item=>item.status)%></option>
+                                                            <option value="Processing" <% if (order.map(item=>item.status)==="Processing" ) { %>selected<% } %>>Processing</option>
+                                                            <option value="Shipped" <% if (order.map(item=>item.status)==="Shipped" ) { %>selected<% } %>>Shipped</option>
+                                                            <option value="Out For Delivery" <% if (order.map(item=>item.status)==="Out For Delivery" ) { %>selected<% } %>>Out For Delivery</option>
+                                                            <option value="Deliverd" <% if (order.map(item=>item.status)==="Deliverd" ) { %>selected<% } %>>Deliverd</option>
+                                                            <option value="Canceled" <% if (order.map(item=>item.status)==="Canceled" ) { %>selected<% } %>>Canceled</option>
+                                                            <option value="Return Accepted" <% if (order.map(item=>item.status)==="Return Accepted" ) { %>selected<% } %>>Return Accepted</option>
+                                                        </select>
+                                                    </div>
+                                                    <span class="text text-success fw-bold" id="msg"></span>
+                                                </div>
+                                            </div>
+                                            <div class="profile_info mb-3">
+                                                <!-- Shipping information -->
+                                                <div class="card-body ">
+                                                    <h6 class="fw-bold pt-2 pb-2">User Information</h6>
+                                                    <div class="fw-bold" style="font-size: 14px; opacity: 70%;">User Name : <span><%=userDetails.name%></span></div>
+                                                    <div class="fw-bold" style="font-size: 14px; opacity: 70%;">Payment Method : <span class="badge bg-success rounded-pill"><%=order.map(items=>items.payment.method)%></span></div>
+                                                    <hr>
+                                                    <h6 class="fw-bold" style="font-size: 14px; opacity: 70%;">Address :</h6>
+                                                    <address style="font-size: 14px; opacity: 70%;">
+                                                        <label class="fw-bold" style="font-size: 14px; opacity: 70%;"><%=address.name%></label><br>
+                                                        <%=address.houseName%>, <%=address.street%><br>
+                                                        <%=address.city%>, <%=address.state%><br>
+                                                        Ph : <%=address.phone%><br>
+                                                        Pin : <%=address.postalCode%>
+                                                    </address>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+    </div>
+    <!-- Status Updation -->
+    <script>
+       function updateOrderStatus(orderId) {
+        const statusSelect = document.getElementById(`status_${orderId}`);
+        const selectedStatus = statusSelect.value;
+        const msg = document.getElementById('msg');
+
+        // Send a request to update the order status
+        fetch(`/admin/order/${orderId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ status: selectedStatus })
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+            const dataNew = document.getElementById('dataNew');
+
+            // Clear the existing content
+            dataNew.innerHTML = '';
+
+            // Create a new element based on the updated status
+            const spanElement = document.createElement('span');
+            spanElement.className = 'badge rounded-pill';
+
+            if (data === 'Deliverd') {
+                spanElement.className += ' bg-success';
+            } else if (data === 'Processing') {
+                spanElement.className += ' bg-warning';
+            } else if (data === 'Return Accepted') {
+                spanElement.className += ' bg-success';
+            } else if (data === 'Canceled') {
+                spanElement.className += ' bg-danger';
+            } else {
+                spanElement.className += ' bg-info';
+            }
+
+            spanElement.innerText = data;
+
+            // Append the new element to the container
+            dataNew.appendChild(spanElement);
+
+            msg.innerText = 'Status Updated....';
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
+   </script>
+   <%- include('../partials/adminfooter.ejs')%>

@@ -51,8 +51,9 @@ admin.post('/addUpdatedProducts', upload.array("image"), adminController.addUpda
 // Order 
 admin.get('/order',adminController.orderList);
 admin.put('/order/:id',adminController.orderstatus);
+admin.post('/order/details',adminController.orderDetails);
 
-// Order 
+// Coupons 
 admin.get('/coupons',adminController.couponsList);
 admin.get('/coupons/couponsAdding',adminController.couponsAdding);
 admin.post('/coupons/couponsAdding',adminController.couponCreation);
