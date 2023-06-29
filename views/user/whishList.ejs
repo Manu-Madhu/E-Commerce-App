@@ -13,12 +13,12 @@
                                 <div class="container bg-white ProductCard m-0 p-0">
                                     <div class="container">
                                         <!-- image rendering  -->
-                                        <a href="">
+                                        <a href="/detaildView/<%=data._id%>">
                                             <div class="cardImage mb-2 p-1 d-flex align-items-center justify-content-center"
                                                 style="position: relative;">
                                                 <img src="/productImages/<%= data.image[0] %>" alt="Product Image">
                                                 <div style="position: absolute; top: 7px; right: 5px; border-radius: 50%; width:30px; height: 30px;">
-                                                    <img src="/assets/icons/delete.png" alt=""  class="img-fluid bg-white p-2" style="width:30px; height: 30px;">
+                                                    <a href="/WhishList/<%=data._id%>"><img src="/assets/icons/delete.png" alt=""  class="img-fluid bg-white p-2" style="width:30px; height: 30px;"></a>
                                                 </div>
                                             </div>
                                         </a>

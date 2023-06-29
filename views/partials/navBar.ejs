@@ -55,9 +55,15 @@
                         <i class="fa-solid fa-cart-shopping "></i>
                     <%}%>
                     <div class="d-flex flex-column align-items-center">
+                        <% if(user) {%>
                         <div class="iconP ">
-                            <a href="/profile"><i class="fa-regular fa-user text-dark"></i></a>
+                            <a href="/profile"> <img src="/assets/admin/propic.webp" alt="" class="img-fluid"></a>
                         </div>
+                        <%}else{%>
+                            <div class="iconP ">
+                                <a href="/profile"><i class="fa-regular fa-user text-dark"></i></a>
+                            </div>
+                        <%}%>
                          <span class="text-danger fw-bold ">
                             <%= locals.user?user:"" %>
                         </span>

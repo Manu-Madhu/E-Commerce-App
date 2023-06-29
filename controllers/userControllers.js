@@ -364,7 +364,6 @@ const WhishListLoad = async (req, res) => {
         let cartCount = cart.length;
         const productId = productData.map(items => items.productId);
         const productDetails = await ProductModel.find({ _id: { $in: productId } });
-        console.log(productDetails)
         res.render('user/whishList', { user, productDetails, cartCount })
     } catch (error) {
         console.log(error)
@@ -422,6 +421,19 @@ const addingWhishListtoCart = async (req, res) => {
         console.log('Error adding to cart:', error);
     }
 };
+const WhishProductDelete = async (req, res) => {
+    try {
+        const productId = req.params.id;
+        const userEmail = req.session.email;
+        await UserModel.findOneAndUpdate(
+            { email: userEmail },
+            { $pull: { wishlist: { productId: productId } } }
+        );
+        res.redirect("/WhishList");
+    } catch (error) {
+        console.log("whish deleting Error" + error)
+    }
+}
 
 // Cart
 const cartload = async (req, res) => {
@@ -581,7 +593,7 @@ const Checkout = async (req, res) => {
 
         const discount = Math.abs(totalP_Price - totalPrice)
         res.render('user/account/billing', {
-            title: "Check Out", 
+            title: "Check Out",
             user,
             cartItems,
             cartProducts,
@@ -664,8 +676,8 @@ const orderSuccess = async (req, res) => {
                 amount: amount
             },
             status: "Processing",
-            proCartDetail:cartProducts,
-            cartProduct:cartItems,
+            proCartDetail: cartProducts,
+            cartProduct: cartItems,
             createdAt: currentDate,
             expectedDelivery: deliveryDate
         });
@@ -764,6 +776,7 @@ module.exports = {
     cartQuantityUpdate,
     coupons,
     WhishListLoad,
+    WhishProductDelete,
     addingWhishList,
     addingWhishListtoCart,
     OTPValidationSignIn,

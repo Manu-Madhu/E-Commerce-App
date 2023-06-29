@@ -112,7 +112,7 @@ const editAddress = async (req, res) => {
         const user = req.session.user;
         const addressId = req.body.selectedAddress;
         const userDetails = await userModel.findOne({ email: req.session.email });
-        const cart = userData.cart.items;
+        const cart = userDetails.cart.items;
         const cartCount = cart.length;
         const address = userDetails.address;
         const selectedAddress = address.find((data) => data._id.toString() === addressId);
