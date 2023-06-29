@@ -131,13 +131,13 @@ const order = async (req, res) => {
         const cart = userDetails.cart.items;
         const cartCount = cart.length;
         const userid = userDetails._id;
-        const order = await orderModel.find({ userId: userid, orderCancleRequest: false, status: { $ne: 'Deliverd' } }).sort({ _id: -1 });
+        const order = await orderModel.find({ userId: userid,orderReturnRequest: false, orderCancleRequest: false, status: { $ne: 'Deliverd' } }).sort({ _id: -1 });
         const orderHist = await orderModel.find({
             userId: userid,
             $or: [
                 { orderCancleRequest: true },
                 { status: 'Deliverd' }
-            ],orderReturnRequest:false
+            ], orderReturnRequest: false,
         }).sort({ _id: -1 });
         const orderProducts = orderHist.map(data => data.products);
         const orderProduct = orderProducts.flat();
@@ -303,17 +303,42 @@ const pdf = async (req, res) => {
         res.status(500).send('Internal Server Error');
     }
 };
-const orderReturn = async (req,res) => {
+const orderReturn = async (req, res) => {
     try {
-      const id = req.params.id;
-      await orderModel.findByIdAndUpdate({ _id: id },
-        {
-            $set: {
-                orderReturnRequest: true
-            }
+        const id = req.params.id;
+        await orderModel.findByIdAndUpdate({ _id: id },
+            {
+                $set: {
+                    orderReturnRequest: true,
+                    status:"Return Requested"
+                }
+            });
+
+        res.redirect('/profile/order');
+    } catch (error) {
+        console.log(error)
+    }
+}
+const listReturn = async (req, res) => {
+    try {
+        const user = req.session.user;
+        const email = req.session.email;
+        const userDetails = await userModel.findOne({ email: email });
+        const cart = userDetails.cart.items;
+        const cartCount = cart.length;
+        const userid = userDetails._id;
+        const returnProduct = await orderModel.find({
+            userId: userid,
+            orderReturnRequest: true
         });
 
-    res.redirect('/profile/order');
+        console.log(returnProduct)
+        res.render("user/account/return", {
+            title: "OrderPage",
+            user,
+            cartCount,
+            returnProduct
+        })
     } catch (error) {
         console.log(error)
     }
@@ -344,5 +369,6 @@ module.exports = {
     orderView,
     pdf,
     orderStatus,
-    orderReturn
+    orderReturn,
+    listReturn
 };

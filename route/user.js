@@ -36,6 +36,7 @@ Router.get('/profile',userMiddlewear.userCheking,userMiddlewear.userIsBlocked, p
 Router.get('/profile/order',userMiddlewear.userCheking,userMiddlewear.userIsBlocked, profileController.order);
 Router.get('/profile/orderView',userMiddlewear.userCheking,userMiddlewear.userIsBlocked, profileController.orderView);
 Router.post('/profile/orderStatus/:id',userMiddlewear.userCheking,userMiddlewear.userIsBlocked, profileController.orderStatus);
+Router.get('/profile/orderReturn',userMiddlewear.userCheking,userMiddlewear.userIsBlocked, profileController.listReturn);
 Router.post('/profile/orderReturn/:id',userMiddlewear.userCheking,userMiddlewear.userIsBlocked, profileController.orderReturn);
 Router.get('/profile/address',userMiddlewear.userCheking,userMiddlewear.userIsBlocked,profileController.profileAddress);
 Router.post('/profile/order/:id',userMiddlewear.userCheking,userMiddlewear.userIsBlocked, profileController.orderCancel);
