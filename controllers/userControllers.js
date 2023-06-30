@@ -101,7 +101,14 @@ const validation = async (req, res) => {
         res.render('user/login', { fail: "Pease Use proper credentials", user: req.session.user })
     }
 }
-
+const forGotPassword = async (req, res) => {
+    try {
+        let cartCount;
+        res.render("user/forgotPassword", { user: req.session.user, cartCount })
+    } catch (error) {
+        console.log(error);
+    }
+}
 // REGISTRATION
 const signup = (req, res) => {
     let cartCount;
@@ -214,7 +221,6 @@ const OTPValidation = async (req, res) => {
         res.status(500).send("Otp error")
     }
 }
-
 // Success
 const successTick = (req, res) => {
     let cartCount;
@@ -338,7 +344,7 @@ const detaildView = async (req, res) => {
         const id = req.params.id;
         const data = await ProductModel.findOne({ _id: id });
         const cate = data.category[0];
-        const category = await ProductModel.find({ category: cate }).sort({_id:-1}).limit(4);
+        const category = await ProductModel.find({ category: cate }).sort({ _id: -1 }).limit(4);
         let cart, cartCount;
         if (userData) {
             cart = userData.cart.items;
@@ -349,7 +355,7 @@ const detaildView = async (req, res) => {
         }
 
     } catch (error) {
-        console.log("detaild page error"+ error)
+        console.log("detaild page error" + error)
     }
 }
 
@@ -408,7 +414,8 @@ const addingWhishListtoCart = async (req, res) => {
             const newCartItem = {
                 productId: id,
                 quantity: 1,
-                price: cartPrtoduct.price
+                price: cartPrtoduct.finalPrice,
+                realPrice: cartPrtoduct.price
             };
             userData.cart.items.push(newCartItem);
         }
@@ -439,7 +446,7 @@ const cartload = async (req, res) => {
         const userEmail = req.session.email;
         const user = req.session.user;
         const userData = await UserModel.findOne({ email: userEmail });
-        const similerProducts =  await ProductModel.find({ availability: true }).sort({p_name:-1}).limit(4);
+        const similerProducts = await ProductModel.find({ availability: true }).sort({ p_name: -1 }).limit(4);
         const cartItems = userData.cart.items;
         const cartCount = cartItems.length;
         const cartProductIds = cartItems.map(item => item.productId);
@@ -455,9 +462,8 @@ const cartload = async (req, res) => {
                 console.log(`Product not found for item: ${item.productId}`);
             }
         }
-        console.log(similerProducts)
         const discount = Math.abs(totalPrice - productsPrice);
-        res.render('user/Cart', { title: "Cart", user, cartProducts, cartItems, productsPrice, totalQuantity, totalPrice, discount, cartCount, similerProducts});
+        res.render('user/Cart', { title: "Cart", user, cartProducts, cartItems, productsPrice, totalQuantity, totalPrice, discount, cartCount, similerProducts });
     } catch (error) {
         console.log(error);
         res.status(500).send("Internal error from cart side");
@@ -780,5 +786,6 @@ module.exports = {
     addingWhishList,
     addingWhishListtoCart,
     OTPValidationSignIn,
-    orderSearch
+    orderSearch,
+    forGotPassword,
 }

@@ -333,7 +333,7 @@ const addUpdateProduct = async (req, res) => {
     }
 }
 
-// Order LIsting 
+// Order Listing 
 const orderList = async (req, res) => {
     try {
         const admin = req.session.admin;
@@ -443,7 +443,7 @@ const couponCreation = async (req, res) => {
 }
 
 // LogOut
-const adminLogout = async (req, res) => {
+const   adminLogout = async (req, res) => {
     try {
         req.session.admin = null;
         res.render('admin/adminLogin', { title: "Admin Login", admin: req.session.admin })

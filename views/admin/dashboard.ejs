@@ -129,37 +129,6 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- <script>
-        const ctx = document.getElementById('barChart');
-        const status = JSON.parse(document.getElementById('orderStatus').value);
-        const labels = Object.keys(status);
-        const data = Object.values(status);
-        console.log(data);
-        new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: labels,
-                datasets: [{
-                    // label: '# of Votes',
-                    data: data,
-                    borderColor: 'rgba(219, 68, 68, 1)',
-                    tension: 0.1
-                }]
-            },
-            options: {
-                plugins: {
-                    legend: {
-                        display: false
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
-    </script> -->
     <script>
       const ctx = document.getElementById('barChart');
       const status = JSON.parse(document.getElementById('orderStatus').value);

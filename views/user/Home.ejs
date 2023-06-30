@@ -63,7 +63,7 @@
                     <button class="nxt-btn"><img class="pre-btn-img" src="/assets/icons/arrow.png" alt=""></button>
                     <div class="product-container w-100">
                         <% data.forEach((data,index)=>{ %>
-                            <div class="product-card">
+                            <div class="product-card ">
                                 <div class="product-image">
                                     <span class="discount-tag"><%= data.productOffer %>% off</span>
                                     <a href="/detaildView/<%= data._id%>">
@@ -71,8 +71,8 @@
                                     </a>
                                     <button class="card-btn">add to wishlist</button>
                                 </div>
-                                <div class="product-info">
-                                    <h2 class="product-brand"><%= data.p_name %></h2>
+                                <div class="product-info ">
+                                    <h2 class="product-brand product-name"><%= data.p_name %></h2>
                                     <span class="price text-danger">₹ <%= data.finalPrice %></span><span class="actual-price">₹ <%= data.price %></span>
                                     <div class="rating d-flex align-items-center">
                                         <div class="star d-flex align-items-center">

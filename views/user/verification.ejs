@@ -19,16 +19,16 @@
                 </div>
                 <button class="btn mt-2 text-white" type="submit">validate</button>
             </form>
-            <% } else { %>
-            <form action="/validation" method="post" class="d-flex flex-column align-items-center">
-                <div class="row pt-3">
-                    <input class="code" type="text" placeholder="0" min="0" max="9" name="num_1" required>
-                    <input class="code" type="text" placeholder="0" min="0" max="9" name="num_2" required>
-                    <input class="code" type="text" placeholder="0" min="0" max="9" name="num_3" required>
-                    <input class="code" type="text" placeholder="0" min="0" max="9" name="num_4" required>
-                </div>
-                <button class="btn mt-2 text-white" type="submit">validate</button>
-            </form>
+            <%}else { %>
+                <form action="/validation" method="post" class="d-flex flex-column align-items-center">
+                    <div class="row pt-3">
+                        <input class="code" type="text" placeholder="0" min="0" max="9" name="num_1" required>
+                        <input class="code" type="text" placeholder="0" min="0" max="9" name="num_2" required>
+                        <input class="code" type="text" placeholder="0" min="0" max="9" name="num_3" required>
+                        <input class="code" type="text" placeholder="0" min="0" max="9" name="num_4" required>
+                    </div>
+                    <button class="btn mt-2 text-white" type="submit">validate</button>
+                </form>
             <% } %>
             <span class="mt-2 fs-5" id="time"></span>
             <div id="timer" class="OTPtext mt-2" style="display:none">Don’t get the code?<a class="text-danger text-decoration-none" href="/register">Resent</a></div>
