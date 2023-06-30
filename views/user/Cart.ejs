@@ -56,8 +56,7 @@
                                                         <td class="p-3">
                                                             <h6 for="" class="fw-bold"
                                                                 id="cartPrice-<%= cartItems[index]._id %>">₹
-                                                                <%= ( cartItems.find(item=> item.productId.toString()
-                                                                    === data._id.toString()).price) %>
+                                                                <%= ( cartItems.find(item=> item.productId.toString() === data._id.toString()).price) %>
                                                             </h6>
                                                         </td>
                                                         <td class="p-3 text-center">
@@ -122,12 +121,12 @@
                                     <h5>Your Cart is Empty</h5>
                                 </div>
                             </div>
-                            <%}%>
-                                <div class="container mt-4 mx-1">
+                       <%}%>
+                            <div class="container mt-4 mx-1">
                                     <hr class="line bg-dark">
-                                </div>
-                                <!--Accessory Container -->
-                                <div class="row d-flex align-items-center ">
+                            </div>
+                            <!--Accessory Container -->
+                           <div class="row d-flex align-items-center ">
                                     <div class="p-2 px-4 py-4">
                                         <h4 class="fw-bold">Other Products</h4>
                                     </div>
@@ -166,8 +165,8 @@
                                             </div>
                                         </div>  
                                         <%})%>
-                                    </div>
                                 </div>
+                        </div>
                 </div>
             </div>
     </div>
