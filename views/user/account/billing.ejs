@@ -72,30 +72,38 @@
                                 <div class="container p-2 px-3 my-3 proSumWraper">
                                     <div class="container billing_img">
                                         <% cartProducts.forEach((data)=>{%>
-                                            <ul class="p-0" style="list-style-type: none;">
-                                                <li class="d-flex align-items-center justify-content-between gap-5 p-2">
-                                                    <img src="/productImages/<%=data.image[0]%>" width="50px" alt=""
-                                                        class="shadow" style="border-radius: 5px; ">
-                                                    <span class="fw-bold" style="color: #9a9a9a;">
-                                                        <%=data.p_name%>
-                                                    </span>
-                                                    <span class="fw-bold" style="color: #9a9a9a;">
-                                                        <%=(cartItems.find(item=> data._id.toString() ===
-                                                            item.productId.toString()).quantity)%>
-                                                    </span>
-                                                    <span style="color: #9a9a9a;">₹ <span style="color: #9a9a9a;">
-                                                            <%= ( cartItems.find(item=> item.productId.toString() ===
-                                                                data._id.toString()).price) %>
-                                                        </span>
-                                                    </span>
-                                                </li>
-                                                <input type="hidden" name="productId" value="<%=data._id%>">
-                                                <input type="hidden" name="quantity"
-                                                    value="<%= cartItems.find(item => data._id.toString() === item.productId.toString()).quantity %>">
-                                                <input type="hidden" name="CartProduct_Id"
-                                                    value="<%= cartItems.find(item => item.productId.toString() === data._id.toString()).price%>">
-                                            </ul>
-                                            <%}) %>
+                                            <table class="table table-borderless">
+                                                <tbody >
+                                                    <tr>
+                                                        <td class="d-flex align-items-center justify-content-between gap-5 p-2">
+                                                            <div class="d-flex mb-2">
+                                                                <div class="flex-shrink-0" >
+                                                                    <img src="/productImages/<%=data.image[0]%>"
+                                                                        alt="" width="50px" class="img-fluid"  >
+                                                                </div>
+                                                                <div class="flex-lg-grow-1 ms-3">
+                                                                    <h6 class="small mb-0" style="color: #9a9a9a;">
+                                                                        <a href="#"class="text-reset text-decoration-none">
+                                                                            <%=data.p_name%>
+                                                                        </a>
+                                                                    </h6>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td  style="font-size: 14px;color: #9a9a9a;">
+                                                            <div class="d-flex align-items-center mb-2 fw-bold">
+                                                                ₹ <%= (cartItems.find(item=> item.productId.toString() === data._id.toString()).price) %>
+                                                            </div> 
+                                                        </td>
+                                                            <input type="hidden" name="productId" value="<%=data._id%>">
+                                                            <input type="hidden" name="quantity"
+                                                                value="<%= cartItems.find(item => data._id.toString() === item.productId.toString()).quantity %>">
+                                                            <input type="hidden" name="CartProduct_Id"
+                                                                value="<%= cartItems.find(item => item.productId.toString() === data._id.toString()).price %>">
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        <%}) %>
                                     </div>
                                 </div>
                                 <div class=" p-2 px-3 my-3 border billinf_form_Wrapper">
@@ -348,7 +356,7 @@
                                     url: "/saveOrderData",
                                     success: function (response) {
                                         console.log(response)
-                                        window.location.href = 'http://localhost:5000/profile/order';
+                                        window.location.href = '/profile/order';
                                     }
                                 })
                             },
@@ -376,7 +384,7 @@
                         });
                         rzp1.open();
                     } else if (res === 'successFully cod Completed') {
-                        window.location.href = "http://localhost:5000/success"
+                        window.location.href = "/success"
                     }
                 }
             })

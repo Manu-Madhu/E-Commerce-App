@@ -47,6 +47,7 @@ const profileUpdate = async (req, res) => {
                 userData.password = encryptedPwd;
             await userData.save();
             req.session.email = userData.email
+            req.session.user = userData.name
             res.render('user/account/profile', { title: "Profile", user, userData, success: "Successfully Updated", cartCount });
         } else {
             res.render('user/account/profile', { title: "Profile", user, userData, error: "Please check Your Current Password & Updated Email ID", cartCount });
