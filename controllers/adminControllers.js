@@ -256,22 +256,30 @@ const newproductAdding = async (req, res) => {
 const p_unlist = async (req, res) => {
     try {
         const id = req.params.id;
-        // Retrieve existing product data
-        const existingProduct = await productModel.findById(id);
-        // const existingImages = existingProduct.image;
-        // Delete previous images from fs
-        // existingImages.forEach((filename) => {
-        //     fs.unlink(`productImages/${filename}`, (err) => {
-        //         if (err) {
-        //             console.log(err);
-        //         }
-        //     });
-        // });
-        await productModel.findByIdAndUpdate({ _id: id },{$set:{availability:false}})
+        await productModel.findByIdAndUpdate({ _id: id }, { $set: { availability: false } })
         res.redirect('/admin/productView');
     } catch (error) {
         console.log(error);
         res.status(500).send("internal error");
+    }
+}
+const productDelete = async (req, res) => {
+    try {
+        const id = req.params.id;
+        const existingProduct = await productModel.findById(id);
+        const existingImages = existingProduct.image;
+        // Delete previous images from fs
+        existingImages.forEach((filename) => {
+            fs.unlink(`productImages/${filename}`, (err) => {
+                if (err) {
+                    console.log(err);
+                }
+            });
+        });
+        await productModel.findByIdAndDelete({ _id: id })
+        res.redirect('/admin/productView');
+    } catch (error) {
+        console.log(error)
     }
 }
 const p_list = async (req, res) => {
@@ -279,7 +287,7 @@ const p_list = async (req, res) => {
         const id = req.params.id;
         // Retrieve existing product data
         const existingProduct = await productModel.findById(id);
-        await productModel.findByIdAndUpdate({ _id: id },{$set:{availability:true}})
+        await productModel.findByIdAndUpdate({ _id: id }, { $set: { availability: true } })
         res.redirect('/admin/productView');
     } catch (error) {
         console.log(error);
@@ -290,7 +298,7 @@ const productUpdating = async (req, res) => {
     try {
         const id = req.params.id;
         const product = await productModel.findById({ _id: id });
-        res.render('admin/productUpdate', { title: "Product", admin: req.session.admin, product })
+        res.render('admin/productUpdate', { title: "Product", admin: req.session.admin, product });
     } catch (error) {
         console.log(error);
         res.status(500).send("Internal error")
@@ -314,8 +322,8 @@ const addUpdateProduct = async (req, res) => {
         const updatedData = {
             p_name: req.body.p_name,
             price: req.body.price,
-            c_offerPrice:req.body.c_offerPrice,
-            productOffer:req.body.productOffer,
+            c_offerPrice: req.body.c_offerPrice,
+            productOffer: req.body.productOffer,
             description: req.body.description,
             finalPrice: req.body.finalPrice,
             category: req.body.category,
@@ -347,7 +355,7 @@ const orderList = async (req, res) => {
                 user: user
             };
         });
-        const ordersWithDataSorted = ordersWithData.sort((a, b) =>  b.createdAt-a.createdAt);
+        const ordersWithDataSorted = ordersWithData.sort((a, b) => b.createdAt - a.createdAt);
         res.render('admin/orderListing', { admin, orderList: ordersWithDataSorted })
     } catch (error) {
         console.log(error)
@@ -368,12 +376,12 @@ const orderstatus = async (req, res) => {
         res.json("error in the orderstatus updation");
     }
 }
-const orderDetails = async(req,res)=>{
-    try{
+const orderDetails = async (req, res) => {
+    try {
         const admin = req.session.admin;
         const userId = req.body.userId;
         const orderId = req.body.orderId;
-        const userDetails = await UsersModel.findOne({ _id: userId});
+        const userDetails = await UsersModel.findOne({ _id: userId });
         const order = await orderModel.find({ _id: orderId });
         const orderProducts = order.map(items => items.proCartDetail).flat();
         const cartProducts = order.map(items => items.cartProduct).flat();
@@ -389,9 +397,9 @@ const orderDetails = async(req,res)=>{
         const subTotal = cartProducts.reduce((totals, items) => totals + items.realPrice, 0);
         const [orderCanceld] = order.map(item => item.orderCancleRequest);
         const orderStatus = order.map(item => item.status);
-        res.render("admin/orderDetails", { admin,order, orderProducts, subTotal, address, orderCanceld, orderStatus, userDetails });
-    }catch(error){
-      console.log(error+"orderdetailing error")
+        res.render("admin/orderDetails", { admin, order, orderProducts, subTotal, address, orderCanceld, orderStatus, userDetails });
+    } catch (error) {
+        console.log(error + "orderdetailing error")
     }
 }
 
@@ -443,7 +451,7 @@ const couponCreation = async (req, res) => {
 }
 
 // LogOut
-const   adminLogout = async (req, res) => {
+const adminLogout = async (req, res) => {
     try {
         req.session.admin = null;
         res.render('admin/adminLogin', { title: "Admin Login", admin: req.session.admin })
@@ -458,6 +466,7 @@ module.exports = {
     productView,
     productAdding,
     productUpdating,
+    productDelete,
     userView,
     adminVerification,
     category,

@@ -46,6 +46,7 @@ admin.post("/p_unlist/:id", adminController.p_unlist);
 admin.post("/p_list/:id", adminController.p_list);
 
 admin.get('/updateProduct/:id', adminController.productUpdating);
+admin.get('/deleteProduct/:id', adminController.productDelete);
 admin.post('/addUpdatedProducts', upload.array("image"), adminController.addUpdateProduct);
 
 // Order 

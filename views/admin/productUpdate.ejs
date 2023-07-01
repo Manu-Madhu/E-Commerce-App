@@ -112,9 +112,11 @@
 
                                     <input type="hidden" name="id" value="<%= product._id %>">
                                     <input type="file" class="form-control my-3 py-2" name="image" multiple required>
-                                    <div class="mt-3">
-                                        <button type="submit" class="btn btn-success" style="background :#0D9E00;">Apply
-                                            Changes</button>
+                                    <div class="mt-3 gap-3">
+                                        <button type="submit" class="btn btn-success" style="background :#0D9E00;font-size: 11px;">Apply
+                                            Changes
+                                        </button>
+                                        <a href="/admin/deleteProduct/<%= product._id%>" class="btn btn-danger text-white catagoryEdit" style="color:rgb(7, 7, 7); font-size: 11px;">Delete</a>
                                     </div>
                                 </form>
                             </div>
