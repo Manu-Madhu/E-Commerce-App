@@ -11,7 +11,7 @@ const islogin = async (req, res, next) => {
             const data = await ProductModel.find();
             const dataNormal = await ProductModel.find({ availability: true }).limit(8);
             let cartCount;
-            res.render('user/home', { title: 'Home', user, data,cartCount,dataNormal });
+            res.render('user/Home', { title: 'Home', user, data,cartCount,dataNormal });
         }
     } catch (err) {
         console.log(err)
