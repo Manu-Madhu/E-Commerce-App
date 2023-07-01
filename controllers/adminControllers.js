@@ -348,7 +348,7 @@ const orderList = async (req, res) => {
             };
         });
         const ordersWithDataSorted = ordersWithData.sort((a, b) =>  b.createdAt-a.createdAt);
-        res.render('admin/orderlisting', { admin, orderList: ordersWithDataSorted })
+        res.render('admin/orderListing', { admin, orderList: ordersWithDataSorted })
     } catch (error) {
         console.log(error)
     }
