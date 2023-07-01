@@ -10,10 +10,8 @@ const orderModel = require('../models/order');
 const fast2sms = require('fast-two-sms');
 
 
-// Twilio
-const accountSid = process.env.TWILIO_ACCOUNT_SID;
-const authToken = process.env.TWILIO_AUTH_TOKEN;
-const client = require('twilio')(accountSid, authToken);
+// Fast 2 SMS
+const API = process.env.FAST_2_SMS_API;
 
 // Razorpoy
 const key_id = process.env.RAZORPAY_API_KEY;
@@ -59,17 +57,18 @@ const validation = async (req, res) => {
                     const userNumber = userData.number;
                     const number = userNumber;
                     let cartCount;
-                    let signinPage=0;
+                    let signinPage = 0;
                     req.session.data = {
                         userName: userData.name,
                         userEmail: userData.email
                     }
                     // generat randome 4 digit number
                     let randome = Math.floor(Math.random() * 9000) + 1000;
-
-                    // send random number to user
-                    client.messages
-                        .create({ body: randome, from: '+12542726949', to: `+91${number}` })
+                    fast2sms.sendMessage({
+                        authorization: API, 
+                        message: `Your verification OTP is: ${randome}`,
+                        numbers: [number],
+                    })
                         .then(saveUser());
 
                     //save randome Number to database then render verify page
@@ -121,26 +120,25 @@ const registerUser = async (req, res) => {
         req.body.password = enPwd;
         req.body.isBlocked = false;
         let cartCount;
-        let signinPage=1;
+        let signinPage = 1;
         // USER INFO SAVING TO DB
-        const {name,number,email,password,confirmPassword,isBlocked} = req.body
+        const { name, number, email, password, confirmPassword, isBlocked } = req.body
         req.session.userData = {
-            name:name,
-            number:number,
-            email:email,
-            password:password,
-            confirmPassword:confirmPassword,
-            isBlocked:isBlocked
+            name: name,
+            number: number,
+            email: email,
+            password: password,
+            confirmPassword: confirmPassword,
+            isBlocked: isBlocked
         }
         // await UserModel.create(req.body)
         // OTP CODE
-        const Number = req.body.number
-        // generat randome 4 digit number
         let randome = Math.floor(Math.random() * 9000) + 1000;
-
-        // send random number to user
-        client.messages
-            .create({ body: randome, from: '+12542726949', to: `+91${Number}` })
+        fast2sms.sendMessage({
+            authorization: API, 
+            message: `Your verification OTP is: ${randome}`,
+            numbers: [number],
+        })
             .then(saveUser());
 
         //save randome Number to database then render verify page
@@ -175,7 +173,7 @@ const OTPValidationSignIn = async (req, res) => {
                 if (fount.length > 0) {
                     let cartCount;
                     UserModel.create(req.session.userData);
-                    res.render("user/successTick", {user:req.session.user,cartCount })
+                    res.render("user/successTick", { user: req.session.user, cartCount })
                     // IF FOUND, DELETE THE OTP CODE FROM DB
                     OTP.findOneAndDelete({ number: code })
                         .then(() => {
