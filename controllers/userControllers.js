@@ -7,6 +7,7 @@ const Razorpay = require('razorpay');
 const couponModle = require('../models/coupon');
 const categoryModel = require('../models/category');
 const orderModel = require('../models/order');
+const fast2sms = require('fast-two-sms');
 
 
 // Twilio
@@ -58,7 +59,7 @@ const validation = async (req, res) => {
                     const userNumber = userData.number;
                     const number = userNumber;
                     let cartCount;
-                    let signinPage;
+                    let signinPage=0;
                     req.session.data = {
                         userName: userData.name,
                         userEmail: userData.email
@@ -120,18 +121,26 @@ const registerUser = async (req, res) => {
         req.body.password = enPwd;
         req.body.isBlocked = false;
         let cartCount;
-        let signinPage;
+        let signinPage=1;
         // USER INFO SAVING TO DB
-        await UserModel.create(req.body)
-
+        const {name,number,email,password,confirmPassword,isBlocked} = req.body
+        req.session.userData = {
+            name:name,
+            number:number,
+            email:email,
+            password:password,
+            confirmPassword:confirmPassword,
+            isBlocked:isBlocked
+        }
+        // await UserModel.create(req.body)
         // OTP CODE
-        const number = req.body.number
+        const Number = req.body.number
         // generat randome 4 digit number
         let randome = Math.floor(Math.random() * 9000) + 1000;
 
         // send random number to user
         client.messages
-            .create({ body: randome, from: '+12542726949', to: `+91${number}` })
+            .create({ body: randome, from: '+12542726949', to: `+91${Number}` })
             .then(saveUser());
 
         //save randome Number to database then render verify page
@@ -160,12 +169,13 @@ const OTPValidationSignIn = async (req, res) => {
         const num2 = req.body.num_2;
         const num3 = req.body.num_3;
         const num4 = req.body.num_4;
-        const code = parseInt(num1 + num2 + num3 + num4)
-        console.log(code)
+        const code = parseInt(num1 + num2 + num3 + num4);
         await OTP.find({ number: code })
             .then((fount) => {
                 if (fount.length > 0) {
-                    res.render("successTick", {})
+                    let cartCount;
+                    UserModel.create(req.session.userData);
+                    res.render("user/successTick", {user:req.session.user,cartCount })
                     // IF FOUND, DELETE THE OTP CODE FROM DB
                     OTP.findOneAndDelete({ number: code })
                         .then(() => {
@@ -183,7 +193,7 @@ const OTPValidationSignIn = async (req, res) => {
             })
     } catch (error) {
         console.log(error)
-        res.status(500).send("Otp error")
+        res.status(500).send("SignIn Otp error")
     }
 }
 const OTPValidation = async (req, res) => {
@@ -193,7 +203,7 @@ const OTPValidation = async (req, res) => {
         const num2 = req.body.num_2;
         const num3 = req.body.num_3;
         const num4 = req.body.num_4;
-        const code = parseInt(num1 + num2 + num3 + num4)
+        const code = parseInt(num1 + num2 + num3 + num4);
         const { userName, userEmail } = req.session.data;
         await OTP.find({ number: code })
             .then((fount) => {

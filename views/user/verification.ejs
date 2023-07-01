@@ -9,7 +9,7 @@
             <span>Enter OTP Code</span>
             <span class="text-danger fw-bold">
                 <%=locals.fal? fal:" " %></span>
-            <% if (locals.signinPage) { %>
+            <% if (locals.signinPage==1) { %>
             <form action="/signIn" method="post" class="d-flex flex-column align-items-center">
                 <div class="row pt-3">
                     <input class="code" type="text" placeholder="0" min="0" max="9" name="num_1" required>
@@ -19,7 +19,7 @@
                 </div>
                 <button class="btn mt-2 text-white" type="submit">validate</button>
             </form>
-            <%}else { %>
+            <%}else{ %>
                 <form action="/validation" method="post" class="d-flex flex-column align-items-center">
                     <div class="row pt-3">
                         <input class="code" type="text" placeholder="0" min="0" max="9" name="num_1" required>
