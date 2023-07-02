@@ -82,8 +82,6 @@ const graph = async (req, res) => {
         const orders = await orderModel.find();
         const orderProducts = orders.map(order => order.products.map(product => product)).flat();
         const cataData = orderProducts.filter(item=> item.category[0] ==cataValue);
-        
-        console.log(orderProducts);
     } catch (error) {
      console.log(error);
     }

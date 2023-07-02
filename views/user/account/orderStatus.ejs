@@ -56,22 +56,8 @@
                                                         </div>
                                                         <div >
                                                             <span class="badge rounded-pill bg-primary ">
-                                                                <!-- <i class="bi bi-download"></i>  -->
-                                                                <a class="text-decoration-none text-white" href=""><span class="text">Invoice</span></a>
+                                                                <a class="text-decoration-none text-white" href="/profile/invoice?id=<%=order.map(item=>item._id)%>"><span class="text">Invoice</span></a>
                                                             </span>
-                                                            <div class="dropdown">
-                                                                <button class="btn btn-link p-0 text-muted"
-                                                                    type="button" data-bs-toggle="dropdown">
-                                                                    <i class="bi bi-three-dots-vertical"></i>
-                                                                </button>
-                                                                <ul class="dropdown-menu dropdown-menu-end">
-                                                                    <li><a class="dropdown-item" href="#"><i
-                                                                                class="bi bi-pencil"></i> Edit</a></li>
-                                                                    <li><a class="dropdown-item" href="#"><i
-                                                                                class="bi bi-printer"></i> Print</a>
-                                                                    </li>
-                                                                </ul>
-                                                            </div>
                                                         </div>
                                                     </div>
                                                     <table class="table table-borderless">

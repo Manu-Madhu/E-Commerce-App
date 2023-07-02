@@ -2,6 +2,7 @@ const userModel = require('../models/user');
 const orderModel = require('../models/order');
 const bcrypt = require('bcrypt');
 const easyinvoice = require('easyinvoice');
+const fs = require('fs');
 
 
 // encription
@@ -40,7 +41,7 @@ const profileUpdate = async (req, res) => {
         const isMatch = await bcrypt.compare(password, userData.password);
         if (isMatch) {
             const encryptedPwd = await pwdEncription(password1);
-                userData.name = name,
+            userData.name = name,
                 userData.email = email,
                 userData.number = number,
                 userData.password = encryptedPwd;
@@ -131,7 +132,7 @@ const order = async (req, res) => {
         const cart = userDetails.cart.items;
         const cartCount = cart.length;
         const userid = userDetails._id;
-        const order = await orderModel.find({ userId: userid,orderReturnRequest: false, orderCancleRequest: false, status: { $ne: 'Deliverd' } }).sort({ _id: -1 });
+        const order = await orderModel.find({ userId: userid, orderReturnRequest: false, orderCancleRequest: false, status: { $ne: 'Deliverd' } }).sort({ _id: -1 });
         const orderHist = await orderModel.find({
             userId: userid,
             $or: [
@@ -222,80 +223,86 @@ const orderStatus = async (req, res) => {
         console.log(error)
     }
 }
-const pdf = async (req, res) => {
+const generateInvoice = async (order, orderProducts, subTotal, address, orderCanceld, orderStatus ) => {
     try {
-        const da = req.body
-        console.log(da)
-        // Extract the necessary data from your request or database
-        const data = {
-            order: {
-                _id: '123456',
-                status: 'Pending',
-                payment: {
-                    method: 'Credit Card',
-                    amount: 100,
-                },
-            },
-            address: {
-                name: 'John Doe',
-                houseName: '123 Main St',
-                street: 'City',
-                city: 'State',
-                state: 'Country',
-                postalCode: '12345',
-                phone: '123-456-7890',
-            },
-            orderProduct: [
-                { p_name: 'Product 1', realPrice: 50 },
-                { p_name: 'Product 2', realPrice: 25 },
-                { p_name: 'Product 3', realPrice: 30 },
-            ],
-            discount: 10,
-        };
-
-        // Create the invoice options using the data
         const invoiceOptions = {
             documentTitle: 'Invoice',
-            currency: 'USD',
+            currency: 'INR',
             taxNotation: 'GST',
             marginTop: 25,
             marginRight: 25,
             marginLeft: 25,
             marginBottom: 25,
-            logo: 'https://example.com/logo.png', // Replace with your logo URL
+            images: {
+                logo: '',
+            },
             sender: {
                 company: 'Asthra Fashion World',
-                address: 'Neyyattinkara, gramam, Thiruvananthapuram, PIN 695121',
-                email: 'info@example.com',
-                phone: '+1 123-456-7890',
+                address: 'Neyyattinkara Gramam',
+                zip: '695121',
+                city: 'Trivandrum',
+                country: 'Kerala',
+                phone: '987-654-3210',
             },
             client: {
-                company: 'Client Company',
-                address: `${data.address.name}, ${data.address.houseName}, ${data.address.street}, ${data.address.city}, ${data.address.state}, PIN: ${data.address.postalCode}`,
-                email: 'client@example.com',
-                phone: data.address.phone,
+                company: address.name,
+                address: address.houseName,
+                zip: address.street,
+                city: address.city,
+                country: address.phone,
+                phone: address.postalCode
             },
-            invoiceNumber: `#${data.order._id}`,
-            invoiceDate: new Date().toDateString(),
-            products: data.orderProduct.map((product) => ({
-                description: product.p_name,
-                quantity: 1,
-                price: product.realPrice,
-            })),
-            bottomNotice: `Discount: $${data.discount}`,
-            // Calculate the subtotal and total amounts based on your data
-            subtotal: 105,
-            total: 95,
+            information: {
+                number: order.map(item=>item._id),
+                date: order.map(item=>item.createdAt.toLocaleDateString()),
+                'due-date': order.map(item=>item.expectedDelivery.toLocaleDateString())
+            },
+            products: [],
+           
+            bottomNotice: 'Discount: $10',
+            subtotal: 185,
+            total: 175,
         };
+        orderProducts.forEach((data) => {
+            invoiceOptions.products.push({
+                quantity: data.cartProduct.quantity,
+                description: data.p_name,
+                'tax-rate': 0,
+                price: data.cartProduct.price,
+            });
+        });
+        const result = await easyinvoice.createInvoice(invoiceOptions);
+        const pdfBuffer = Buffer.from(result.pdf, 'base64');
 
-        // Generate the invoice as a PDF buffer
-        const invoiceBuffer = await easyinvoice.createInvoice(invoiceOptions);
+        return pdfBuffer;
+    } catch (error) {
+        console.log('Error generating invoice:', error);
+        throw error;
+    }
+};
+const pdf = async (req, res) => {
+    try {
+        const orderId = req.query.id;
+        const userDetails = await userModel.findOne({ email: req.session.email });
+        const order = await orderModel.find({ _id: orderId });;
+        const orderProducts = order.map(items => items.proCartDetail).flat();
+        const cartProducts = order.map(items => items.cartProduct).flat();
+        for (let i = 0; i < orderProducts.length; i++) {
+            const orderProductId = orderProducts[i]._id;
+            const matchingCartProduct = cartProducts.find(cartProduct => cartProduct.productId.toString() === orderProductId.toString());
 
-        // Set response headers for downloading the PDF
+            if (matchingCartProduct) {
+                orderProducts[i].cartProduct = matchingCartProduct;
+            }
+        }
+        const address = userDetails.address.find(items => items._id.toString() == order.map(items => items.address).toString());
+        const subTotal = cartProducts.reduce((totals, items) => totals + items.realPrice, 0);
+        const [orderCanceld] = order.map(item => item.orderCancleRequest);
+        const orderStatus = order.map(item => item.status);
+    
+        const invoiceBuffer = await generateInvoice(order, orderProducts, subTotal, address, orderCanceld, orderStatus );
         res.setHeader('Content-Type', 'application/pdf');
         res.setHeader('Content-Disposition', 'attachment; filename=invoice.pdf');
-
-        // Send the invoice PDF buffer as the response
         res.send(invoiceBuffer);
     } catch (error) {
         console.log(error);
@@ -309,7 +316,7 @@ const orderReturn = async (req, res) => {
             {
                 $set: {
                     orderReturnRequest: true,
-                    status:"Return Requested"
+                    status: "Return Requested"
                 }
             });
 
