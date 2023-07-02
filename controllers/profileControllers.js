@@ -34,7 +34,6 @@ const profileUpdate = async (req, res) => {
         let cart = userData.cart.items;
         let cartCount = cart.length;
         const { name, email, number, password, password1, password2 } = req.body;
-        console.log(email);
         if (password1 !== password2) {
             res.render('user/account/profile', { title: "Profile", user, userData, error: "Check the password currectly" });
         }

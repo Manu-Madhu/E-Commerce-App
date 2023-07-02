@@ -3,15 +3,14 @@
         <%- include("../partials/navBar.ejs")%>
 
             <!-- CAROUSEL -->
-            <div id="carouselExampleControlsNoTouching" class="carousel slide container-fluid mt-2"
-                data-bs-touch="false" data-bs-interval="false">
+            <div id="carouselExampleDark" class="carousel carousel-dark slide mt-2" data-bs-ride="carousel" data-bs-interval="2500">
                 <div class="carousel-inner">
-                    <div class="imageOne col-lg-12 col-6 carousel-item active d-flex align-items-center">
-                        <div class="container  textCard text d-flex flex-column justify-content-center w-50">
-                            <h4 style="font-size:50px; color: #4a4949;" class="tone display-5">Are you ready to</h4>
-                            <h1 style="font-size: 60px;" class=" mb-3">Run with Trend</h1>
-                            <span class=" mb-2">Luxury meets ultimate sitting comfort</span>
-                            <button id="bannerDirect" style="font-size: 14px;" class="btn btn-danger w-25 p-3 mt-3">Discover</button>
+                    <div class="imageOne col-lg-12 col-12 carousel-item active d-flex align-items-center">
+                        <div class="container  textCard text d-flex flex-column justify-content-center">
+                            <h4 style="color: #4a4949;">Are you ready to</h4>
+                            <h1  class=" col-lg-mb-3">Run with Trend</h1>
+                            <span class=" col-lg-mb-2">Luxury meets ultimate sitting comfort</span>
+                            <button id="bannerDirect" class="btn btn-danger col-lg-mt-3">Discover</button>
                         </div>
                         <img src="/assets/banners/banner.png" class=" CarouselImage d-block p-2 " alt="...">
                     </div>
@@ -22,12 +21,12 @@
                         <img src="/assets/banners/banner2.jpg" class="CarouselImage d-block p-2" alt="...">
                     </div>
                 </div>
-                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControlsNoTouching"
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark"
                     data-bs-slide="prev">
                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                     <span class="visually-hidden">Previous</span>
                 </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControlsNoTouching"
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark"
                     data-bs-slide="next">
                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
                     <span class="visually-hidden">Next</span>
