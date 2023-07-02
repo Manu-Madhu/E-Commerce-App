@@ -81,14 +81,18 @@
                                                                     <img src="/productImages/<%=data.image[0]%>"
                                                                         alt="" width="60px" class="img-fluid"  >
                                                                 </div>
-                                                                <div class="flex-lg-grow-1 ms-3">
-                                                                    <h6 class="small mb-0" style="color: #9a9a9a;">
-                                                                        <a href="#"class="text-reset text-decoration-none">
+                                                                <div class="flex-lg-grow-1 ms-3 product-name">
+                                                                    <h6 class="small mb-0 product-name" style="color: #9a9a9a;">
+                                                                        <a href=""class="text-reset text-decoration-none">
                                                                             <%=data.p_name%>
                                                                         </a>
                                                                     </h6>
                                                                 </div>
                                                             </div>
+                                                        </td>
+                                                        <td  style="font-size: 14px;color: #9a9a9a; ">
+                                                                <input readonly  name="quantity" style="width: 40px; border: white; border-radius: 5px; padding-left: 10px;"
+                                                                value="<%= cartItems.find(item => data._id.toString() === item.productId.toString()).quantity %>">
                                                         </td>
                                                         <td  style="font-size: 14px;color: #9a9a9a;">
                                                             <div class="d-flex align-items-center mb-2 fw-bold">

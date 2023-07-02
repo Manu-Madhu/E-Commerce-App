@@ -11,26 +11,26 @@
                             <div class="container col-lg-7 col-12 bg-white Cart_table_wapper p-4 m-0 mb-2">
                                 <div class="Cart_list">
                                     <div class="px-2">
-                                        <table style="width:100%;">
+                                        <table style="width:100%; overflow-x: scroll;">
                                             <thead class="cartTop" style="position:sticky; top: 0;;">
                                                 <tr class="cart_table">
                                                     <th class="first p-3"><span>Product</span></th>
                                                     <th class="p-3"><span>Quantity</span></th>
-                                                    <th class="p-3"><span>Total Price</span></th>
+                                                    <th class="p-3"><span> Total Price</span></th>
                                                     <th class="third p-3"><span>Action</span></th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <% cartProducts.forEach((data,index)=>{%>
                                                     <tr>
-                                                        <td class=" p-3 d-flex align-items-center">
-                                                            <a href="/detaildView/<%= data._id%>"
-                                                                class="container d-flex align-items-center text-decoration-none text-dark">
+                                                        <td class=" p-3 d-flex align-items-center ">
+                                                            <a  href="/detaildView/<%= data._id%>"
+                                                                class="px-0 container d-flex align-items-center text-decoration-none text-dark">
                                                                 <img src="/productImages/<%= data.image[0]%>" alt=""
                                                                     class="img-fluid" width="70px"
                                                                     style="border-radius: 5px;">
-                                                                <div class="d-flex flex-column">
-                                                                    <h6 for="" class="fw-bold ps-3"
+                                                                <div class="d-flex flex-column product-name">
+                                                                    <h6 for="" class="fw-bold ps-3 product-name"
                                                                         style="font-size: 13.5px;">
                                                                         <%=data.p_name%>
                                                                     </h6>
@@ -41,16 +41,23 @@
                                                             <span></span>
                                                         </td>
                                                         <td class="p-3">
-                                                            <div class="input-container">
-                                                            <input type="number"
+                                                            <div class="input-container d-flex align-items-center gap-2">
+                                                                <button type="button" class="minus shadow" style="border-radius: 5px;" onclick="decreaseQuantity(this)">
+                                                                    –
+                                                                </button>
+                                                                <input type="number"
+                                                                readonly
                                                                 id="quantityUpdate-<%= cartItems[index]._id %>"
                                                                 class="d-flex align-items-center track-input"
                                                                 data-item-id="<%= cartItems[index]._id %>"
                                                                 name="quantity"
                                                                 value="<%= cartItems.find(item => item.productId.toString() === data._id.toString()).quantity %>"
-                                                                style="width: 50px; border: 2px solid #020202; border-radius: 4px;"
+                                                                style="width: 40px; border: 2px solid #020202; border-radius: 4px;"
                                                                 onchange="updateQuantity(this,'<%= cartItems[index]._id %>')"
                                                                 min="1" >
+                                                                <button type="button" class="plus shadow" style="border-radius: 5px;" onclick="increaseQuantity(this)">
+                                                                    +
+                                                                </button>
                                                             </div>
                                                         </td>
                                                         <td class="p-3">
@@ -172,6 +179,22 @@
             </div>
     </div>
     <script>
+         function decreaseQuantity(button) {
+         const inputElement = button.nextElementSibling;
+         let quantity = +inputElement.value;
+         if (quantity > 1) {
+             quantity--;
+             inputElement.value = quantity;
+             updateQuantity(inputElement, inputElement.getAttribute("data-item-id"));
+         }
+        }
+        function increaseQuantity(button) {
+         const inputElement = button.previousElementSibling;
+         let quantity = +inputElement.value;
+         quantity++;
+         inputElement.value = quantity;
+         updateQuantity(inputElement, inputElement.getAttribute("data-item-id"));
+        }     
         function updateQuantity(input, itemId) {
             const cartPrice = document.getElementById(`cartPrice-${itemId}`);
             const totalPrice1 = document.getElementById('totalPrice1');

@@ -10,7 +10,7 @@
                             <h4 style="color: #4a4949;">Are you ready to</h4>
                             <h1  class=" col-lg-mb-3">Run with Trend</h1>
                             <span class=" col-lg-mb-2">Luxury meets ultimate sitting comfort</span>
-                            <button id="bannerDirect" class="btn btn-danger col-lg-mt-3">Discover</button>
+                            <a href="/Shop"><button id="bannerDirect" class="btn btn-danger col-lg-mt-3">Discover</button></a>
                         </div>
                         <img src="/assets/banners/banner.png" class=" CarouselImage d-block p-2 " alt="...">
                     </div>
@@ -68,7 +68,7 @@
                                     <a href="/detaildView/<%= data._id%>">
                                         <img src="/productImages/<%=data.image[0] %>" class="product-thumb" alt="">
                                     </a>
-                                    <button class="card-btn">add to wishlist</button>
+                                    <a href="/detaildView/<%= data._id%>"><button class="card-btn">add to wishlist</button></a>
                                 </div>
                                 <div class="product-info ">
                                     <h2 class="product-brand product-name"><%= data.p_name %></h2>
@@ -112,7 +112,7 @@
                                     <a href="/detaildView/<%= data._id%>">
                                         <img src="/productImages/<%=data.image[0] %>" class="product-thumb" alt="">
                                     </a>
-                                    <button class="card-btn">add to wishlist</button>
+                                    <a href="/detaildView/<%= data._id%>"><button class="card-btn">add to wishlist</button></a>
                                 </div>
                                 <div class="product-info">
                                     <h2 class="product-brand"><%= data.p_name %></h2>
