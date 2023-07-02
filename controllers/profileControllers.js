@@ -2,7 +2,6 @@ const userModel = require('../models/user');
 const orderModel = require('../models/order');
 const bcrypt = require('bcrypt');
 const easyinvoice = require('easyinvoice');
-const fs = require('fs');
 
 
 // encription
