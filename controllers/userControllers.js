@@ -65,7 +65,7 @@ const validation = async (req, res) => {
                     // generat randome 4 digit number
                     let randome = Math.floor(Math.random() * 9000) + 1000;
                     fast2sms.sendMessage({
-                        authorization: API, 
+                        authorization: API,
                         message: `Your verification OTP is: ${randome}`,
                         numbers: [number],
                     })
@@ -120,7 +120,7 @@ const registerUser = async (req, res) => {
         req.body.password = enPwd;
         req.body.isBlocked = false;
         let cartCount;
-        let signinPage = 1;
+        const signinPage = 1;
         // USER INFO SAVING TO DB
         const { name, number, email, password, confirmPassword, isBlocked } = req.body
         req.session.userData = {
@@ -131,33 +131,43 @@ const registerUser = async (req, res) => {
             confirmPassword: confirmPassword,
             isBlocked: isBlocked
         }
-        // await UserModel.create(req.body)
-        // OTP CODE
-        let randome = Math.floor(Math.random() * 9000) + 1000;
-        fast2sms.sendMessage({
-            authorization: API, 
-            message: `Your verification OTP is: ${randome}`,
-            numbers: [number],
-        })
-            .then(saveUser());
+        const dataExist = await UserModel.findOne({
+            $or: [{ email }, { number }]
+        });
 
-        //save randome Number to database then render verify page
-        function saveUser() {
-            const newUser = new OTP({
-                number: randome
+        if (!dataExist) {
+            // OTP CODE 
+            const randome = Math.floor(Math.random() * 9000) + 1000;
+            fast2sms.sendMessage({
+                authorization: API,
+                message: `Your verification OTP is: ${randome}`,
+                numbers: [number],
             })
-            newUser.save()
-                .then(() => {
-                    res.render('user/verification', { user: req.session.user, cartCount, signinPage });
+            .then(saveUser());
+            //save randome Number to database then render verify page
+            function saveUser() {
+                const newUser = new OTP({
+                    number: randome
                 })
-                .catch((error) => {
-                    console.log("error generating numb", error);
-                });
+                newUser.save()
+                    .then(() => {
+                        res.render('user/verification', { user: req.session.user, cartCount, signinPage });
+                    })
+                    .catch((error) => {
+                        console.log("error generating numb", error);
+                    });
+            }
+        } else {
+            console.log(error)
+            let cartCount;
+            res.render('user/signUp', { succ: "Please Use a Uniqe Email ID and Phone Number", user: req.session.user, cartCount })
         }
+
+
     } catch (error) {
         console.log(error)
         let cartCount;
-        res.render('user/signUp', { succ: "Please Use a Uniqe Email ID", user: req.session.user, cartCount })
+        res.render('user/signUp', { succ: "Please Use a Uniqe Email ID and Phone Number", user: req.session.user, cartCount })
     }
 }
 const OTPValidationSignIn = async (req, res) => {

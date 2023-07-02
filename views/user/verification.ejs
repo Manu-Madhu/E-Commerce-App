@@ -12,30 +12,39 @@
             <% if (locals.signinPage==1) { %>
             <form action="/signIn" method="post" class="d-flex flex-column align-items-center">
                 <div class="row pt-3">
-                    <input class="code" type="text" placeholder="0" min="0" max="9" name="num_1" required>
-                    <input class="code" type="text" placeholder="0" min="0" max="9" name="num_2" required>
-                    <input class="code" type="text" placeholder="0" min="0" max="9" name="num_3" required>
-                    <input class="code" type="text" placeholder="0" min="0" max="9" name="num_4" required>
+                    <input class="code" type="text" placeholder="0" min="0" max="9" name="num_1" required maxlength="1">
+                    <input class="code" type="text" placeholder="0" min="0" max="9" name="num_2" required maxlength="1">
+                    <input class="code" type="text" placeholder="0" min="0" max="9" name="num_3" required maxlength="1">
+                    <input class="code" type="text" placeholder="0" min="0" max="9" name="num_4" required maxlength="1">
                 </div>
                 <button class="btn mt-2 text-white" type="submit">validate</button>
             </form>
             <%}else{ %>
                 <form action="/validation" method="post" class="d-flex flex-column align-items-center">
                     <div class="row pt-3">
-                        <input class="code" type="text" placeholder="0" min="0" max="9" name="num_1" required>
-                        <input class="code" type="text" placeholder="0" min="0" max="9" name="num_2" required>
-                        <input class="code" type="text" placeholder="0" min="0" max="9" name="num_3" required>
-                        <input class="code" type="text" placeholder="0" min="0" max="9" name="num_4" required>
+                        <input class="code" type="text" placeholder="0" min="0" max="9" name="num_1" required maxlength="1">
+                        <input class="code" type="text" placeholder="0" min="0" max="9" name="num_2" required maxlength="1">
+                        <input class="code" type="text" placeholder="0" min="0" max="9" name="num_3" required maxlength="1">
+                        <input class="code" type="text" placeholder="0" min="0" max="9" name="num_4" required maxlength="1">
                     </div>
                     <button class="btn mt-2 text-white" type="submit">validate</button>
                 </form>
             <% } %>
             <span class="mt-2 fs-5" id="time"></span>
-            <div id="timer" class="OTPtext mt-2" style="display:none">Don’t get the code?<a class="text-danger text-decoration-none" href="/register">Resent</a></div>
+            <div id="timer" class="OTPtext mt-2" style="display:none">Don’t get the code?<a class="text-danger text-decoration-none" href="/login">Resent</a></div>
         </div>
     </div>
 </div>
 <script>
+    const inputs = document.querySelectorAll('.code');
+    for (let i = 0; i < inputs.length; i++) {
+        inputs[i].addEventListener('input', function() {
+            if (this.value.length === this.maxLength) {
+                inputs[i + 1].focus();
+            }
+        });
+    }
+
     let timeLeft = 59;
     const Counter = document.getElementById('time');
     const timerId = setInterval(countdown, 1000);

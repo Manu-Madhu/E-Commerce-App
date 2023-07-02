@@ -109,7 +109,7 @@ function passwordChecking() {
 
 
     if (!hasSpecialChar || !hasNumber || !hasLowerCase || !hasUpperCase) {
-        re_password.innerHTML = "Password must contain at least one special character, one number, one lowercase letter, and one uppercase letter";
+        re_password.innerHTML = `Password must contain at least one "$","4","A" and one "a" letter`;
         return false;
     }
 
