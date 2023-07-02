@@ -8,6 +8,10 @@ const profileController = require('../controllers/profileControllers');
 
 Router.get('/login', userMiddlewear.isLogOut, userControler.login);
 Router.post('/login', userControler.validation);
+Router.get('/forGotPassword',userControler.forGotPassword);
+Router.post('/numberValidation',userControler.numberValidation);
+Router.post('/resetPassword',userControler.resetPassword);
+Router.post('/newPassword',userControler.newPassword);
 
 // Sign up
 Router.get('/signUp', userMiddlewear.isLogOut, userControler.signup);

@@ -109,6 +109,99 @@ const forGotPassword = async (req, res) => {
         console.log(error);
     }
 }
+const numberValidation = async (req, res) => {
+    try {
+        const number = req.body.number;
+        req.session.userNumber = number;
+        const signinPage = 2;
+        let cartCount;
+        const userExist = await UserModel.findOne({ number: number });
+        if (userExist) {
+            const randome = Math.floor(Math.random() * 9000) + 1000;
+            fast2sms.sendMessage({
+                authorization: API,
+                message: `Your verification OTP is: ${randome}`,
+                numbers: [number],
+            })
+                .then(saveUser());
+            //save randome Number to database then render verify page
+            function saveUser() {
+                const newUser = new OTP({
+                    number: randome
+                })
+                newUser.save()
+                    .then(() => {
+                        res.render('user/verification', { user: req.session.user, cartCount, signinPage });
+                    })
+                    .catch((error) => {
+                        console.log("error generating numb", error);
+                    });
+            }
+        } else {
+            const msg = "Please Enter The Currect Number";
+            let cartCount;
+            res.render("user/forgotPassword", { user: req.session.user, msg, cartCount })
+        }
+    } catch (error) {
+        const msg = "Server Error Wait for the Admin Response";
+        let cartCount;
+        console.log("error At the number validation inreset place" + error);
+        res.status(500).render("user/forgotPassword", { user: req.session.user, msg, cartCount })
+    }
+}
+const resetPassword = async (req, res) => {
+    try {
+        const num1 = req.body.num_1;
+        const num2 = req.body.num_2;
+        const num3 = req.body.num_3;
+        const num4 = req.body.num_4;
+        const code = parseInt(num1 + num2 + num3 + num4);
+        const signinPage = 2;
+        let cartCount;
+        await OTP.find({ number: code })
+            .then((fount) => {
+                if (fount.length > 0) {
+                    res.render("user/resetPassword", { user: req.session.user, cartCount })
+                    // IF FOUND, DELETE THE OTP CODE FROM DB
+                    OTP.findOneAndDelete({ number: code })
+                        .then(() => {
+                            console.log("successfully deleted")
+                        })
+                        .catch((err) => {
+                            console.log("error while deleting", err);
+                        });
+                } else {
+                    let cartCount;
+                    res.render('user/verification', { fal: "Please Check Your OTP", user: req.session.user, cartCount, signinPage })
+                }
+            })
+            .catch((err) => {
+                console.log(err);
+                res.render('user/verification', { fal: "Please Check Your OTP", user: req.session.user, cartCount, signinPage })
+            })
+    } catch (error) {
+        console.log("reset password error" + error);
+    }
+}
+const newPassword = async (req, res) => {
+    try {
+        const psw = req.body.password;
+        const userNumber = req.session.userNumber;
+        const newPassword = await pwdEncription(psw);
+        await UserModel.findOneAndUpdate({ number: userNumber }, {
+            $set: {
+                password: newPassword
+            }
+        });
+        req.session.userNumber = null;
+        const succ = "Successfully Changed Your Password"
+        let cartCount;
+        res.render("user/successTick", { user: req.session.user, cartCount, succ });
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 // REGISTRATION
 const signup = (req, res) => {
     let cartCount;
@@ -143,7 +236,7 @@ const registerUser = async (req, res) => {
                 message: `Your verification OTP is: ${randome}`,
                 numbers: [number],
             })
-            .then(saveUser());
+                .then(saveUser());
             //save randome Number to database then render verify page
             function saveUser() {
                 const newUser = new OTP({
@@ -182,8 +275,9 @@ const OTPValidationSignIn = async (req, res) => {
             .then((fount) => {
                 if (fount.length > 0) {
                     let cartCount;
+                    const succ = "Successfully Created Your Account"
                     UserModel.create(req.session.userData);
-                    res.render("user/successTick", { user: req.session.user, cartCount })
+                    res.render("user/successTick", { user: req.session.user, cartCount,succ })
                     // IF FOUND, DELETE THE OTP CODE FROM DB
                     OTP.findOneAndDelete({ number: code })
                         .then(() => {
@@ -197,6 +291,7 @@ const OTPValidationSignIn = async (req, res) => {
                 }
             })
             .catch((err) => {
+                console.log(err)
                 res.render('user/verification', { fal: "Please Check Your OTP", user: req.session.user, cartCount })
             })
     } catch (error) {
@@ -218,7 +313,9 @@ const OTPValidation = async (req, res) => {
                 if (fount.length > 0) {
                     req.session.user = userName;
                     req.session.email = userEmail;
-                    res.redirect("/success")
+                    const succ = "Successfully Logged In"
+                    let cartCount;
+                    res.render("user/successTick", { user: req.session.user, cartCount, succ });
                     // IF FOUND, DELETE THE OTP CODE FROM DB
                     OTP.findOneAndDelete({ number: code })
                         .then(() => {
@@ -806,4 +903,7 @@ module.exports = {
     OTPValidationSignIn,
     orderSearch,
     forGotPassword,
+    numberValidation,
+    resetPassword,
+    newPassword
 }
