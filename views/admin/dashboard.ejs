@@ -59,9 +59,6 @@
                                     <h6 class="mt-3 ps-4">Sales Summary</h6>
                                     <select name="cars" id="cars" class="btnYear fw-bold mt-3">
                                         <option value="volvo">2023</option>
-                                        <option value="saab">2022</option>
-                                        <option value="opel">2021</option>
-                                        <option value="audi">2020</option>
                                     </select>
                                 </div>
                                 <div class="row p-4">
@@ -109,8 +106,13 @@
                             <div class="conatiner graphSummary bg-white">
                                 <div class="container summary p-3 d-flex gap-3">
                                     <h6 class="mt-3 ps-4">Order Summary</h6>
-                                    <select name="cars" id="yearFilter" class="btnYear fw-bold mt-3">
-                                        <option value="all">All</option>
+                                    <select name="cars" id="CataFilter" class="btnYear fw-bold mt-3">
+                                        <%cata.forEach((data,index)=>{%>
+                                            <option value="all">All</option>
+                                            <option value="<%=data.categoryName%>">
+                                                <%=data.categoryName%>
+                                            </option>
+                                        <%})%>
                                     </select>
                                 </div>
 
@@ -130,40 +132,67 @@
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-      const ctx = document.getElementById('barChart');
-      const status = JSON.parse(document.getElementById('orderStatus').value);
-      let labels = Object.keys(status);
-      let data = Object.values(status);
-      console.log(status);
-    
-      function updateChart(labels, data) {
-    
-        chart = new Chart(ctx, {
-          type: 'bar',
-          data: {
-            labels: labels,
-            datasets: [{
-              // label: '# of Votes',
-              data: data,
-              borderColor: 'rgba(219, 68, 68, 1)',
-              tension: 0.1
-            }]
-          },
-          options: {
-            plugins: {
-              legend: {
-                display: false
-              }
-            },
-            scales: {
-              y: {
-                beginAtZero: true
-              }
-            }
-          }
-        });
-      }
-      updateChart(labels, data);
+        const ctx = document.getElementById('barChart');
+        const status = JSON.parse(document.getElementById('orderStatus').value);
+        let labels = Object.keys(status);
+        let data = Object.values(status);
+        console.log(status);
+
+        function updateChart(labels, data) {
+
+            chart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        // label: '# of Votes',
+                        data: data,
+                        borderColor: 'rgba(219, 68, 68, 1)',
+                        tension: 0.1
+                    }]
+                },
+                options: {
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+        updateChart(labels, data);
     </script>
-    
+    <script>
+        const selectElement = document.getElementById('CataFilter');
+
+        selectElement.addEventListener('change', (event) => {
+            const selectedCategory = event.target.value;
+            sendSelectedCategory(selectedCategory);
+        });
+
+        function sendSelectedCategory(category) {
+            fetch('/admin/Dashboard/graph', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ category: category })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    // Handle the response from the backend
+                    console.log(data);
+                })
+                .catch(error => {
+                    // Handle any errors that occurred during the request
+                    console.error(error);
+                });
+        }
+
+    </script>
     <%- include('../partials/adminfooter.ejs')%>

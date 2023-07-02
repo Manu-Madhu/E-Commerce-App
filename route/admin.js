@@ -25,6 +25,7 @@ const adminMiddleWeare = require('../middleWeare/admin');
 admin.get('/',adminMiddleWeare.isAdmin, adminController.adminLogin);
 admin.post('/', adminController.adminVerification)
 admin.get('/Dashboard', adminMiddleWeare.isLogOut, adminController.dashboard);
+admin.post('/Dashboard/graph',adminController.graph);
 
 // category
 admin.get("/category", adminController.category);

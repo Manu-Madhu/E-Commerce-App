@@ -59,6 +59,8 @@ const dashboard = async (req, res) => {
         order.forEach((data) => {
             orderStatus[data.status]++;
         });
+        
+        const cata = await CategoryModel.find();
         res.render('admin/dashboard', {
             title: "Dashboard",
             admin: req.session.admin,
@@ -67,10 +69,23 @@ const dashboard = async (req, res) => {
             totalUser,
             canceled,
             totalOrder,
+            cata,
             orderStatus: JSON.stringify(orderStatus)
         })
     } catch (error) {
         console.log(error)
+    }
+}
+const graph = async (req, res) => {
+    try {
+        const cataValue = req.body.category;
+        const orders = await orderModel.find();
+        const orderProducts = orders.map(order => order.products.map(product => product)).flat();
+        const cataData = orderProducts.filter(item=> item.category[0] ==cataValue);
+        
+        console.log(orderProducts);
+    } catch (error) {
+     console.log(error);
     }
 }
 
@@ -490,5 +505,6 @@ module.exports = {
     couponsAdding,
     couponCreation,
     couponsRemove,
-    orderstatus
+    orderstatus,
+    graph
 }
