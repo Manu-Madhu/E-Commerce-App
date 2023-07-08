@@ -72,13 +72,10 @@ const profileAddress = async (req, res) => {
 }
 const newAddress = async (req, res) => {
     try {
-        if(Object.keys(req.body).length === 0){
-            res.redirect('/profile/address');
-        }else{
         const email = req.session.email;
         const { name, houseName, street, city, state, phone, postalCode, AddressId } = req.body;
         const userData = await userModel.findOne({ email: email });
-        const exisitingAddress = userData.address.find((data) => data._id.toString() === AddressId);
+        const exisitingAddress = userData.address.find((data) => data._id.toString() === req.body.AddressId);
 
         if (exisitingAddress) {
             exisitingAddress.name = name;
@@ -102,7 +99,6 @@ const newAddress = async (req, res) => {
         }
         await userData.save();
         res.redirect('/profile/address');
-       }
     } catch (error) {
         console.log(error);
         res.status(500).send("Internal server error");

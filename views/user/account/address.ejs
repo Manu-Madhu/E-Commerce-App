@@ -42,7 +42,7 @@
                                                     <div class="bg-white p-2 address_selecter">
                                                         <% userAddress.forEach((data,index)=>{%>
                                                         <div class="d-flex align-items-center gap-2">
-                                                            <input type="radio" name="selectedAddress" value="<%=data._id%>">
+                                                            <input type="radio" name="selectedAddress" value="<%=data._id%>" required>
                                                             <h6>Select Address</h6>
                                                         </div>
                                                         <div class="address p-2 px-3">
