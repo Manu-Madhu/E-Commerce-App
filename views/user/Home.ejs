@@ -40,7 +40,7 @@
 
                 <!-- banner -->
                 <div class="container">
-                    <img src="/assets/banners/banner4.jpg" alt="" class="img-fluid p-3 bannerImage">
+                    <a href="/Shop"><img src="/assets/banners/banner4.jpg" alt="" class="img-fluid p-3 bannerImage"></a>
                 </div>
 
                 <!-- line -->
@@ -51,9 +51,7 @@
                 <!-- view product -->
                 <div class="container d-flex p-3  justify-content-between ">
                     <div class="textHeading fw-bold fs-4">Latest Women Wearing</div>
-                    <form action="/Shop" method="get">
-                        <button class="productviewButton">view all products</button>
-                    </form>
+                    <a href="/Shop"><button class="productviewButton">view all products</button></a>
                 </div>
 
                 <!-- Product Container -->
@@ -68,7 +66,7 @@
                                     <a href="/detaildView/<%= data._id%>">
                                         <img src="/productImages/<%=data.image[0] %>" class="product-thumb" alt="">
                                     </a>
-                                    <a href="/detaildView/<%= data._id%>"><button class="card-btn">add to wishlist</button></a>
+                                    <a href="/detaildView/<%= data._id%>"><button class="card-btn">View Product</button></a>
                                 </div>
                                 <div class="product-info ">
                                     <h2 class="product-brand product-name"><%= data.p_name %></h2>
@@ -97,7 +95,7 @@
                 <!-- view Accessory -->
                 <div class="container d-flex p-3  justify-content-between ">
                     <div class="textHeading fw-bold fs-4">Latest Women Accessory</div>
-                    <button class="productviewButton">view all products</button>
+                    <a href="/Shop"><button class="productviewButton">view all products</button></a>
                 </div>
 
                 <!--Accessory Container -->

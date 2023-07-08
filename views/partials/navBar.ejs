@@ -48,34 +48,35 @@
                                     style="border-radius: 50%; position: absolute; top: -5px; right: -10px; width: 18px; height: 18px;font-size: 9px;">
                                     <%=locals.cartCount%>
                                 </span>
-                                <%}else{%>
-                                    <span id="cartItemCount"
-                                        class="badge badge-pill bg-danger d-flex justify-content-center align-items-center p-1"
-                                        style="border-radius: 50%; position: absolute; top: -5px; right: -10px; width: 18px; height: 18px;font-size: 9px;">
-                                        0
-                                    </span>
-                                    <%}%>
+                            <%}else{%>
+                                <span id="cartItemCount"
+                                    class="badge badge-pill bg-danger d-flex justify-content-center align-items-center p-1"
+                                    style="border-radius: 50%; position: absolute; top: -5px; right: -10px; width: 18px; height: 18px;font-size: 9px;">
+                                    0
+                                </span>
+                            <%}%>
                         </a>
                         <%}else{%>
-                            <i class="fa-regular fa-heart"></i>
-                            <i class="fa-solid fa-cart-shopping "></i>
+                            <a href="/WhishList" class="link-dark text-center"> <i class="fa-regular fa-heart"></i></a> 
+                            <a href="/cart" class="link-dark text-center"><i class="fa-solid fa-cart-shopping "></i></a>
                             <%}%>
-                                <div class="d-flex flex-column align-items-center">
-                                    <% if(user) {%>
-                                        <div class="iconP ">
-                                            <a href="/profile"> <img src="/assets/admin/propic.webp" alt=""
-                                                    class="img-fluid"></a>
-                                        </div>
-                                        <%}else{%>
-                                            <div class="iconP ">
-                                                <a href="/profile"><i class="fa-regular fa-user text-dark"></i></a>
-                                            </div>
-                                            <%}%>
-                                                <span class="text-danger fw-bold ">
-                                                    <%= locals.user?user:"" %>
-                                                </span>
-                                </div>
-                                </form>
+                            <div class="d-flex flex-column align-items-center">
+                                <% if(user) {%>
+                                    <div class="iconP ">
+                                        <a href="/profile"> 
+                                            <img src="/assets/admin/propic.webp" alt=""class="img-fluid">
+                                        </a>
+                                     </div>
+                                <%}else{%>
+                                    <div class="iconP ">
+                                          <a href="/profile">
+                                            <i class="fa-regular fa-user text-dark"></i>
+                                          </a>
+                                    </div>
+                                 <%}%>
+                                <span class="text-danger fw-bold "> <%= locals.user?user:"" %></span>
+                            </div>
+                    </form>
                 </div>
             </div>
     </nav>
