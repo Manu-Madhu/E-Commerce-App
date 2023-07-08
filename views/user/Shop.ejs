@@ -46,17 +46,32 @@
                         <!-- category  -->
                         <div class="container filterCo p-4">
                             <span style="font-weight: 550;">CATEGORIES</span>
-                            <div class="px-2 pt-2 filterFont" style="max-height: 150px; overflow-y: auto;">
-                                <%category.forEach((data,index)=>{%>
-                                    <div class="">
-                                        <input type="checkbox" id="category-<%= data.categoryName %>"
-                                            value="<%= index %>" class="category-checkbox">
-                                        <label for="category-<%= index %>">
-                                            <%=data.categoryName%>
-                                        </label>
-                                    </div>
-                                <%})%>
-                            </div>
+                            <%if(category.length < 7){%>
+                                <div class="px-2 pt-2 filterFont" style="max-height: 150px; overflow-y: auto;">
+                                    <%category.forEach((data,index)=>{%>
+                                        <div class="">
+                                            <input type="checkbox" id="category-<%= data.categoryName %>"
+                                                value="<%= index %>" class="category-checkbox">
+                                            <label for="category-<%= index %>">
+                                                <%=data.categoryName%>
+                                            </label>
+                                        </div>
+                                    <%})%>
+                                </div>
+                            <%}else{%>
+                                <div class="px-2 pt-2 filterFont" style="max-height: 150px; overflow-y: auto;">
+                                    <%category.forEach((data,index)=>{%>
+                                        <div class="">
+                                            <input type="checkbox" id="category-<%= data.categoryName %>"
+                                                value="<%= index %>" class="category-checkbox">
+                                            <label for="category-<%= index %>">
+                                                <%=data.categoryName%>
+                                            </label>
+                                        </div>
+                                    <%})%>
+                                </div>
+                                <div class="mt-2" style="font-size: 13px; color: #909090;">See More <%=category.length-6%>+</div>
+                            <%}%>
                         </div>
                         <!--Rate Range -->
                         <!-- line -->
@@ -240,7 +255,6 @@
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             const selectedElement = document.getElementById('sortSelect');
-
             selectedElement.addEventListener("change", () => {
                 const selectedValue = selectedElement.value;
                 if (selectedValue === "latest") {
