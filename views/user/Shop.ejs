@@ -50,8 +50,8 @@
                                 <div class="px-2 pt-2 filterFont" style="max-height: 150px; overflow-y: auto;">
                                     <%category.forEach((data,index)=>{%>
                                         <div class="">
-                                            <input type="checkbox" id="category-<%= data.categoryName %>"
-                                                value="<%= index %>" class="category-checkbox">
+                                            <input name="filter" type="checkbox" id="category-<%= data.categoryName %>"
+                                                value="<%= data.categoryName %>" class="category-checkbox">
                                             <label for="category-<%= index %>">
                                                 <%=data.categoryName%>
                                             </label>
@@ -62,8 +62,8 @@
                                 <div class="px-2 pt-2 filterFont" style="max-height: 150px; overflow-y: auto;">
                                     <%category.forEach((data,index)=>{%>
                                         <div class="">
-                                            <input type="checkbox" id="category-<%= data.categoryName %>"
-                                                value="<%= index %>" class="category-checkbox">
+                                            <input name="filter" type="checkbox" id="category-<%= data.categoryName %>"
+                                                value="<%= data.categoryName %>" class="category-checkbox">
                                             <label for="category-<%= index %>">
                                                 <%=data.categoryName%>
                                             </label>
@@ -83,7 +83,7 @@
                             <span style="font-weight: 550;">CATEGORIES</span>
                             <div class="px-2 pt-2 filterFont">
                                 <select id="sortSelect" style="width: 100%; height: 40px;font-size: 13.5px;">
-                                    <option value="latest">Select</option>
+                                    <option value="random">Random</option>
                                     <option value="latest">Latest Arrival</option>
                                     <option value="heighToLow">Heigher To Lower</option>
                                     <option value="lowToHigh">Lower To Hegher</option>
@@ -187,6 +187,43 @@
                 </div>
             </div>
     </div>
+
+
+    <div id="pagination-container"></div>
+    <!--Product Template-->
+    <template id="product-temp">
+        <div class="container bg-white ProductCard m-2">
+            <a class="detail-view-anchor" href="/detaildView/">
+                <div class="cardImage mb-2 d-flex align-items-center justify-content-center">
+                    <img class="product-img" src="/productImages/" alt="Product Image">
+                </div>
+            </a>
+            <div class="px-3 product-name">
+                <span class="product-name text-dark"></span>
+                <div class="p_price d-flex justify-content-between">
+                    <div class="price text-danger">₹ <text class="product-final-price"></text> &nbsp; 
+                        <span>₹ <span class="product-price"></span></span>
+                    </div>
+                    <div class="favor" style="cursor: pointer;">
+                        <i class="fa-regular fa-heart"></i>
+                    </div>
+                </div>
+                <div class="rating d-flex align-items-center">
+                    <div class="star d-flex align-items-center">
+                        <img src="/assets/product/star.png" alt="">
+                        <img src="/assets/product/star.png" alt="">
+                        <img src="/assets/product/star.png" alt="">
+                        <img src="/assets/product/star.png" alt="">
+                        <img src="/assets/product/star.png" alt="">
+                    </div>
+                    <div class="value ms-2">(75)</div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+
+
     <!-- FILTER CHECKBOX -->
     <script>
         const checkboxes = document.querySelectorAll('[id^="category-"]');
@@ -339,4 +376,173 @@
             });
         }
     </script>
+
+
+    <!--Extra changes --start-->
+    <script>
+const productContainer = document.getElementById('product-container');
+const productTemp = document.getElementById('product-temp')
+const buildProduct = (product)=>{
+    const newProduct = productTemp.content.cloneNode(true)
+
+    console.log(newProduct)
+    newProduct.querySelector('.detail-view-anchor').href += product._id
+    newProduct.querySelector('.product-img').src += product.image[0]
+    newProduct.querySelector('.product-name').innerText = product.p_name
+    newProduct.querySelector('.product-final-price').innerText = product.finalPrice
+    newProduct.querySelector('.product-price').innerText = product.price
+
+    productContainer.appendChild(newProduct)
+}
+
+
+
+
+let selectedFilter = []
+
+const filterInputEvent = ()=>{
+    const filterInp = document.querySelectorAll('input[name="filter"]')
+    //this is adding evet to every filter checkbox
+    for(let inp of filterInp){
+        inp.addEventListener("change", (e)=>{
+            if(e.target.checked) selectedFilter.push(inp.value)
+            else selectedFilter = selectedFilter.filter(cate => cate != inp.value)
+            rebuildPaginationBtn = true
+        })
+    }
+}
+
+let sorting = {}//initiallizing sorting varible to pass as query
+const sortingSelectorEvent = ()=>{
+    const sortingSelector = document.getElementById('sortSelect')
+    sortingSelector.addEventListener("change", ()=>{
+        if(sortingSelector.value == 'latest') sorting.createdAt = -1
+        else if(sortingSelector.value == 'heighToLow') sorting.price = -1
+        else if(sortingSelector.value == 'lowToHigh') sorting.price = 1
+        else sorting = {}
+    })
+}
+
+
+let searchInpVal = ''
+const searchInput = document.getElementById('searchInput')
+
+let timer
+searchInput.addEventListener("keyup", ()=>{
+    clearTimeout(timer)
+    timer = setTimeout(()=>{
+        searchInpVal = searchInput.value
+        //invoke build product
+    }, 2000)
+})
+
+
+const fetchProducts = async (page=1)=>{
+    const option = {}
+    if(selectedFilter.length) option.category = {$in: selectedFilter}
+    if(searchInpVal) option.p_name = {$regex: `^${searchInpVal}`, $options: 'i'}
+    let url = `/getproducts?skip=${(page - 1) * limit}&limit=${limit}`
+    if(Object.keys(option)) url += `option=${JSON.stringify(option)}&`
+    if(Object.keys(sorting)) url += `sortBy=${JSON.stringify(sorting)}`
+
+    const res = await fetch(url, {method: 'GET'})
+    if(res.ok){
+        const products = await res.json()
+        productContainer.innerHTML = ''
+        products.forEach(product=> buildProduct(product))
+        if(rebuildPaginationBtn){
+            btnsCount(option)
+            rebuildPaginationBtn = false
+        }
+    }
+
+}
+
+
+
+const limit = 3
+let rebuildPaginationBtn = true //initailizing as a true for build first pagination buttons
+//PAGENATION
+const btnsCount = async(option)=>{
+    let url = '/products/count'
+    //this will return doc count that matching certain condition
+    if(option) url += `?option=${JSON.stringify(option)}`
+    const res = await fetch(url, {method: "GET"})
+    // console.log(await res.text())
+    const totalProductsCount = await res.text()
+    //Building pagination buttons
+    buildPagenationBtns(Math.ceil(+totalProductsCount / limit))
+}
+
+//declared as a global
+const paginationContainer = document.getElementById('pagination-container')
+
+
+//this is for building pagination buttons
+function buildPagenationBtns (btnsLen){
+    paginationContainer.innerHTML = ''
+    if(!btnsLen) return //Stoping building btns if there is no products
+    paginationContainer.innerHTML += `
+    <button id="prev-btn" class="btn btn-dark">prev</button>
+    <button value="1" class='page-btn btn btn-outline-dark'>1</button>`
+    for(let i = 2; i <= btnsLen; i++){
+        paginationContainer.innerHTML += `<button value="${i}" class='btn page-btn'>${i}</button>`
+    }
+    paginationContainer.innerHTML += `<button id="next-btn" class="btn btn-dark">next</button>`
+
+    paginationBtnEventHandler()
+    prevNextBtnEvent()
+    prevAndNextDisableHandler()
+}
+
+//declared some variables for reuse
+let btns
+let selectedBtn
+
+function paginationBtnEventHandler(){
+
+    btns = paginationContainer.querySelectorAll('.page-btn')//selecting all pagination buttons and assigning to a variable for reuse
+    selectedBtn = paginationContainer.querySelector(".btn-outline-dark")//taking current selected button and assigning to a variable for reuse
+    
+    for(let btn of btns){
+        btn.addEventListener('click', ()=>{
+            const className = 'btn-outline-dark'
+            selectedBtn.classList.remove(className)//remove the "btn-outline-dark" class from previous selected button
+            btn.classList.add(className)//adding "btn-outline-dark" class to current selected button
+            selectedBtn = btn//replacing previous slected button to current slected button
+            fetchProducts(+btn.value)//fetching current page products
+            prevAndNextDisableHandler()//ivoking prevAndNextDisableHandler() it check whther it time to disable or enable
+        })
+    }
+}
+
+
+let prev_btn//intializing prev btn to reuse 
+let next_btn //intializing next btn to reuse
+
+function prevAndNextDisableHandler (){//this function ditect current page and take the dission whether make it disable or not
+    if(selectedBtn.value == 1) prev_btn.disabled = true
+    else prev_btn.disabled = false
+    if(selectedBtn.value == btns.length) next_btn.disabled = true
+    else next_btn.disabled = false 
+}
+
+
+function prevNextBtnEvent (){//this is prev and next button event function
+    prev_btn = paginationContainer.querySelector('#prev-btn')
+    next_btn = paginationContainer.querySelector('#next-btn')
+
+    prev_btn.addEventListener('click', ()=>  btns[selectedBtn.value - 2].click())//where the -2 came from?
+    // well, we accessing btn using index so it take (-1) and we want previous page so we dcreasing once againg
+
+    next_btn.addEventListener('click', ()=> btns[selectedBtn.value].click())
+    
+}
+btnsCount()
+    </script>
+    <!--Extra changes --end-->
+
+
+
+
     <%- include("../partials/footer.ejs")%>
