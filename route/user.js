@@ -73,4 +73,13 @@ Router.post('/saveOrderData', userMiddlewear.userCheking, userMiddlewear.userIsB
 // Logout
 Router.get('/logout', userControler.logOut);
 
+
+//Extra changes --start
+
+Router.get('/products/count', userControler.productCount)
+Router.get('/getproducts', userControler.getProducts)
+
+
+//Extra changes --end
+
 module.exports = Router;
