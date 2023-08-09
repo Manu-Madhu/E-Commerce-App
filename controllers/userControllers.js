@@ -12,7 +12,6 @@ const fast2sms = require('fast-two-sms');
 
 // Fast 2 SMS
 const API = process.env.FAST_2_SMS_API;
-
 // Razorpoy
 const key_id = process.env.RAZORPAY_API_KEY;
 const key_secret = process.env.RAZORPAY_API_SECRET
@@ -47,9 +46,9 @@ const login = (req, res) => {
 }
 const validation = async (req, res) => {
     try {
-        const email = req.body.email;
-        const password = req.body.password;
+        const {email,password} = req.body;
         const userData = await UserModel.findOne({ email: email });
+        
         if (userData.isBlocked === false) {
             if (userData) {
                 const VPWD = await bcrypt.compare(password, userData.password);

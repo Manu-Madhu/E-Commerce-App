@@ -7,8 +7,6 @@ const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
 const cookiePaser = require('cookie-parser');
 
-
-
 // MONGO CONNECTION
 dotenv.config({ path: './.env' }); 
 const url = process.env.URL
