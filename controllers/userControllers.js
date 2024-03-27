@@ -872,6 +872,38 @@ const logOut = async (req, res) => {
     }
 }
 
+
+//Extra changes --start
+
+//@des /products/count
+//method GET
+const productCount = async (req, res)=>{
+    try {
+        let option = req.query.option ? JSON.parse(req.query.option) : {}
+        const count = await ProductModel.countDocuments(option)
+        res.status(200).json(count)
+    } catch (err) {
+        return res.staus(500).send(err.message)
+    }
+}
+
+
+//@des /getproducts
+//method GET
+const getProducts = async(req, res)=>{
+    const option = req.query.option ? JSON.parse(req.query.option) : {}
+    const sortBy = req.query.sortBy ? JSON.parse(req.query.sortBy) : {}
+    const skip = req.query.skip ? +req.query.skip : 0
+    const limit = req.query.limit ? +req.query.limit : {}
+    try {
+        const products = await ProductModel.find(option, sortBy).skip(skip).limit(limit)
+        res.status(200).json(products)
+    } catch (err) {
+        return res.status(500).send(err.message)
+    }
+}
+//Extra changes --end
+
 module.exports = {
     home,
     login,
@@ -904,5 +936,7 @@ module.exports = {
     forGotPassword,
     numberValidation,
     resetPassword,
-    newPassword
+    newPassword,
+    productCount,
+    getProducts
 }
